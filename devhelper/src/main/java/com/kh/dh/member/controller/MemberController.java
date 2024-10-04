@@ -33,15 +33,15 @@ public class MemberController
 	@RequestMapping(value = "callback")
 	public String gitLogin(@RequestParam String code, HttpSession session)
 	{
-		//��ū ������
+		//토큰 가져오기
 		String token = gService.getToken(code);
 		
-		//��ū���� ���� ��������
+		//토큰으로 정보가져오기
 		Member gitMember = gService.getUserInfo(token);
 		
-		// �̹� ���Ե� member���� DB���� Ȯ��
+		// 이미 가입되어있는지 확인
         Member loginMember = mService.selectMember(gitMember);
-        // ����� ����� ���� ��� DB�� �߰�
+        // 안되있으면 db에 추가
         if(loginMember == null)
         {
         	int result = mService.insertMember(gitMember);
@@ -58,6 +58,12 @@ public class MemberController
         }
         session.setAttribute("loginMember", loginMember);
         return "redirect:/";
+	}
+	@RequestMapping("logout.me")
+	public String logout(HttpSession session)
+	{
+		session.invalidate();
+		return "redirect:/";
 	}
 	
 }
