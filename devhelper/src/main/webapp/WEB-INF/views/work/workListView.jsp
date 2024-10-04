@@ -244,7 +244,7 @@
       location.href = "detail.wo?sn=" + sn; 
   });
   
-    
+    // 백 투더 탑 스크립트
      $(document).ready(function () {
       
       $('#search-icon-only').click(function () {
@@ -256,7 +256,7 @@
         $('#search-bar').slideUp(); 
         $('#search-icon-only').show();
     });
-// 백 투더 탑 스크립트
+
         $('#back-to-top').click(function () {
           $('html, body').animate({ scrollTop: 0 }, 'slow');
           return false;
