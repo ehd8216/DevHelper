@@ -21,8 +21,9 @@ public class RepoController {
 	
 	// 전체 레파지토리 조회
 	@RequestMapping("myRepo.re")
-	public String myRepo(String token, HttpSession session) throws IOException {
-		github = GitHub.connectUsingOAuth("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");
+	public String myRepo(HttpSession session) throws IOException {
+		String token = (String)session.getAttribute("token");
+		github = GitHub.connectUsingOAuth(token);
 		
 		ArrayList<Repository> repoList = new ArrayList();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
