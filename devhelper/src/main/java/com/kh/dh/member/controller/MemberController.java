@@ -57,6 +57,7 @@ public class MemberController
         	loginMember = mService.selectMember(gitMember);
         }
         session.setAttribute("loginMember", loginMember);
+        session.setAttribute("token", token);
         return "redirect:/";
 	}
 	@RequestMapping("logout.me")
