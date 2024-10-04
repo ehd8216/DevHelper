@@ -246,7 +246,7 @@
 				<div class="menuEls" onclick="toThe('searchNews')">HOME</div>
 				<div class="menuEls" onclick="toThe('myRepo.re')">My Repository</div>
 				<div class="menuEls">코딩테스트</div>
-				<div class="menuEls">취업관련</div>
+				<div class="menuEls" onclick="toThe('list.wo')">취업관련</div>
 				<c:if test="${not empty loginMember}">
 					<div class="menuEls" onclick="toThe('list.bo?memNo=${loginMember.memNo}')">게시판</div>
 				</c:if>
