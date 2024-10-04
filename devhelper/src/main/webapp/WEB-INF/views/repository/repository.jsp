@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,31 +44,26 @@
         <table border="1" class="repoTable">
           <thead id="repoHead">
             <tr>
-              <th>아이콘</th>
-              <th>이름</th>
-              <th>공개범위</th>
-              <th>기타</th>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Visibility</th>
+              <th>Create</th>
+              <td>Sub</td>
             </tr>
           </thead>
           <tbody id="repoBody">
+          <c:forEach var="r" items="${ repoList }">
             <tr>
-              <td>사진</td>
-              <td>TestRe</td>
-              <td>private</td>
+              <td>${ r.repoName }</td>
+              <td>${ r.repoDescription }</td>
+              <td>${ r.visibility }</td>
+              <td>${ r.createDate }</td>
               <td>
                 <button>초대</button>
                 <button>삭제</button>
               </td>
             </tr>
-            <tr>
-              <td>사진</td>
-              <td>TestRe</td>
-              <td>private</td>
-              <td>
-                <button>초대</button>
-                <button>삭제</button>
-              </td>
-            </tr>
+          </c:forEach>
           </tbody>
         </table>
       </div>
@@ -75,11 +71,18 @@
 
   <script>
     $(function(){
+
       $("#repoBody tr").click(function(){
         location.href="repoDetail.re";
       })
+
+      
+
+
+
     })
 
+    
   </script>
 
 </body>
