@@ -7,10 +7,12 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class APIcontroller {
@@ -49,9 +51,12 @@ public class APIcontroller {
 	@RequestMapping(value="detailAPI.wo", produces = "application/json; charset=utf-8")
 	public String employDetailAPI(@RequestParam(value="sn")int sn) throws IOException {
 		
-		String url = "https://apis.data.go.kr/1051000/recruitment/list";
+		String url = "https://apis.data.go.kr/1051000/recruitment/detail";
 		url += "?serviceKey=" + serviceKey;
+		url += "&resultType=json";
 		url += "&sn=" + sn;
+
+		System.out.println(url);
 		
 		URL requestUrl = new URL(url);
 		HttpURLConnection urlConnection = (HttpURLConnection)requestUrl.openConnection();
@@ -67,6 +72,8 @@ public class APIcontroller {
 		}
 		br.close();
 		urlConnection.disconnect();
+		System.out.println(responseText);
+		
 				
 		return responseText;
 	}

@@ -40,7 +40,7 @@ public class WorkController {
 		return "work/workListView";
 	}
 	
-	// 상세채용공고로 이동
+	// 상세채용공고 페이지로 이동
 	@RequestMapping("detail.wo")
 	private ModelAndView TodetailView(@RequestParam("sn")int sn, ModelAndView mv) {
 		
