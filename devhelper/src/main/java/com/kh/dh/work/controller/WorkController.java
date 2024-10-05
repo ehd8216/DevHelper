@@ -42,8 +42,12 @@ public class WorkController {
 	
 	// 상세채용공고로 이동
 	@RequestMapping("detail.wo")
-	private String TodetailView() {
-		return "work/workDetailView";
+	private ModelAndView TodetailView(@RequestParam("sn")int sn, ModelAndView mv) {
+		
+		mv.addObject("sn",sn)
+		  .setViewName("work/workDetailView");
+		
+		return mv;
 	}
 	
 	

@@ -46,7 +46,7 @@ public class APIcontroller {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="detail.wo", produces = "application/json; charset=utf-8")
+	@RequestMapping(value="detailAPI.wo", produces = "application/json; charset=utf-8")
 	public String employDetailAPI(@RequestParam(value="sn")int sn) throws IOException {
 		
 		String url = "https://apis.data.go.kr/1051000/recruitment/list";

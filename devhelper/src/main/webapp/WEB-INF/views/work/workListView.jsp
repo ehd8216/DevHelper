@@ -242,6 +242,7 @@
   $(document).on("click", "#result1>tbody>tr", function() {
       const sn = $(this).data("sn");
       location.href = "detail.wo?sn=" + sn; 
+      console.log(sn)
   });
   
     // 백 투더 탑 스크립트

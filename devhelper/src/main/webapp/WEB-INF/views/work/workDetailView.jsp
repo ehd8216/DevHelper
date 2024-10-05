@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -58,54 +59,43 @@
     </div>
    
     <table class="condition" style="border: 1px solid lightgray">
-        <tr>
-            <td>공고기간</td>
-            <td>채용분야</td>
-            <td>대체인력여부</td>
-        </tr>
-        <tr>
-            <td>2024-10-2</td>
-            <td>건설기계</td>
-            <td>아니오</td>
-        </tr>
-        <tr>
-            <td>고용형태</td>
-            <td>학력정보</td>
-            <td>근무지</td>
-        </tr>
-        <tr>
-            <td>청년체험</td>
-            <td>학력무관</td>
-            <td>강남</td>
-        </tr>
-       
-    </table>
-    <br>
+    <tr>
+        <td>공고 시작일</td>
+        <td>공고 종료일</td>
+        <td>대체인력 여부</td>
+    </tr>
+    <tr>
+        <td id="condition-start-date"></td>  <!-- 공고 시작일 -->
+        <td id="condition-end-date"></td>    <!-- 공고 종료일 -->
+        <td id="condition-substitute"></td>  <!-- 대체인력 여부 -->
+    </tr>
+    <tr>
+        <td>채용분야</td>
+        <td>고용형태</td>
+        <td>근무지</td>
+    </tr>
+    <tr>
+        <td id="condition-job-type"></td>    <!-- 채용분야 -->
+        <td id="hire-type"></td>             <!-- 고용형태 -->
+        <td id="work-region"></td>           <!-- 근무지 -->
+    </tr>
+</table>
+<br>
 
-    <table class="info-table" style="border: 1px solid lightgray" >
-        <tr>
-            <th>응시자격</th>
-            <td>ㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇ
-                ㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇ
-            </td>
-        </tr>
-        <tr style="height: 20px;">
-            <th>우대조건</th>
-            <td>국가유공자</td>
-        </tr>
-        <tr style="height: 150px;">
-            <th>전형절차 방법</th>
-            <td>서류->면접->최종합격</td>
-        </tr>
-        <tr style="height: 20px;">
-            <th >공고문</th>
-            <td>.zip 파일</td>
-        </tr>
-        <tr style="height: 20px;">
-            <th s>입사지원서</th>
-            <td>.png 파일</td>
-        </tr>
-    </table>
+<table class="info-table" style="border: 1px solid lightgray">
+    <tr>
+        <th>응시자격</th>
+        <td id="eligibility"></td> <!-- 응시자격 -->
+    </tr>
+    <tr style="height: 20px;">
+        <th>우대조건</th>
+        <td id="preferred"></td> <!-- 우대조건 -->
+    </tr>
+    <tr style="height: 150px;">
+        <th>전형절차 방법</th>
+        <td id="selection-procedure"></td> <!-- 전형절차 방법 -->
+    </tr>
+</table>
     <br>
     <br>
 
@@ -113,15 +103,53 @@
 </div>
 
 <script>
-	$.ajax({
-		uri:"detail.wo",
-		data:{},
-		success:function(result){
-			console.log(result)
-		},error:function(){
-			console.log("detail API 에러")
-		}
-	})
+$(document).ready(function() {
+    var sn = "${sn}";  // JSP에서 sn 값을 가져옴
+
+    $.ajax({
+        url: "detailAPI.wo",
+        type: "GET",
+        data: { sn: sn },
+        success: function(result) {
+            console.log(result);  // 콘솔에 데이터 출력 (디버깅용)
+
+            if (result && result.result.length > 0) {
+                const job = result.result[0];  // 첫 번째 결과를 가져옴
+
+                // 공고기간
+                $("#condition-start-date").text(job.pbancBgngYmd);
+                $("#condition-end-date").text(job.pbancEndYmd);
+
+                // 채용분야
+                $("#condition-job-type").text(job.ncsCdNmLst);
+
+                // 대체인력 여부
+                $("#condition-substitute").text(job.replmprYn === "Y" ? "예" : "아니오");
+
+                // 고용형태
+                $("#hire-type").text(job.hireTypeNmLst);
+
+                // 근무지
+                $("#work-region").text(job.workRgnNmLst);
+
+                // 응시자격
+                $("#eligibility").text(job.aplyQlfcCn);
+
+                // 우대조건
+                $("#preferred").text(job.prefCn);
+
+                // 전형절차 방법
+                $("#selection-procedure").text(job.scrnprcdrMthdExpln);
+            } else {
+                console.log("데이터가 없습니다.");
+            }
+        },
+        error: function() {
+            console.log("detail API 에러");
+        }
+    });
+});
+
 </script>
 </body>
 </html>
