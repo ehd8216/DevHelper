@@ -116,10 +116,10 @@ $(document).ready(function() {
         type: "GET",
         data: { sn: sn },
         success: function(result) {
-            console.log(result);  // 콘솔에 데이터 출력 (디버깅용)
+            console.log(result.result);  // 콘솔에 데이터 출력 (디버깅용)
 
-            if (result && result.result.length > 0) {
-                const job = result.result[0];  // 첫 번째 결과를 가져옴
+           
+                const job = result.result;  
 
                 // 공고기간
                 $("#condition-start-date").text(job.pbancBgngYmd);
@@ -145,9 +145,7 @@ $(document).ready(function() {
 
                 // 전형절차 방법
                 $("#selection-procedure").text(job.scrnprcdrMthdExpln);
-            } else {
-                console.log("데이터가 없습니다.");
-            }
+           
         },
         error: function() {
             console.log("detail API 에러");

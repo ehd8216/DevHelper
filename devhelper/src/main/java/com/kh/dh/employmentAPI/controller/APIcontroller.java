@@ -55,8 +55,6 @@ public class APIcontroller {
 		url += "?serviceKey=" + serviceKey;
 		url += "&resultType=json";
 		url += "&sn=" + sn;
-
-		System.out.println(url);
 		
 		URL requestUrl = new URL(url);
 		HttpURLConnection urlConnection = (HttpURLConnection)requestUrl.openConnection();
