@@ -1,6 +1,8 @@
 package com.kh.dh.board.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,18 +22,28 @@ public class BoardServiceImpl implements BoardService {
 	private SqlSessionTemplate sst;
 	
 	@Override
-	public int selectListCount() {
-		return bd.selectListCount(sst);
+	public int selectListCount(Map<String, Object> conditions) {
+		return bd.selectListCount(sst, conditions);
 	}
 	
 	@Override
-	public ArrayList<Board> selectList(PageInfo pi, Integer memNo) {
-		return bd.selectList(sst,pi,memNo);
+	public ArrayList<Board> selectList(PageInfo pi, Map<String, Object> conditions) {
+		return bd.selectList(sst, pi, conditions);
 	}
 
 	@Override
 	public int insertBoard(Board b) {
 		return bd.insertBoard(sst, b);
+	}
+
+	@Override
+	public int increaseBoardCount(int bNo) {
+		return bd.increaseBoardCount(sst, bNo);
+	}
+
+	@Override
+	public Board selectBoard(int bNo) {
+		return bd.selectBoard(sst, bNo);
 	}
 
 

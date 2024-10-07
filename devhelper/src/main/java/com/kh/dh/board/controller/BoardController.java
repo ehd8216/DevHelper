@@ -31,18 +31,19 @@ public class BoardController {
 	private BoardServiceImpl bs;
 
 	@RequestMapping("list.bo")
-	public ModelAndView selectList(@RequestParam(value="cPage", defaultValue="1") int currentPage, ModelAndView mv, Integer memNo) {
-		int listCount = bs.selectListCount();
+	public ModelAndView selectList(@RequestParam(value="cPage", defaultValue="1") int currentPage, ModelAndView mv, Integer memNo, @RequestParam(value="boardLang", required=false) String boardLang, 
+	        @RequestParam(value="boardAnswered", required=false) String boardAnswered) {
+		
+		Map<String, Object> conditions = new HashMap<String, Object>();
+		conditions.put("lang", boardLang);
+		conditions.put("answer", boardAnswered);
+		
+		int listCount = bs.selectListCount(conditions);
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 6);
 		
-		ArrayList<Board> list = bs.selectList(pi, memNo);
-		
-		/*
-		mv.addObject("pi", pi);
-		mv.addObject("list", list);
-		mv.setViewName("board/boardListView");
-		*/
+		conditions.put("memNo", memNo);
+		ArrayList<Board> list = bs.selectList(pi, conditions);
 		
 		mv.addObject("pi", pi)
 		  .addObject("list", list)
@@ -77,6 +78,22 @@ public class BoardController {
 	    
 	}
 	
+	@RequestMapping(value="detail.bo")
+	public String boardDetailView(int bNo, Model model) {
+		
+		int result = bs.increaseBoardCount(bNo);
+		
+		if (result > 0) {
+			Board b = bs.selectBoard(bNo);
+			model.addAttribute("b", b);
+			model.addAttribute("alertMsg", bNo+"번 게시글을 조회합니다.");
+			return "board/boardDetailView";
+		} else {
+			model.addAttribute("errorMsg", "게시글 조회 실패");
+			return "community/community";
+		}
+		
+	}
 	
 	
 	

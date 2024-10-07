@@ -23,5 +23,6 @@ public class Board {
 	private Date createDate;
 	private String answer;
 	private String boardLang;
+	private String profile;
 	
 }

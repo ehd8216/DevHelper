@@ -69,30 +69,17 @@
 
 					#boardList {
 						width: 100%;
-						height: 756px;
+						height: 700px;
 						display: flex;
 						flex-wrap: wrap;
 						gap: 1%;
 
 						& .boards {
 							width: 32.5%;
-							height: 46%;
+							height: 49%;
 							border: 1px solid #000;
 							position: relative;
 							border-radius: 10px;
-
-
-							& .answerMark {
-								position: absolute;
-								width: 30px;
-								height: 30px;
-								background-color: rgb(241, 239, 107);
-								right: 5px;
-								top: -31px;
-								display: flex;
-								justify-content: center;
-								line-height: 33px;
-							}
 
 							& .thumbnail {
 								width: 100%;
@@ -131,27 +118,65 @@
 								background-color: #fff;
 								border-bottom-left-radius: 10px;
 								border-bottom-right-radius: 10px;
+								overflow: hidden;
 
-								& .underBoardInfo {
-									display: flex;
-									align-items: center;
-									gap: 3%;
-									height: 100%;
-									width: 30%;
-									justify-content: end;
+								&:hover .ubSlider {
+									bottom: 0;
+									opacity: 1;
 								}
+
+								& .ubSlider {
+									position: absolute;
+									bottom: -100%;
+									width: 100%;
+									height: 110%;
+									background-color: rgb(250, 208, 93);
+									opacity: 0;
+									transition: bottom 0.4s ease, opacity 0.4s ease;
+
+									& .underBoardInfo {
+										display: flex;
+										align-items: center;
+										gap: 3%;
+										height: 100%;
+										width: 30%;
+										justify-content: end;
+
+										& .count {
+											border: 2px solid rgb(243, 132, 243);
+											border-radius: 5px;
+											width: 15%;
+											background-color: white;
+											text-align: center;
+											height: 75%;
+											line-height: 24px;
+										}
+									}
+
+									& .answerMark {
+										height: 100%;
+										line-height: 27px;
+									}
+
+									&:hover {
+										opacity: 1;
+										cursor: pointer;
+									}
+								}
+
 							}
 						}
 					}
 
 					#pagingArea {
 						width: 100%;
-						height: 6%;
+						margin: .2% auto 0;
 
 						& .pagination {
 							display: flex;
 							gap: 1%;
 							justify-content: center;
+							align-items: end;
 						}
 					}
 				</style>
@@ -163,59 +188,84 @@
 
 				<div class="outer">
 
-					<div id="sortingBar">
-						<button onclick="toEnroll();">게시글 작성</button>
-
-						<div id="languages"> 사용언어
-							<select id="language">
-								<option value="">JavaScript</option>
-								<option value="">HTML</option>
-								<option value="">JAVA</option>
-							</select>
-						</div>
-
-						<div id="radios"> 답변여부
-							<div id="answers">
-								<label>
-									<input type="radio" name="answered" value="a"> 답변됨
-								</label>
-								<label>
-									<input type="radio" name="answered" value="n"> 답변안됨
-								</label>
+					<form id="filterForm" action="list.bo" method="get">
+						<input type="hidden" name="memNo" value="${loginMember.memNo}" />
+						<input type="hidden" name="cPage" value="1" />
+						<div id="sortingBar">
+							<button type="button" onclick="toEnroll();">게시글 작성</button>
+							<div id="languages">
+								사용언어
+								<select id="language" name="boardLang" onchange="this.form.submit();">
+									<option value="All">All</option>
+									<option value="JavaScript">JavaScript</option>
+									<option value="HTML">HTML</option>
+									<option value="JAVA">JAVA</option>
+								</select>
+							</div>
+							<div id="radios">
+								답변여부
+								<div id="answers">
+									<label>
+										<input type="radio" name="boardAnswered" value="Y"
+											onchange="this.form.submit();"> 답변됨
+									</label>
+									<label>
+										<input type="radio" name="boardAnswered" value="N"
+											onchange="this.form.submit();"> 답변안됨
+									</label>
+								</div>
 							</div>
 						</div>
+					</form>
 
-					</div>
+					<script>
+						$(document).ready(() => {
+							const lang = '${param.boardLang}';
+							if (lang) {
+								$('#language').val(lang);
+							}
+
+							const answered = '${param.boardAnswered}';
+							if (answered) {
+								$('input[name="boardAnswered"][value="' + answered + '"]').prop('checked', true);
+							}
+						});
+					</script>
 
 					<div id="boardList">
 
 						<c:forEach var="b" items="${list}">
-
 							<div class="boards">
-								<c:if test="${b.answer eq 'Y'}">
-									<div class="answerMark">🏆</div>
-								</c:if>
 								<div class="thumbnail">
 									<pre>
-<code class="language-js" id="code-${b.boardNo}">${b.code}</code>
+<code class="language-js">${b.code}</code>
 									</pre>
 								</div>
 								<div class="underBoard">
+									<div class="ubSlider" data-bNo="${b.boardNo}">
+										<div class="underBoardInfo">
+											<c:if test="${b.answer eq 'Y'}">
+												<div class="answerMark">🏆</div>
+											</c:if>
+											<div class="count">${b.boardCount}</div>
+											<div class="date">${b.createDate}</div>
+										</div>
+									</div>
 									<div class=lang>${b.boardLang}</div>
 									<div class="title">${b.boardTitle}</div>
-									<div class="underBoardInfo">
-										<div class="count">${b.boardCount}</div>
-										<div class="date">${b.createDate}</div>
-									</div>
 								</div>
 							</div>
-
-
-
 						</c:forEach>
 
 					</div>
 
+					<c:set var="condition" value="" />
+					<c:if test="${not empty param.boardLang}">
+						<c:set var="condition" value="${condition}&boardLang=${param.boardLang}" />
+					</c:if>
+					<c:if test="${not empty param.boardAnswered}">
+						<c:set var="condition" value="${condition}&boardAnswered=${param.boardAnswered}" />
+					</c:if>
 
 					<div id="pagingArea">
 						<ul class="pagination">
@@ -227,14 +277,15 @@
 
 								<c:otherwise>
 									<li class="page-item"><a class="page-link"
-											href="list.bo?cPage=${ pi.currentPage - 1 }&memNo=${loginMember.memNo}">Previous</a>
+											href="list.bo?cPage=${ pi.currentPage - 1 }&memNo=${loginMember.memNo}${condition}">Previous</a>
 									</li>
 								</c:otherwise>
 							</c:choose>
 
 							<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
 								<li class="page-item"><a class="page-link"
-										href="list.bo?cPage=${ p }&memNo=${loginMember.memNo}">${ p }</a></li>
+										href="list.bo?cPage=${ p }&memNo=${loginMember.memNo}${condition}">${ p }</a>
+								</li>
 							</c:forEach>
 
 							<c:choose>
@@ -244,7 +295,7 @@
 
 								<c:otherwise>
 									<li class="page-item"><a class="page-link"
-											href="list.bo?cPage=${ pi.currentPage + 1 }&memNo=${loginMember.memNo}">Next</a>
+											href="list.bo?cPage=${ pi.currentPage + 1 }&memNo=${loginMember.memNo}${condition}">Next</a>
 									</li>
 								</c:otherwise>
 							</c:choose>
@@ -258,6 +309,10 @@
 						location.href = "enrollForm.bo";
 					}
 
+					$(document).on('click', '.ubSlider', function () {
+						const bNo = $(this).data("bno");
+						location.href = "detail.bo?bNo=" + bNo;
+					});
 				</script>
 
 			</body>

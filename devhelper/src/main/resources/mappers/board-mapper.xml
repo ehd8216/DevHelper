@@ -13,6 +13,7 @@
 		<result column="create_date" property="createDate" />
 		<result column="answer" property="answer" />
 		<result column="board_lang" property="boardLang" />
+		<result column="profile" property="profile" />
 	</resultMap>
 	
 	<select id="selectListCount" resultType="_int">
@@ -22,6 +23,12 @@
 		       board
 		 where 
 		       status = 'Y'
+		 <if test="lang != null and lang != 'All'">
+		   and board_lang = #{lang}
+		 </if>
+		 <if test="answer != null">
+		   and answer = #{answer}
+		 </if>
 	</select>
 	
 	<select id="selectList" resultMap="boardResult">
@@ -38,6 +45,12 @@
 		       board 
 		 where status = 'Y'
 		   and board_writer = #{memNo}
+		 <if test="lang != null and lang !='All'">
+		   and board_lang = #{lang}
+		 </if>
+		 <if test="answer != null">
+		   and answer = #{answer}
+		 </if>
 		 order
 		    by board_no desc
 	</select>
@@ -63,5 +76,19 @@
 		     , #{boardLang}
 		     )
 	</insert>
+	
+	<update id="increaseBoardCount">
+		update board
+		   set board_count = board_count + 1
+		 where board_no = #{bNo}
+	</update>
+	
+	<select id="selectBoard" resultMap="boardResult">
+		select b.*
+		     , m.profile
+		  from board b
+		  join member m on (b.board_writer = m.mem_no)
+		 where b.board_no = #{bNo}
+	</select>
 
 </mapper>
