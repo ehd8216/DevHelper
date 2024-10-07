@@ -8,12 +8,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-<<<<<<< HEAD
 import org.kohsuke.github.GHIssue;
 import org.kohsuke.github.GHIssueState;
-=======
 import org.kohsuke.github.GHCreateRepositoryBuilder;
->>>>>>> df77d4e6468e3edef80c0555eb6c517dbc531ed9
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 import org.springframework.stereotype.Controller;
