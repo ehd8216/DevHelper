@@ -8,8 +8,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+<<<<<<< HEAD
 import org.kohsuke.github.GHIssue;
 import org.kohsuke.github.GHIssueState;
+=======
+import org.kohsuke.github.GHCreateRepositoryBuilder;
+>>>>>>> df77d4e6468e3edef80c0555eb6c517dbc531ed9
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 import org.springframework.stereotype.Controller;
@@ -65,6 +69,7 @@ public class RepoController {
 		return "repository/repoDetail";
 	}
 	
+
 	@RequestMapping("issueslist.re")
 	public String issueslist(String repoName, HttpSession session) throws IOException
 	{
@@ -83,6 +88,28 @@ public class RepoController {
             System.out.println("Issue #" + issue.getNumber() + ": " + issue.getTitle());
         }
     	return "repository/issuesList";
+	}
+	@RequestMapping("createRepo.re")
+	public String createRepo(Repository repo, HttpSession session) throws IOException {
+		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
+		
+		GHCreateRepositoryBuilder builder = github.createRepository(repo.getRepoName());
+        builder.description(repo.getRepoDescription());
+        
+        if(repo.getVisibility().equals("true")) {
+        	builder.private_(true);
+        }else {
+        	builder.private_(false);
+        }
+        
+        if(repo.getReadMe().equals("true")) {
+        	builder.autoInit(true);
+        }
+        
+        builder.create();
+		
+		session.setAttribute("alertMsg", "레파지토리 생성 완료");
+		return "redirect:myRepo.re";
 	}
 	
 }
