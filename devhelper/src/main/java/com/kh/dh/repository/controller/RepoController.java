@@ -3,15 +3,19 @@ package com.kh.dh.repository.controller;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.kohsuke.github.GHIssue;
+import org.kohsuke.github.GHIssueState;
 import org.kohsuke.github.GHCreateRepositoryBuilder;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.dh.member.model.vo.Member;
 import com.kh.dh.repository.model.vo.Repository;
@@ -60,10 +64,32 @@ public class RepoController {
 		GHRepository repo = github.getRepository(str);
 		
 		session.setAttribute("repo", repo);
-		
 		return "repository/repoDetail";
 	}
 	
+
+	@RequestMapping("issueslist.re")
+	public ModelAndView issueslist(String repoName, HttpSession session, ModelAndView mv) throws IOException
+	{
+		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
+		Member m = (Member)session.getAttribute("loginMember");
+		   // 특정 레포지토리 가져오기
+		String str = m.getGitNick() + "/" + repoName;
+		System.out.println(str);
+        GHRepository repo = github.getRepository(str);
+
+        // 레포지토리의 OPEN 상태 이슈 목록 가져오기
+        List<GHIssue> issues = repo.getIssues(GHIssueState.OPEN);
+        mv.addObject("issues", issues)
+		  .setViewName("repository/issuesList");
+		//포워딩 => WEB-INF/views/board/boardListView
+		return mv;
+        // 이슈 목록 출력
+		/*
+		 * for (GHIssue issue : issues) { System.out.println("Issue #" +
+		 * issue.getNumber() + ": " + issue.getTitle()); }
+		 */
+	}
 	@RequestMapping("createRepo.re")
 	public String createRepo(Repository repo, HttpSession session) throws IOException {
 		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
@@ -86,7 +112,6 @@ public class RepoController {
 		session.setAttribute("alertMsg", "레파지토리 생성 완료");
 		return "redirect:myRepo.re";
 	}
-	
 	@RequestMapping("deleteRepo.re")
 	public String deleteRepo(String repoName, HttpSession session) throws IOException {
 		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
@@ -99,5 +124,5 @@ public class RepoController {
 		return "redirect:myRepo.re";
 	}
 	
-
+	
 }
