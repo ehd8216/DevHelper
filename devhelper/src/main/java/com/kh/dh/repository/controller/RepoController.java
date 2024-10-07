@@ -12,6 +12,7 @@ import org.kohsuke.github.GitHub;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.kh.dh.member.model.vo.Member;
 import com.kh.dh.repository.model.vo.Repository;
 
 @Controller
@@ -22,29 +23,43 @@ public class RepoController {
 	// 전체 레파지토리 조회
 	@RequestMapping("myRepo.re")
 	public String myRepo(HttpSession session) throws IOException {
-		String token = (String)session.getAttribute("token");
-		github = GitHub.connectUsingOAuth(token);
 		
-		ArrayList<Repository> repoList = new ArrayList();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
-		Map<String , GHRepository> list = github.getMyself().getRepositories();
+		if(session.getAttribute("loginMember") == null) {
+			session.setAttribute("alertMsg", "로그인 후 이용 가능합니다.");
+			return "redirect:/";
+		}else {
+			String token = (String)session.getAttribute("token");
+			github = GitHub.connectUsingOAuth(token);
+			
+			ArrayList<Repository> repoList = new ArrayList();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
+			Map<String , GHRepository> list = github.getMyself().getRepositories();
+			
+			for (Map.Entry<String, GHRepository> entry : list.entrySet()) {
+				GHRepository repo = entry.getValue();
+				Repository r = new Repository();
+				r.setRepoName(repo.getName());
+				r.setRepoDescription(repo.getDescription());
+				r.setVisibility(repo.getVisibility().toString());
+				r.setCreateDate(sdf.format(repo.getCreatedAt()));
+				repoList.add(r);
+			}
+			session.setAttribute("repoList", repoList);
+			
+			return "repository/repository";
+		}
 		
-		for (Map.Entry<String, GHRepository> entry : list.entrySet()) {
-            GHRepository repo = entry.getValue();
-            Repository r = new Repository();
-            r.setRepoName(repo.getName());
-		    r.setRepoDescription(repo.getDescription());
-		    r.setVisibility(repo.getVisibility().toString());
-		    r.setCreateDate(sdf.format(repo.getCreatedAt()));
-            repoList.add(r);
-        }
-		session.setAttribute("repoList", repoList);
-		
-		return "repository/repository";
 	}
 	
 	@RequestMapping("repoDetail.re")
-	public String repoDetail() {
+	public String repoDetail(String repoName, HttpSession session) throws IOException {
+		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
+		Member m = (Member)session.getAttribute("loginMember");
+		String str = m.getGitNick() + "/" + repoName;
+		GHRepository repo = github.getRepository(str);
+		
+		session.setAttribute("repo", repo);
+		
 		return "repository/repoDetail";
 	}
 	
