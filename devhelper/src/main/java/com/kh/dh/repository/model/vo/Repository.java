@@ -17,5 +17,6 @@ public class Repository {
 	private String repoDescription;
 	private String visibility;
 	private String createDate;
-
+	private String readMe;
+	private String repoUrl;
 }
