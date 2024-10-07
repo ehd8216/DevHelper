@@ -10,8 +10,10 @@ import javax.servlet.http.HttpSession;
 
 import org.kohsuke.github.GHIssue;
 import org.kohsuke.github.GHIssueState;
+import org.kohsuke.github.GHPerson;
 import org.kohsuke.github.GHCreateRepositoryBuilder;
 import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GHUser;
 import org.kohsuke.github.GitHub;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -126,6 +128,20 @@ public class RepoController {
 		repo.delete();
 		
 		session.setAttribute("alertMsg", "레파지토리 삭제 완료");
+		return "redirect:myRepo.re";
+	}
+	
+	@RequestMapping("inviteRepo.re")
+	public String inviteRepo(String inviteUserName, HttpSession session) throws IOException {
+		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
+		
+		GHRepository repo = github.getRepository("ehd8216/TestRe");
+		
+		GHUser userToInvite = github.getUser("0724choi");
+		
+		repo.addCollaborators(userToInvite);
+		
+		session.setAttribute("alertMsg", "초대 성공");
 		return "redirect:myRepo.re";
 	}
 	

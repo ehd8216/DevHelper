@@ -73,7 +73,7 @@
 		
   <div class="outer">
       <div class="repoList">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createRepo">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#createRepo">
           레파지토리 생성
         </button>
       	<c:choose>
@@ -103,8 +103,8 @@
 		              <td>${ r.visibility }</td>
 		              <td>${ r.createDate }</td>
 		              <td id="repoBtn">
-		                <button id="inviteRepo" onclick="inviteRepo()">초대</button>
-		                <button id="deleteRepo" onclick="deleteRepo('${ r.repoName }')">삭제</button>
+		                <button class="btn btn-danger" id="deleteRepo" onclick="return deleteRepo()">삭제</button>
+		                <butto class="btn btn-success" data-toggle="modal" data-target="#inviteRepo">초대</button>
 		              </td>
 		            </tr>
 		          </c:forEach>
@@ -127,17 +127,13 @@
 
     })
 
-    function inviteRepo(){
-      location.href="inviteRepo.re";
-    }
-
-    function deleteRepo(repoName){
-      location.href="deleteRepo.re?repoName=" + repoName;
+    function deleteRepo(){
+      return confirm("정말로 삭제하시겠습니까?");
     }
     
   </script>
 
-  <!-- The Modal -->
+  <!-- 레파지토리 생성용 모달 -->
   <div class="modal" id="createRepo">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -154,6 +150,27 @@
             public : <input type="radio" name="visibility" id="" value="false"> <br>
             README : <input type="checkbox" name="readMe" value="true"> <br><br>
             <button type="submit">생성</button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  
+  
+  <!-- 레파지토리 초대용 모달 -->
+  <div class="modal" id="inviteRepo">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Invite Repository</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+          <form action="inviteRepo.re" method="post">
+            이름 : <input type="text" name="inviteUserName" id=""> <br><br>
+            <button type="submit" onclick="inviteRepo()">초대</button>
           </form>
         </div>
 
