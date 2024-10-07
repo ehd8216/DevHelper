@@ -1,6 +1,8 @@
 package com.kh.dh.board.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -12,22 +14,30 @@ import com.kh.dh.common.model.vo.PageInfo;
 @Repository
 public class BoardDao {
 
-	public int selectListCount(SqlSessionTemplate sst) {
-		return sst.selectOne("boardMapper.selectListCount");
+	public int selectListCount(SqlSessionTemplate sst, Map<String, Object> conditions) {
+		return sst.selectOne("boardMapper.selectListCount", conditions);
 	}
 
-	public ArrayList<Board> selectList(SqlSessionTemplate sst, PageInfo pi, Integer memNo) {
+	public ArrayList<Board> selectList(SqlSessionTemplate sst, PageInfo pi, Map<String, Object> conditions) {
 		
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		int limit = pi.getBoardLimit();
 		
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
-		return (ArrayList)sst.selectList("boardMapper.selectList", memNo, rowBounds);
+		return (ArrayList)sst.selectList("boardMapper.selectList", conditions, rowBounds);
 	}
 
 	public int insertBoard(SqlSessionTemplate sst, Board b) {
 		return sst.insert("boardMapper.insertBoard", b);
+	}
+
+	public int increaseBoardCount(SqlSessionTemplate sst, int bNo) {
+		return sst.update("boardMapper.increaseBoardCount", bNo);
+	}
+
+	public Board selectBoard(SqlSessionTemplate sst, int bNo) {
+		return sst.selectOne("boardMapper.selectBoard", bNo);
 	}
 
 }

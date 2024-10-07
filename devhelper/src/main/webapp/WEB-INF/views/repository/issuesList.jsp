@@ -24,6 +24,7 @@
                 <tr>
                     <th>번호</th>
                     <th>issues Title</th>
+                    <th>작성자</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,6 +33,7 @@
                         <tr>
                             <td>${i.getNumber()}</td>
                             <td>${i.getTitle()}</td>
+                            <td>${i.getUser().login}</td>
                         </tr>
                     </c:forEach>
                 </c:if>

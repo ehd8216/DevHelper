@@ -106,6 +106,7 @@
 		                <button class="btn btn-danger" id="deleteRepo" onclick="return deleteRepo()">삭제</button>
 		                <butto class="btn btn-success" data-toggle="modal" data-target="#inviteRepo">초대</button>
 		              </td>
+                  <input class="url" type="hidden" value="${r.repoUrl}">
 		            </tr>
 		          </c:forEach>
 		          </tbody>
@@ -117,15 +118,20 @@
   </div>
 
   <script>
-    $(function(){
+  $(function(){
 
-      $("#repoBody tr td").click(function(){  
-        if($(this).attr('id') != 'repoBtn'){
-          location.href="repoDetail.re?repoName="+$(this).parent().children("#repoName").text();
-        }
-      })
+	    $("#repoBody tr").click(function(){
+	      if($(this).find("td").attr('id') !== 'repoBtn'){
+	        // 현재 클릭한 row에서 url input의 값을 가져옴
+	        var repoName = $(this).find("#repoName").text();
+	        var repoUrl = $(this).find(".url").val();
+	        
+	        // repoName과 repoUrl을 파라미터로 추가하여 이동
+	        location.href="repoDetail.re?repoName=" + repoName + "&repoUrl=" + encodeURIComponent(repoUrl);
+	      }
+	    });
 
-    })
+	  });
 
     function deleteRepo(){
       return confirm("정말로 삭제하시겠습니까?");
