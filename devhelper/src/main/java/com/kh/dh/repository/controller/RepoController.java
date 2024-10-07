@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.kohsuke.github.GHIssue;
@@ -44,7 +45,6 @@ public class RepoController {
 				GHRepository repo = entry.getValue();
 				
 				String url = repo.getUrl().toString().substring(29);
-				System.out.println(url);
 				
 				Repository r = new Repository();
 				r.setRepoName(repo.getName());
@@ -62,38 +62,37 @@ public class RepoController {
 	}
 	
 	@RequestMapping("repoDetail.re")
-	public String repoDetail(String repoName, HttpSession session) throws IOException {
+	public ModelAndView repoDetail(String repoName,String repoUrl,  ModelAndView mv,HttpSession session) throws IOException {
 		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
-		Member m = (Member)session.getAttribute("loginMember");
-		String str = m.getGitNick() + "/" + repoName;
-		GHRepository repo = github.getRepository(str);
+		String url = repoUrl.substring(29);
+		 String[] str = url.split("/");
+
+	        // 첫 번째 부분만 출력
+	        String writer = str[0];
+		GHRepository repo = github.getRepository(url);
 		
-		session.setAttribute("repo", repo);
-		return "repository/repoDetail";
+		mv.addObject("repo", repo)
+		  .addObject("writer", writer)
+		  .setViewName("repository/repoDetail");
+		return mv;
 	}
 	
 
 	@RequestMapping("issueslist.re")
-	public ModelAndView issueslist(String repoName, HttpSession session, ModelAndView mv) throws IOException
+	public ModelAndView issueslist(String repoName,String writer,HttpSession session, ModelAndView mv) throws IOException
 	{
-		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
-		Member m = (Member)session.getAttribute("loginMember");
-		   // 특정 레포지토리 가져오기
-		String str = m.getGitNick() + "/" + repoName;
-		System.out.println(str);
-        GHRepository repo = github.getRepository(str);
 
+		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
+		String url = writer + "/" + repoName;
+		GHRepository repo = github.getRepository(url);
+        
         // 레포지토리의 OPEN 상태 이슈 목록 가져오기
         List<GHIssue> issues = repo.getIssues(GHIssueState.OPEN);
+        System.out.println(issues);
         mv.addObject("issues", issues)
 		  .setViewName("repository/issuesList");
 		//포워딩 => WEB-INF/views/board/boardListView
 		return mv;
-        // 이슈 목록 출력
-		/*
-		 * for (GHIssue issue : issues) { System.out.println("Issue #" +
-		 * issue.getNumber() + ": " + issue.getTitle()); }
-		 */
 	}
 	@RequestMapping("createRepo.re")
 	public String createRepo(Repository repo, HttpSession session) throws IOException {

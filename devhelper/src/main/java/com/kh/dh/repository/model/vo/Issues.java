@@ -23,7 +23,7 @@ public class Issues {
     private String description;
 
     // 작성자
-    private String author;
+    private String user;
 
     // 이슈 상태 (예: OPEN, CLOSED)
     private String state;

@@ -19,7 +19,7 @@
             </div>
 
             <h1 id="repoName">${repo.description}</h1>
-            <h1>${loginMember.gitNick}</h1>
+            <h1 id="writer">${writer}</h1>
             <h1>${repo.language}</h1>
         </div>
 
@@ -27,9 +27,11 @@
 <script>
 $(function(){
     $(".repoDetail #issues").click(function(){
-      location.href="issueslist.re?repoName=" + $("#repoName").text();
-    })
-  })
+      var writer = $("#writer").text();
+      console.log(writer)// writer가 없을 경우 기본값 설정
+      location.href="issueslist.re?repoName=" + $("#repoName").text()+"&writer=" + writer;
+    });
+});
 </script>
 </body>
 </html>
