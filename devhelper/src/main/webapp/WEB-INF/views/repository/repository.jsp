@@ -7,8 +7,16 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.0/css/boxicons.min.css" integrity="sha512-pVCM5+SN2+qwj36KonHToF2p1oIvoU3bsqxphdOIWMYmgr4ZqD3t5DjKvvetKhXGc/ZG5REYTT6ltKfExEei/Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.css" integrity="sha256-NAxhqDvtY0l4xn+YVa6WjAcmd94NNfttjNsDmNatFVc=" crossorigin="anonymous" />
+
+<!-- w3school bootstrap 링크 4개 Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
 <style>
   .repoList{
     border: 1px solid black;
@@ -37,11 +45,22 @@
   #nullRepo{
   	height: 500px;
   }  
+  .modal{
+    transition: .5s;
+  }
   
 </style>
 </head>
 <body>
   <jsp:include page="../common/menubar.jsp" />
+  
+  	<c:if test="${ not empty alertMsg }">
+		<script>
+			toastr.success("${alertMsg}");
+		</script>
+		<c:remove var="alertMsg" />
+	</c:if>
+		
   <div class="outer">
       <div class="repoList">
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createRepo">
@@ -107,21 +126,20 @@
   <div class="modal" id="createRepo">
     <div class="modal-dialog">
       <div class="modal-content">
-
-        <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title">Modal Heading</h4>
+          <h4 class="modal-title">Create Repository</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
-
-        <!-- Modal body -->
+        
         <div class="modal-body">
-          Modal body..
-        </div>
-
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          <form action="createRepo.re" method="post">
+            제목 : <input type="text" name="repoName" id=""> <br><br>
+            부제목 : <input type="text" name="repoDescription" id=""> <br><br>
+            private : <input type="radio" name="visibility" id="" value="true"> <br>
+            public : <input type="radio" name="visibility" id="" value="false"> <br>
+            README : <input type="checkbox" name="readMe" value="true"> <br><br>
+            <button type="submit">생성</button>
+          </form>
         </div>
 
       </div>
