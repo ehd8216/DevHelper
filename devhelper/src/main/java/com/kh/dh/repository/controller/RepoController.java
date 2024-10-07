@@ -42,11 +42,16 @@ public class RepoController {
 			
 			for (Map.Entry<String, GHRepository> entry : list.entrySet()) {
 				GHRepository repo = entry.getValue();
+				
+				String url = repo.getUrl().toString().substring(29);
+				System.out.println(url);
+				
 				Repository r = new Repository();
 				r.setRepoName(repo.getName());
 				r.setRepoDescription(repo.getDescription());
 				r.setVisibility(repo.getVisibility().toString());
 				r.setCreateDate(sdf.format(repo.getCreatedAt()));
+				r.setRepoUrl(repo.getUrl().toString());
 				repoList.add(r);
 			}
 			session.setAttribute("repoList", repoList);
