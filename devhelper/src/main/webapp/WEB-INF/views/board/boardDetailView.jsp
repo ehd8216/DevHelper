@@ -192,8 +192,21 @@
 								*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
 
 								var disqus_config = function () {
+
 									this.page.url = window.location.href;
 									this.page.identifier = '${b.boardNo}';
+
+									console.log('Disqus config initialized for page:', this.page.url);
+
+									this.callbacks.onCommentPinned = [function (comment) {
+										// Your custom code when a comment is pinned
+										console.log('Comment pinned:', comment);
+									}];
+
+									this.callbacks.onNewComment = [function (comment) {
+										console.log('New comment added:', comment);
+									}];
+
 								};
 
 								(function () { // DON'T EDIT BELOW THIS LINE

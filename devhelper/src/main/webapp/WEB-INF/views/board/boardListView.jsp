@@ -220,12 +220,12 @@
 
 					<script>
 						$(document).ready(() => {
-							const lang = '${param.boardLang}';
+							const lang = "${param.boardLang}";
 							if (lang) {
 								$('#language').val(lang);
 							}
 
-							const answered = '${param.boardAnswered}';
+							const answered = "${param.boardAnswered}";
 							if (answered) {
 								$('input[name="boardAnswered"][value="' + answered + '"]').prop('checked', true);
 							}
