@@ -19,20 +19,25 @@
 
 <style>
   .repoList{
-    border: 1px solid black;
     margin: auto;
     width: 80%;
+    backdrop-filter: blur(5px);
+    position: relative;
   }
   .repoTable{
-    border: 1px solid gray;
     margin: auto;
     width: 100%;
   }
   #repoHead{
-    height: 50px;
+    height: 80px;
     font-size: 24px;
+    text-align: center;
+  }
+  #repoHead tr td{
+    padding-top: 20px;
   }
   #repoBody{
+    font-size: 18px;
     text-align: center;
   }
   #repoBody tr{
@@ -40,13 +45,18 @@
     cursor: pointer;
   }
   #repoBody tr:hover{
-    background-color: rgba(155, 155, 155, 0.3)
+    background-color: rgba(155, 155, 155, 0.3);
+    transition: .3s;
   }
   #nullRepo{
   	height: 500px;
   }  
   .modal{
     transition: .5s;
+  }
+  .btn{
+  float: right;
+  margin-right: 35px;
   }
   
 </style>
@@ -92,9 +102,9 @@
 		              <td>${ r.repoDescription }</td>
 		              <td>${ r.visibility }</td>
 		              <td>${ r.createDate }</td>
-		              <td>
-		                <button>초대</button>
-		                <button>삭제</button>
+		              <td id="repoBtn">
+		                <button id="inviteRepo" onclick="inviteRepo()">초대</button>
+		                <button id="deleteRepo" onclick="deleteRepo('${ r.repoName }')">삭제</button>
 		              </td>
 		            </tr>
 		          </c:forEach>
@@ -109,16 +119,21 @@
   <script>
     $(function(){
 
-      $("#repoBody tr").click(function(){
-        location.href="repoDetail.re?repoName=" + $(this).children("#repoName").text();
+      $("#repoBody tr td").click(function(){  
+        if($(this).attr('id') != 'repoBtn'){
+          location.href="repoDetail.re?repoName="+$(this).parent().children("#repoName").text();
+        }
       })
-
-      
-
-
 
     })
 
+    function inviteRepo(){
+      location.href="inviteRepo.re";
+    }
+
+    function deleteRepo(repoName){
+      location.href="deleteRepo.re?repoName=" + repoName;
+    }
     
   </script>
 

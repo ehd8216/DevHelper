@@ -87,5 +87,17 @@ public class RepoController {
 		return "redirect:myRepo.re";
 	}
 	
+	@RequestMapping("deleteRepo.re")
+	public String deleteRepo(String repoName, HttpSession session) throws IOException {
+		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
+		Member m = (Member)session.getAttribute("loginMember");
+		String str = m.getGitNick() + "/" + repoName;
+		GHRepository repo = github.getRepository(str);
+		repo.delete();
+		
+		session.setAttribute("alertMsg", "레파지토리 삭제 완료");
+		return "redirect:myRepo.re";
+	}
+	
 
 }
