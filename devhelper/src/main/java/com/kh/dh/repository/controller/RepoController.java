@@ -79,7 +79,7 @@ public class RepoController {
 
         // 레포지토리의 OPEN 상태 이슈 목록 가져오기
         List<GHIssue> issues = repo.getIssues(GHIssueState.OPEN);
-
+        session.setAttribute("issues", issues);
         // 이슈 목록 출력
         for (GHIssue issue : issues) {
             System.out.println("Issue #" + issue.getNumber() + ": " + issue.getTitle());
