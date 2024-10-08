@@ -11,8 +11,10 @@ import javax.servlet.http.HttpSession;
 
 import org.kohsuke.github.GHIssue;
 import org.kohsuke.github.GHIssueState;
+import org.kohsuke.github.GHPerson;
 import org.kohsuke.github.GHCreateRepositoryBuilder;
 import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GHUser;
 import org.kohsuke.github.GitHub;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -70,7 +72,6 @@ public class RepoController {
 	        // 첫 번째 부분만 출력
 	        String writer = str[0];
 		GHRepository repo = github.getRepository(url);
-		
 		mv.addObject("repo", repo)
 		  .addObject("writer", writer)
 		  .setViewName("repository/repoDetail");
@@ -84,11 +85,11 @@ public class RepoController {
 
 		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
 		String url = writer + "/" + repoName;
+		System.out.println(url);
 		GHRepository repo = github.getRepository(url);
         
         // 레포지토리의 OPEN 상태 이슈 목록 가져오기
         List<GHIssue> issues = repo.getIssues(GHIssueState.OPEN);
-        System.out.println(issues);
         mv.addObject("issues", issues)
 		  .setViewName("repository/issuesList");
 		//포워딩 => WEB-INF/views/board/boardListView
@@ -125,6 +126,20 @@ public class RepoController {
 		repo.delete();
 		
 		session.setAttribute("alertMsg", "레파지토리 삭제 완료");
+		return "redirect:myRepo.re";
+	}
+	
+	@RequestMapping("inviteRepo.re")
+	public String inviteRepo(String inviteUserName, HttpSession session) throws IOException {
+		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
+		
+		GHRepository repo = github.getRepository("ehd8216/TestRe");
+		
+		GHUser userToInvite = github.getUser("0724choi");
+		
+		repo.addCollaborators(userToInvite);
+		
+		session.setAttribute("alertMsg", "초대 성공");
 		return "redirect:myRepo.re";
 	}
 	
