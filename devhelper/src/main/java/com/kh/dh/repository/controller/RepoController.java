@@ -6,12 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.kohsuke.github.GHIssue;
 import org.kohsuke.github.GHIssueState;
-import org.kohsuke.github.GHPerson;
 import org.kohsuke.github.GHCreateRepositoryBuilder;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHUser;
@@ -112,7 +110,6 @@ public class RepoController {
         if(repo.getReadMe().equals("true")) {
         	builder.autoInit(true);
         }
-        
         builder.create();
 		
 		session.setAttribute("alertMsg", "레파지토리 생성 완료");
@@ -131,12 +128,12 @@ public class RepoController {
 	}
 	
 	@RequestMapping("inviteRepo.re")
-	public String inviteRepo(String inviteUserName, HttpSession session) throws IOException {
+	public String inviteRepo(String inviteUserName, String reUserUrl, HttpSession session) throws IOException {
 		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
+		System.out.println(reUserUrl);
+		GHRepository repo = github.getRepository(reUserUrl);
 		
-		GHRepository repo = github.getRepository("ehd8216/TestRe");
-		
-		GHUser userToInvite = github.getUser("0724choi");
+		GHUser userToInvite = github.getUser(inviteUserName);
 		
 		repo.addCollaborators(userToInvite);
 		
