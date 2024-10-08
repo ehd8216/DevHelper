@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.dh.board.model.dao.BoardDao;
 import com.kh.dh.board.model.vo.Board;
+import com.kh.dh.board.model.vo.CodeChunk;
 import com.kh.dh.common.model.vo.PageInfo;
 
 @Service
@@ -44,6 +45,16 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public Board selectBoard(int bNo) {
 		return bd.selectBoard(sst, bNo);
+	}
+
+	@Override
+	public int insertCodeChunk(String chunk, int chunkOrder) {
+		return bd.insertCodeChunk(sst, new CodeChunk(chunk, chunkOrder));
+	}
+
+	@Override
+	public ArrayList<CodeChunk> selectCodeChunks(int bNo) {
+		return bd.selectCodeChunks(sst, bNo);
 	}
 
 

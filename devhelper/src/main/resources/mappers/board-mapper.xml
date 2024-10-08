@@ -16,6 +16,13 @@
 		<result column="profile" property="profile" />
 	</resultMap>
 	
+	<resultMap type="CodeChunk" id="codeChunkResult">
+		<result column="code_id" property="codeId" />
+		<result column="board_no" property="boardNo" />
+		<result column="chunk_content" property="chunkContent" />
+		<result column="chunk_order" property="chunkOrder" />
+	</resultMap>
+	
 	<select id="selectListCount" resultType="_int">
 		select
 		       count(*)
@@ -34,7 +41,6 @@
 	<select id="selectList" resultMap="boardResult">
 		select
 			   board_no
-			 , code
 			 , board_title
 			 , board_content
 			 , board_count
@@ -61,7 +67,6 @@
 		  	 (
 		  	   board_no
 		  	 , board_writer
-		  	 , code
 		  	 , board_title
 		  	 , board_content
 		  	 , board_lang
@@ -70,7 +75,6 @@
 		     (
 		       seq_bno.nextval
 		     , #{boardWriter}
-		     , #{code}
 		     , #{boardTitle}
 		     , #{boardContent}
 		     , #{boardLang}
@@ -90,5 +94,30 @@
 		  join member m on (b.board_writer = m.mem_no)
 		 where b.board_no = #{bNo}
 	</select>
+
+	<insert id="insertCodeChunk">
+		insert 
+	 	  into code_chunks
+	 	     (
+	 	       code_id
+	 	     , board_no
+	 	     , chunk_content
+	 	     , chunk_order
+	 	     )
+	 	values
+	 	     (
+	 	       seq_code.nextval
+	 	     , seq_bno.currval
+	 	     , #{chunkContent}
+	 	     , #{chunkOrder}
+	 	     )
+	</insert>
+	
+	<select id="selectCodeChunks" resultType="CodeChunk">
+        SELECT chunk_content, chunk_order
+        FROM code_chunks
+        WHERE board_no = #{boardNo}
+        ORDER BY chunk_order
+    </select>
 
 </mapper>

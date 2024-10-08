@@ -6,12 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.kohsuke.github.GHIssue;
 import org.kohsuke.github.GHIssueState;
-import org.kohsuke.github.GHPerson;
 import org.kohsuke.github.GHCreateRepositoryBuilder;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHUser;
@@ -72,7 +70,6 @@ public class RepoController {
 	        // 첫 번째 부분만 출력
 	        String writer = str[0];
 		GHRepository repo = github.getRepository(url);
-		
 		mv.addObject("repo", repo)
 		  .addObject("writer", writer)
 		  .setViewName("repository/repoDetail");
@@ -86,11 +83,11 @@ public class RepoController {
 
 		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
 		String url = writer + "/" + repoName;
+		System.out.println(url);
 		GHRepository repo = github.getRepository(url);
         
         // 레포지토리의 OPEN 상태 이슈 목록 가져오기
         List<GHIssue> issues = repo.getIssues(GHIssueState.OPEN);
-        System.out.println(issues);
         mv.addObject("issues", issues)
 		  .setViewName("repository/issuesList");
 		//포워딩 => WEB-INF/views/board/boardListView
@@ -112,7 +109,6 @@ public class RepoController {
         if(repo.getReadMe().equals("true")) {
         	builder.autoInit(true);
         }
-        
         builder.create();
 		
 		session.setAttribute("alertMsg", "레파지토리 생성 완료");
@@ -131,12 +127,12 @@ public class RepoController {
 	}
 	
 	@RequestMapping("inviteRepo.re")
-	public String inviteRepo(String inviteUserName, HttpSession session) throws IOException {
+	public String inviteRepo(String inviteUserName, String reUserUrl, HttpSession session) throws IOException {
 		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
+		System.out.println(reUserUrl);
+		GHRepository repo = github.getRepository(reUserUrl);
 		
-		GHRepository repo = github.getRepository("ehd8216/TestRe");
-		
-		GHUser userToInvite = github.getUser("0724choi");
+		GHUser userToInvite = github.getUser(inviteUserName);
 		
 		repo.addCollaborators(userToInvite);
 		

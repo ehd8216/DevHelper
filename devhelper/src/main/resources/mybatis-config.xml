@@ -9,6 +9,7 @@
 	<typeAliases>
 		<typeAlias type="com.kh.dh.member.model.vo.Member" alias="Member"/>
 		<typeAlias type="com.kh.dh.board.model.vo.Board" alias="Board"/>
+		<typeAlias type="com.kh.dh.board.model.vo.CodeChunk" alias="CodeChunk"/>
 	</typeAliases>
 	
 	 <mappers>

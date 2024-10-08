@@ -18,7 +18,7 @@
                 <button>commit</button>
             </div>
 
-            <h1 id="repoName">${repo.description}</h1>
+            <h1 id="repoName">${repo.name}</h1>
             <h1 id="writer">${writer}</h1>
             <h1>${repo.language}</h1>
         </div>
