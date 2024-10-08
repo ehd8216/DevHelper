@@ -103,10 +103,10 @@
 		              <td>${ r.visibility }</td>
 		              <td>${ r.createDate }</td>
 		              <td id="repoBtn">
-		                <button class="btn btn-danger" id="deleteRepo" onclick="return deleteRepo()">삭제</button>
-		                <butto class="btn btn-success" data-toggle="modal" data-target="#inviteRepo">초대</button>
+		                <button class="btn btn-danger" id="deleteRepo" onclick="deleteRepo('${r.repoUrl}')">삭제</button>
+		                <button class="btn btn-success" id="invite" data-toggle="modal" data-target="#inviteRepo" onclick="reUserUrlq('${r.repoUrl}')">초대</button>
 		              </td>
-                  <input class="url" type="hidden" value="${r.repoUrl}">
+                  <input id="repoUrl" class="url" type="hidden" value="${r.repoUrl}">
 		            </tr>
 		          </c:forEach>
 		          </tbody>
@@ -118,23 +118,42 @@
   </div>
 
   <script>
+    let reUserUrl = "";
   $(function(){
 
-	    $("#repoBody tr").click(function(){
-	      if($(this).find("td").attr('id') !== 'repoBtn'){
+	    $("#repoBody tr td").click(function(){
+	      if($(this).attr('id') !== 'repoBtn'){
 	        // 현재 클릭한 row에서 url input의 값을 가져옴
-	        var repoName = $(this).find("#repoName").text();
-	        var repoUrl = $(this).find(".url").val();
+	        var repoName = $(this).parent().find("#repoName").text();
+	        var repoUrl = $(this).parent().find(".url").val();
 	        
 	        // repoName과 repoUrl을 파라미터로 추가하여 이동
 	        location.href="repoDetail.re?repoName=" + repoName + "&repoUrl=" + encodeURIComponent(repoUrl);
 	      }
 	    });
 
-	  });
 
-    function deleteRepo(){
-      return confirm("정말로 삭제하시겠습니까?");
+	  });
+  
+  
+  
+
+    function reUserUrlq(repoUrl){
+      reUserUrl = repoUrl.substr(29);
+    }
+
+    function deleteRepo(repoUrl){
+      let deleteRepo = confirm("정말로 삭제하시겠습니까?");
+      if(deleteRepo){
+        reUserUrlq(repoUrl);
+        location.href="deleteRepo.re?reUserUrl=" + reUserUrl;
+      }
+    	
+    }
+    
+    function inviteRepo(){
+    	const inviteUserName = $("#inviteUserName").val();
+    	location.href="inviteRepo.re?inviteUserName=" + inviteUserName + "&reUserUrl=" + reUserUrl;
     }
     
   </script>
@@ -149,12 +168,13 @@
         </div>
         
         <div class="modal-body">
-          <form action="createRepo.re" method="post">
+          <form action="createRepo.re" method="get">
             제목 : <input type="text" name="repoName" id=""> <br><br>
             부제목 : <input type="text" name="repoDescription" id=""> <br><br>
             private : <input type="radio" name="visibility" id="" value="true"> <br>
             public : <input type="radio" name="visibility" id="" value="false"> <br>
             README : <input type="checkbox" name="readMe" value="true"> <br><br>
+            <input type="hidden" name="readMe" value=""> <!-- readMe 안할 시 넘길 값 -->
             <button type="submit">생성</button>
           </form>
         </div>
@@ -172,14 +192,10 @@
           <h4 class="modal-title">Invite Repository</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
-        
         <div class="modal-body">
-          <form action="inviteRepo.re" method="post">
-            이름 : <input type="text" name="inviteUserName" id=""> <br><br>
-            <button type="submit" onclick="inviteRepo()">초대</button>
-          </form>
+            이름 : <input type="text" name="inviteUserName" id="inviteUserName"> <br><br>
+            <button onclick="inviteRepo()">초대</button>
         </div>
-
       </div>
     </div>
   </div>
