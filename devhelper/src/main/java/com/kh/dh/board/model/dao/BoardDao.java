@@ -9,6 +9,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.dh.board.model.vo.Board;
+import com.kh.dh.board.model.vo.CodeChunk;
 import com.kh.dh.common.model.vo.PageInfo;
 
 @Repository
@@ -38,6 +39,14 @@ public class BoardDao {
 
 	public Board selectBoard(SqlSessionTemplate sst, int bNo) {
 		return sst.selectOne("boardMapper.selectBoard", bNo);
+	}
+
+	public int insertCodeChunk(SqlSessionTemplate sst, CodeChunk codeChunk) {
+		return sst.insert("boardMapper.insertCodeChunk", codeChunk);
+	}
+
+	public ArrayList<CodeChunk> selectCodeChunks(SqlSessionTemplate sst, int bNo) {
+		return (ArrayList)sst.selectList("boardMapper.selectCodeChunks", bNo);
 	}
 
 }
