@@ -85,15 +85,30 @@ public class RepoController {
 
 		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
 		String url = writer + "/" + repoName;
-		System.out.println(url);
 		GHRepository repo = github.getRepository(url);
         
         // 레포지토리의 OPEN 상태 이슈 목록 가져오기
         List<GHIssue> issues = repo.getIssues(GHIssueState.OPEN);
         mv.addObject("issues", issues)
+          .addObject("writer", writer)
+          .addObject("repoName", repoName)
 		  .setViewName("repository/issuesList");
 		//포워딩 => WEB-INF/views/board/boardListView
 		return mv;
+	}
+	@RequestMapping(value = "issuesInsert.re")
+	public String createIssue(String repoName,String writer, String title, String body, HttpSession session, ModelAndView mv) throws IOException {
+	    GitHub github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
+	    String url = writer + "/" + repoName;
+	    GHRepository repo = github.getRepository(url);
+	    // 이슈 생성
+	    GHIssue issue = repo.createIssue(title)
+	                        .body(body)
+	                        .create();
+	    
+	    // 생성된 이슈를 다시 가져오거나 이슈 리스트 페이지로 리다이렉트
+		/* mv.setViewName("redirect:/issuesList?repoName="); */
+	    return "redirect:issueslist.re?repoName=" + repoName + "&writer=" + writer ;
 	}
 	@RequestMapping("createRepo.re")
 	public String createRepo(Repository repo, HttpSession session) throws IOException {

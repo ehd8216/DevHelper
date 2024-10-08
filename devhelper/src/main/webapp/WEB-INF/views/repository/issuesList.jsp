@@ -14,6 +14,37 @@
         #boardList>tbody>tr:hover {
             cursor: pointer;
         }
+
+        /* 모달 스타일 */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 15% auto; 
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -23,7 +54,7 @@
             <thead>
                 <tr>
                     <th>번호</th>
-                    <th>issues Title</th>
+                    <th>Issues Title</th>
                     <th>작성자</th>
                 </tr>
             </thead>
@@ -39,11 +70,51 @@
                 </c:if>
                 <c:if test="${empty issues}">
                     <tr>
-                        <td colspan="2">이슈가 없습니다.</td>
+                        <td colspan="3">이슈가 없습니다.</td>
                     </tr>
                 </c:if>
             </tbody>
         </table>
     </div>
+
+    <!-- 이슈 작성 버튼 -->
+    <button id="openModalBtn">이슈 작성하기</button>
+
+    <!-- 이슈 작성 모달 -->
+    <div id="issueModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <form id="issueForm" action="issuesInsert.re" method="post">
+            	<input type="hidden" value="${writer}" name="writer">
+            	<input type="hidden" value="${repoName}" name="repoName">
+                <label for="title">이슈 제목:</label>
+                <input type="text" id="title" name="title" required><br><br>
+                
+                <label for="body">이슈 내용:</label>
+                <textarea id="body" name="body" required></textarea><br><br>
+
+                <button type="submit">이슈 생성</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // 모달 열기
+        $("#openModalBtn").click(function(){
+            $("#issueModal").show();
+        });
+
+        // 모달 닫기
+        $(".close").click(function(){
+            $("#issueModal").hide();
+        });
+
+        // 모달 외부 클릭 시 닫기
+        $(window).click(function(event) {
+            if (event.target == $("#issueModal")[0]) {
+                $("#issueModal").hide();
+            }
+        });
+    </script>
 </body>
 </html>
