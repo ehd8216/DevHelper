@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.google.gson.Gson;
 import com.kh.dh.board.model.service.BoardServiceImpl;
 import com.kh.dh.board.model.vo.Board;
+import com.kh.dh.board.model.vo.CodeChunk;
 import com.kh.dh.common.model.vo.PageInfo;
 import com.kh.dh.common.template.Pagination;
 
@@ -45,8 +46,16 @@ public class BoardController {
 		conditions.put("memNo", memNo);
 		ArrayList<Board> list = bs.selectList(pi, conditions);
 		
+		Map<Integer, ArrayList<CodeChunk>> codeChunksMap = new HashMap<>();
+
+		for (Board board : list) {
+		     ArrayList<CodeChunk> codeChunks = bs.selectCodeChunks(board.getBoardNo());
+		     codeChunksMap.put(board.getBoardNo(), codeChunks);
+		}
+		
 		mv.addObject("pi", pi)
 		  .addObject("list", list)
+		  .addObject("codeChunksMap", codeChunksMap)
 		  .setViewName("board/boardListView");
 		
 		return mv;
@@ -63,15 +72,34 @@ public class BoardController {
 	@RequestMapping(value="insert.bo", produces="application/json; charset=utf-8")
 	public String boardInsert(Board b, HttpSession session) {
 		
+		String code = b.getCode();
+		int chunkSize = 4000;
+		int chunkCount = (int)Math.ceil((double)code.length() / chunkSize);
+		
 	    int result = bs.insertBoard(b);
+	    
 	    boolean response;
 
 	    if (result > 0) {
+	    	
+	    	for (int i = 0; i < chunkCount; i++) {
+	    		
+	    		int startIndex = i * chunkSize;
+	    		int endIndex = Math.min(startIndex + chunkSize, code.length());
+	    		String chunk = code.substring(startIndex, endIndex);
+	    		
+	    		bs.insertCodeChunk(chunk, i+1);
+	    		
+	    	}
+	    	
 	    	response = true;
 	        session.setAttribute("alertMsg", "게시글이 등록되었습니다");
+	        
 	    } else {
+	    	
 	    	response = false;
 	    	session.setAttribute("errorMsg", "게시글 등록 실패");
+	    	
 	    }
 	    
 	    return new Gson().toJson(response);
@@ -85,7 +113,9 @@ public class BoardController {
 		
 		if (result > 0) {
 			Board b = bs.selectBoard(bNo);
+			ArrayList<CodeChunk> list = bs.selectCodeChunks(bNo);
 			model.addAttribute("b", b);
+			model.addAttribute("list", list);
 			model.addAttribute("alertMsg", bNo+"번 게시글을 조회합니다.");
 			return "board/boardDetailView";
 		} else {

@@ -237,9 +237,9 @@
 						<c:forEach var="b" items="${list}">
 							<div class="boards">
 								<div class="thumbnail">
-									<pre>
-<code class="language-js">${b.code}</code>
-									</pre>
+<pre>
+<code class="language-js"><c:forEach var="chunk" items="${codeChunksMap[b.boardNo]}"><c:out value="${chunk.chunkContent}" escapeXml="true" /></c:forEach></code>
+</pre>
 								</div>
 								<div class="underBoard">
 									<div class="ubSlider" data-bNo="${b.boardNo}">
