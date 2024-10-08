@@ -267,8 +267,8 @@
     // 페이지 스크립트
     function updatePagination(page) {
     let pageNumbersHTML = "";
-    let startPage = Math.max(1, page - 2); // Start showing 2 pages before the current
-    let endPage = Math.min(totalPages, startPage + 4); // Show up to 5 pages
+    let startPage = Math.max(1, page - 2); 
+    let endPage = Math.min(totalPages, startPage + 4); 
 
     for (let i = startPage; i <= endPage; i++) {
         if (i === page) {
