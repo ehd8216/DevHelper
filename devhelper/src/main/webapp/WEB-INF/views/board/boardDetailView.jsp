@@ -151,7 +151,7 @@
 				<div class="detail">
 
 					<div class="dt_left">
-<pre>
+						<pre>
 <code class="language-js"><c:forEach var="l" items="${list}"><c:out value="${l.chunkContent}" escapeXml="true" /></c:forEach></code>
 </pre>
 					</div>
@@ -198,6 +198,7 @@
 
 									console.log('Disqus config initialized for page:', this.page.url);
 
+									// 여기 어떻게 상호작용 끌어와서 저 답변됨 체크할수있도록 수정할것
 									this.callbacks.onCommentPinned = [function (comment) {
 										// Your custom code when a comment is pinned
 										console.log('Comment pinned:', comment);

@@ -49,4 +49,8 @@ public class BoardDao {
 		return (ArrayList)sst.selectList("boardMapper.selectCodeChunks", bNo);
 	}
 
+	public ArrayList<Board> selectBoardByCount(SqlSessionTemplate sst) {
+		return (ArrayList)sst.selectList("boardMapper.selectBoardByCount");
+	}
+
 }
