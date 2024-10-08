@@ -18,6 +18,7 @@
 
     .text-nav{
         width: 1650px;
+        padding-top: 80px;
         padding-bottom: 10px;
     }
     .text-nav h1{
