@@ -57,5 +57,10 @@ public class BoardServiceImpl implements BoardService {
 		return bd.selectCodeChunks(sst, bNo);
 	}
 
+	@Override
+	public ArrayList<Board> selectBoardByCount() {
+		return bd.selectBoardByCount(sst);
+	}
+
 
 }

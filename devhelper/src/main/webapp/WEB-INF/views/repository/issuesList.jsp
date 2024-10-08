@@ -85,8 +85,8 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <form id="issueForm" action="issuesInsert.re" method="post">
-            	<input type="hidden" value="${writer}" name="writer">
-            	<input type="hidden" value="${repoName}" name="repoName">
+            	<input id="writer" type="hidden" value="${writer}" name="writer">
+            	<input id="repoName" type="hidden" value="${repoName}" name="repoName">
                 <label for="title">이슈 제목:</label>
                 <input type="text" id="title" name="title" required><br><br>
                 
@@ -115,6 +115,17 @@
                 $("#issueModal").hide();
             }
         });
+        $(function()
+        {
+        	$("#boardList tbody tr").click(function()
+        	{
+        		var issueNum = $(this).children('td').first().text();
+        		var writer = $("#writer").val();
+        		var repoName = $("#repoName").val();
+        		console.log(writer,repoName)
+        		location.href = "issuesDetail.re?issueNum=" + issueNum + "&writer=" + writer + "&repoName=" + repoName;
+        	})
+        })
     </script>
 </body>
 </html>
