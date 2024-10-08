@@ -168,12 +168,13 @@
         </div>
         
         <div class="modal-body">
-          <form action="createRepo.re" method="post">
+          <form action="createRepo.re" method="get">
             제목 : <input type="text" name="repoName" id=""> <br><br>
             부제목 : <input type="text" name="repoDescription" id=""> <br><br>
             private : <input type="radio" name="visibility" id="" value="true"> <br>
             public : <input type="radio" name="visibility" id="" value="false"> <br>
             README : <input type="checkbox" name="readMe" value="true"> <br><br>
+            <input type="hidden" name="readMe" value=""> <!-- readMe 안할 시 넘길 값 -->
             <button type="submit">생성</button>
           </form>
         </div>

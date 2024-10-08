@@ -16,8 +16,11 @@ import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHUser;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.dh.member.model.vo.Member;
@@ -98,7 +101,6 @@ public class RepoController {
 	@RequestMapping("createRepo.re")
 	public String createRepo(Repository repo, HttpSession session) throws IOException {
 		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
-		
 		GHCreateRepositoryBuilder builder = github.createRepository(repo.getRepoName());
         builder.description(repo.getRepoDescription());
         
@@ -108,8 +110,9 @@ public class RepoController {
         	builder.private_(false);
         }
         
-        if(repo.getReadMe().equals("true")) {
+        if(!repo.getReadMe().isEmpty()) {
         	builder.autoInit(true);
+        }else {
         }
         builder.create();
 		
@@ -118,14 +121,23 @@ public class RepoController {
 	}
 	@RequestMapping("deleteRepo.re")
 	public String deleteRepo(String reUserUrl, HttpSession session) throws IOException {
-		System.out.println((String)session.getAttribute("token"));
 //		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
-		GitHub github = new GitHubBuilder().withOAuthToken("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").build();
-		GHRepository repo = github.getRepository(reUserUrl);
-		GHPermissionType permission = repo.getPermission("ehd8216");
-        System.out.println(permission);
-        
-		repo.delete();
+//		GitHub github = new GitHubBuilder().withOAuthToken("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").build();
+		WebClient webClient = WebClient.create();
+		
+		String deleteRepoUrl = "https://api.github.com/repos/" + reUserUrl;
+		
+		webClient
+		.delete()
+		.uri(deleteRepoUrl)
+		.header(HttpHeaders.AUTHORIZATION, "Bearer " + (String)session.getAttribute("token"))
+		.header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+		.retrieve()
+		.toBodilessEntity()  // No body is returned on a successful DELETE
+		.doOnError(error -> {
+			System.out.println("Error occurred while deleting the repository: " + error.getMessage());
+		})
+		.block();  // Blocking to wait for the request to complete
 		
 		session.setAttribute("alertMsg", "레파지토리 삭제 완료");
 		return "redirect:myRepo.re";
