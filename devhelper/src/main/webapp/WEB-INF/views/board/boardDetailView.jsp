@@ -151,9 +151,9 @@
 				<div class="detail">
 
 					<div class="dt_left">
-						<pre>
-<code class="language-js">${b.code}</code>
-						</pre>
+<pre>
+<code class="language-js"><c:forEach var="l" items="${list}"><c:out value="${l.chunkContent}" escapeXml="true" /></c:forEach></code>
+</pre>
 					</div>
 
 					<div class="dt_right">

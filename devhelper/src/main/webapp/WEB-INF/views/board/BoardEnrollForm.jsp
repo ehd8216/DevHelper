@@ -131,9 +131,10 @@
 
 				$(() => {
 					$(".submit-button").click(() => {
-						const code = $(".codeInput").val().replace(/&/g, "&amp;")
-							.replace(/"/g, "&quot;")
-							.replace(/'/g, "&#39;");
+						const code = $(".codeInput").val();
+						// .replace(/&/g, "&amp;")
+						// .replace(/"/g, "&quot;")
+						// .replace(/'/g, "&#39;");
 						const title = $(".form-input").val();
 						const content = $(".form-textarea").val();
 						const lang = $("#language").val();
