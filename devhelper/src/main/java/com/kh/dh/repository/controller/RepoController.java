@@ -72,7 +72,6 @@ public class RepoController {
 	        // 첫 번째 부분만 출력
 	        String writer = str[0];
 		GHRepository repo = github.getRepository(url);
-		
 		mv.addObject("repo", repo)
 		  .addObject("writer", writer)
 		  .setViewName("repository/repoDetail");
@@ -86,11 +85,11 @@ public class RepoController {
 
 		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
 		String url = writer + "/" + repoName;
+		System.out.println(url);
 		GHRepository repo = github.getRepository(url);
         
         // 레포지토리의 OPEN 상태 이슈 목록 가져오기
         List<GHIssue> issues = repo.getIssues(GHIssueState.OPEN);
-        System.out.println(issues);
         mv.addObject("issues", issues)
 		  .setViewName("repository/issuesList");
 		//포워딩 => WEB-INF/views/board/boardListView
