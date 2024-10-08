@@ -12,10 +12,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.dh.member.model.vo.Member;
 
 @Service
-public class GitService 
-{
-	public String getToken(String code)
-	{
+public class GitService {
+	
+	public String getToken(String code) {
 		String url = "https://github.com/login/oauth/access_token";
 
 		String response = WebClient.create()
