@@ -4,17 +4,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
+
+import com.kh.dh.employmentAPI.model.service.ChatGPTService;
 
 @Controller
 public class APIcontroller {
@@ -85,5 +85,29 @@ public class APIcontroller {
 		
 				
 		return responseText;
+	}
+	
+	
+	@Controller
+	@RequestMapping("/chat")
+	public class ChatController{
+		
+		private final ChatGPTService chatGPTService;
+
+	    public ChatController(ChatGPTService chatGPTService) {
+	        this.chatGPTService = chatGPTService;
+	    }
+
+	    @RequestMapping(value = "/ask", method = RequestMethod.POST)
+	    @ResponseBody
+	    public String askChatGPT(@RequestParam("prompt") String prompt) {
+	        // Call the service to get the response from ChatGPT
+	        return chatGPTService.getChatGPTResponse(prompt);   
+	    }
+	    
+	    @GetMapping
+	    public String chatPage() {
+	        return "coverletter/chat";  // chat.jsp로 이동
+	    }
 	}
 }
