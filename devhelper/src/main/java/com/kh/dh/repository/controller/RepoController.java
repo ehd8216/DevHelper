@@ -6,11 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.kohsuke.github.GHIssue;
 import org.kohsuke.github.GHIssueState;
 import org.kohsuke.github.GHPermissionType;
+import org.kohsuke.github.GHCommit;
+import org.kohsuke.github.GHContent;
 import org.kohsuke.github.GHCreateRepositoryBuilder;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHUser;
@@ -24,12 +27,16 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.dh.member.model.vo.Member;
+import com.kh.dh.repository.model.vo.Commit;
+import com.kh.dh.repository.model.vo.RepoDirectory;
 import com.kh.dh.repository.model.vo.Repository;
 
 @Controller
 public class RepoController {
 	
 	private GitHub github; 
+	
+	private SimpleDateFormat sdf;
 	
 	// 전체 레파지토리 조회
 	@RequestMapping("myRepo.re")
@@ -43,7 +50,7 @@ public class RepoController {
 			github = GitHub.connectUsingOAuth(token);
 			
 			ArrayList<Repository> repoList = new ArrayList();
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
+			sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
 			Map<String , GHRepository> list = github.getMyself().getRepositories();
 			
 			for (Map.Entry<String, GHRepository> entry : list.entrySet()) {
@@ -67,16 +74,32 @@ public class RepoController {
 	}
 	
 	@RequestMapping("repoDetail.re")
-	public ModelAndView repoDetail(String repoName,String repoUrl,  ModelAndView mv,HttpSession session) throws IOException {
+	public ModelAndView repoDetail(String repoUrl,  ModelAndView mv,HttpSession session) throws IOException {
 		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
 		String url = repoUrl.substring(29);
-		 String[] str = url.split("/");
-
-	        // 첫 번째 부분만 출력
-	        String writer = str[0];
 		GHRepository repo = github.getRepository(url);
+		String[] str = url.split("/");
+
+        // 첫 번째 부분만 출력
+        String writer = str[0];
+        
+        // 레포 폴더 뽑기
+        List<GHContent> contents = repo.getDirectoryContent("");
+        ArrayList<RepoDirectory> list = new ArrayList<RepoDirectory>();
+        for (GHContent content : contents) {
+        	RepoDirectory rd = new RepoDirectory();
+        	rd.setDirName(content.getName());
+        	if(content.isFile()) {
+        		rd.setIsFile("true");
+        	}else {
+        		rd.setIsFile("false");
+        	}
+        	list.add(rd);
+        }
+        
 		mv.addObject("repo", repo)
 		  .addObject("writer", writer)
+		  .addObject("repoDirectory", list)
 		  .setViewName("repository/repoDetail");
 		return mv;
 	}
@@ -114,18 +137,21 @@ public class RepoController {
 	    return "redirect:issueslist.re?repoName=" + repoName + "&writer=" + writer ;
 	}
 	@RequestMapping(value = "issuesDetail.re")
-	public void issuesDetail(int issueNum,String writer,String repoName, HttpSession session) throws IOException
+	public String issuesDetail(int issueNum,String writer,String repoName, HttpSession session,HttpServletRequest request) throws IOException
 	{
 	    GitHub github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
 	    String url = writer + "/" + repoName;
 	    System.out.println(url);
 	    GHRepository repo = github.getRepository(url);
 	    GHIssue issueDe = repo.getIssue(issueNum);
-	    System.out.println(issueDe.getTitle());
-	    System.out.println(issueDe.getBody());
-	    System.out.println(issueDe.getUser().getLogin());
-	    System.out.println(issueDe.getCreatedAt());
-	    
+		/*
+		 * System.out.println(issueDe.getTitle());
+		 * System.out.println(issueDe.getBody());
+		 * System.out.println(issueDe.getUser().getLogin());
+		 * System.out.println(issueDe.getCreatedAt());
+		 */
+	    request.setAttribute("issueDe", issueDe);
+		return "repository/issuesDetail";
 	}
 	@RequestMapping("createRepo.re")
 	public String createRepo(Repository repo, HttpSession session) throws IOException {
@@ -149,32 +175,33 @@ public class RepoController {
 		return "redirect:myRepo.re";
 	}
 	@RequestMapping("deleteRepo.re")
-	public String deleteRepo(String reUserUrl, HttpSession session) throws IOException {
+	public String deleteRepo(String repoUserUrl, HttpSession session) throws IOException {
+		// 현재 토큰 받아오는 코드로 가져온 토큰값이 삭제 권한이 없어 삭제기능은 실현 불가능 이슈
 		
-		WebClient webClient = WebClient.create();
-		
-		String deleteRepoUrl = "https://api.github.com/repos/" + reUserUrl;
-		
-		webClient
-			.delete()
-			.uri(deleteRepoUrl)
-			.header(HttpHeaders.AUTHORIZATION, "Bearer " + (String)session.getAttribute("token"))
-			.header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-			.retrieve()
-			.toBodilessEntity() 
-			.doOnError(error -> {
-				System.out.println("Error occurred while deleting the repository: " + error.getMessage());
-			})
-			.block();
+//		WebClient webClient = WebClient.create();
+//		
+//		String deleteRepoUrl = "https://api.github.com/repos/" + repoUserUrl;
+//		
+//		webClient
+//			.delete()
+//			.uri(deleteRepoUrl)
+//			.header(HttpHeaders.AUTHORIZATION, "Bearer " + (String)session.getAttribute("token"))
+//			.header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+//			.retrieve()
+//			.toBodilessEntity() 
+//			.doOnError(error -> {
+//				System.out.println("Error occurred while deleting the repository: " + error.getMessage());
+//			})
+//			.block();
 		
 		session.setAttribute("alertMsg", "레파지토리 삭제 완료");
 		return "redirect:myRepo.re";
 	}
 	
 	@RequestMapping("inviteRepo.re")
-	public String inviteRepo(String inviteUserName, String reUserUrl, HttpSession session) throws IOException {
+	public String inviteRepo(String inviteUserName, String repoUserUrl, HttpSession session) throws IOException {
 		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
-		GHRepository repo = github.getRepository(reUserUrl);
+		GHRepository repo = github.getRepository(repoUserUrl);
 		
 		GHUser userToInvite = github.getUser(inviteUserName);
 		
@@ -182,6 +209,26 @@ public class RepoController {
 		
 		session.setAttribute("alertMsg", "초대 성공");
 		return "redirect:myRepo.re";
+	}
+	
+	@RequestMapping("commitList.re")
+	public String commitList(String repoUserUrl, HttpSession session) throws IOException {
+		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
+		GHRepository repo = github.getRepository(repoUserUrl);
+		
+		// commit 리스트 뽑기
+        sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
+        ArrayList<Commit> list = new ArrayList<>();
+        for (GHCommit commit : repo.listCommits()) {
+        	Commit c = new Commit();
+        	c.setComAuthor(commit.getCommitShortInfo().getAuthor().getName());
+        	c.setComMessage(commit.getCommitShortInfo().getMessage());
+        	c.setComDate(sdf.format(commit.getCommitDate()));
+        	c.setSHA(commit.getSHA1());
+        	list.add(c);
+        }
+		session.setAttribute("commitList", list);
+		return "repository/commitList";
 	}
 	
 	

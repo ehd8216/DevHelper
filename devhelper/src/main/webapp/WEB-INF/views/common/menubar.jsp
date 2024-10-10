@@ -277,6 +277,7 @@
 									<li><a href="mypage.me">MyPage</a></li>
 									<li><a href="setting.me">Settings</a></li>
 									<li><a class="modal_btn" style="cursor: pointer;">MakeForum</a></li>
+									<li><a href="mypage.me?memNo=${loginMember.memNo}">MyPage</a></li>
 									<li><a href="logout.me">Logout</a></li>
 								</ul>
 							</div>

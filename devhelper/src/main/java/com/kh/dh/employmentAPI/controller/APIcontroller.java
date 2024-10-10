@@ -6,9 +6,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,13 +23,21 @@ public class APIcontroller {
 
 	@ResponseBody
 	@RequestMapping(value="work.wo", produces = "application/json; charset=utf-8")
-	public String employAPI(@RequestParam(value="pageNo",defaultValue="1")int pageNo, @RequestParam(value="numOfRows",defaultValue="15")int numOfRows) throws IOException {
+	public String employAPI(
+			@RequestParam(value="pageNo",defaultValue="1")int pageNo,
+			@RequestParam(value="numOfRows",defaultValue="15")int numOfRows,
+			@RequestParam(value="ncsCdLst",defaultValue = "R6000")String ncsCdLst,
+			@RequestParam(value="recrutPbancTtl",defaultValue = "")String recrutPbancTtl
+			
+			) throws IOException {
 		
 		String url = "https://apis.data.go.kr/1051000/recruitment/list";
 		url += "?serviceKey=" + serviceKey;
 		url += "&numOfRows=15";
 		url += "&pageNo=" + pageNo;
 		url += "&workRgnLst=R3010"; // 근무지 서울포함으로 한정
+		url += "&ncsCdLst=" + ncsCdLst;
+		url += "&recrutPbancTtl=" + URLEncoder.encode(recrutPbancTtl,"utf-8"); // 한글쓸시 무조건 인코딩하기(잘 나오는것같아도)
 		
 		URL requestUrl = new URL(url);
 		HttpURLConnection urlConnection = (HttpURLConnection)requestUrl.openConnection();
@@ -55,6 +65,7 @@ public class APIcontroller {
 		url += "?serviceKey=" + serviceKey;
 		url += "&resultType=json";
 		url += "&sn=" + sn;
+	
 		
 		URL requestUrl = new URL(url);
 		HttpURLConnection urlConnection = (HttpURLConnection)requestUrl.openConnection();
