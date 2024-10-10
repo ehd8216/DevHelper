@@ -231,25 +231,25 @@
 				.dropdown-menu ul li a:hover {
 					background-color: #f1f1f1;
 				}
+
+				.modal {
+					width: 400px;
+					height: 300px;
+					right: 10%;
+					top: 20%;
+					display: flex;
+					position: absolute;
+					z-index: 10;
+				}
+
+				.modal.show {
+					display: none;
+				}
 			</style>
 		</head>
 
 		<body>
 
-			<c:if test="${ not empty alertMsg }">
-				<script>
-					toastr.success("${alertMsg}");
-				</script>
-				<c:remove var="alertMsg" />
-			</c:if>
-
-			<c:if test="${ not empty errorMsg }">
-				<script>
-					toastr.error("${errorMsg}");
-				</script>
-				<c:remove var="errorMsg" />
-			</c:if>
-			<!-- info랑 warning도 있음 -->
 
 			<header>
 				<img class="project_name" src="resources/image/logo-removebg-preview.png" onclick="toThe('toMain')" />
@@ -276,6 +276,7 @@
 								<ul>
 									<li><a href="mypage.me">MyPage</a></li>
 									<li><a href="setting.me">Settings</a></li>
+									<li><a class="modal_btn" style="cursor: pointer;">MakeForum</a></li>
 									<li><a href="logout.me">Logout</a></li>
 								</ul>
 							</div>
@@ -289,6 +290,66 @@
 					</c:otherwise>
 				</c:choose>
 			</header>
+
+			<div class="modal show">
+
+				<div class="modal_body">
+
+					<h2>title</h2>
+					<p>
+					<form id="createRoomForm">
+						<input type="text" id="roomName" placeholder="Room Name" required />
+						<input type="password" id="roomPassword" placeholder="Password" required />
+						<button type="button" onclick="createRoom()">Create Room</button>
+					</form>
+					</p>
+					<span class="close_modal">x</span>
+
+				</div>
+
+			</div>
+
+			<script>
+				$(document).ready(() => {
+
+					$(".modal_btn").on("click", () => {
+						$(".modal").toggleClass("show")
+					});
+
+					$(".close_modal").on("click", () => {
+						$(".modal").toggleClass("show")
+					});
+
+				});
+
+				function createRoom() {
+					const roomName = $('#roomName').val();
+					const roomPassword = $('#roomPassword').val();
+
+					$.ajax({
+						url: "createRoom",
+						data: {
+							name: roomName,
+							password: roomPassword,
+						},
+						success: (result) => {
+
+							if (result == 0) {
+								toastr.warning("${warningMsg1}")
+							} else if (result == 1) {
+								toastr.success("${alertMsg1}"
+									+ "콘솔창을 확인하세요"
+								)
+								console.log("${alertMsg1}")
+							} else {
+								toastr.error("${errorMsg1}")
+							}
+
+						},
+					})
+
+				}
+			</script>
 
 			<div class="outer">
 
@@ -344,6 +405,20 @@
 					}
 				}
 			</script>
+
+			<c:if test="${ not empty alertMsg }">
+				<script>
+					toastr.success("${alertMsg}");
+				</script>
+				<c:remove var="alertMsg" />
+			</c:if>
+
+			<c:if test="${ not empty errorMsg }">
+				<script>
+					toastr.error("${errorMsg}");
+				</script>
+				<c:remove var="errorMsg" />
+			</c:if>
 
 		</body>
 

@@ -52,5 +52,9 @@ public class BoardDao {
 	public ArrayList<Board> selectBoardByCount(SqlSessionTemplate sst) {
 		return (ArrayList)sst.selectList("boardMapper.selectBoardByCount");
 	}
+	
+	public ArrayList<Board> selectBoardByRandom(SqlSessionTemplate sst) {
+		return (ArrayList)sst.selectList("boardMapper.selectBoardByRandom");
+	}
 
 }
