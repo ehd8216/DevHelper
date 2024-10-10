@@ -50,6 +50,12 @@ public class WorkController {
 		return mv;
 	}
 	
+	// 자기소개서 페이지로 이동
+	@RequestMapping("cover.wo")
+	private String ToCover() {
+		return "coverletter/coverletter";
+	}
+	
 	
 	
 	
