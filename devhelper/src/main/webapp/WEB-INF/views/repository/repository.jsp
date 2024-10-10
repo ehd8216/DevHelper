@@ -103,7 +103,7 @@
 		              <td>${ r.visibility }</td>
 		              <td>${ r.createDate }</td>
 		              <td id="repoBtn">
-		                <button class="btn btn-danger" id="deleteRepo" onclick="return deleteRepo()">삭제</button>
+		                <button class="btn btn-danger" id="deleteRepo" onclick="deleteRepo('${r.repoUrl}')">삭제</button>
 		                <button class="btn btn-success" id="invite" data-toggle="modal" data-target="#inviteRepo" onclick="reUserUrlq('${r.repoUrl}')">초대</button>
 		              </td>
                   <input id="repoUrl" class="url" type="hidden" value="${r.repoUrl}">
@@ -121,7 +121,6 @@
     let reUserUrl = "";
   $(function(){
 
-
 	    $("#repoBody tr td").click(function(){
 	      if($(this).attr('id') !== 'repoBtn'){
 	        // 현재 클릭한 row에서 url input의 값을 가져옴
@@ -133,26 +132,28 @@
 	      }
 	    });
 
-      // $("#invite").click(function(){
-      //   let rUrl = $(this).parents("tr").children("#repoUrl").val();
-      //   reUserUrl = rUrl.substring(29);
-    	//   console.log(reUserUrl)
-      // })
-
 
 	  });
+  
+  
+  
 
     function reUserUrlq(repoUrl){
-      reUserUrl = repoUrl.substr(29)
-    	console.log(reUserUrl)
+      reUserUrl = repoUrl.substr(29);
     }
 
-    function deleteRepo(){
-      return confirm("정말로 삭제하시겠습니까?");
+    function deleteRepo(repoUrl){
+      let deleteRepo1 = confirm("정말로 삭제하시겠습니까?");
+      if(deleteRepo1){
+    	  let deleteRepo2 = confirm("삭제하면 복구할 수 없습니다. 정말로 삭제하시겠습니까?");
+        if(deleteRepo2){
+          reUserUrlq(repoUrl);
+          location.href="deleteRepo.re?reUserUrl=" + reUserUrl;
+        }
+      }
     }
     
     function inviteRepo(){
-    	console.log(reUserUrl)
     	const inviteUserName = $("#inviteUserName").val();
     	location.href="inviteRepo.re?inviteUserName=" + inviteUserName + "&reUserUrl=" + reUserUrl;
     }
@@ -169,12 +170,13 @@
         </div>
         
         <div class="modal-body">
-          <form action="createRepo.re" method="post">
+          <form action="createRepo.re" method="get">
             제목 : <input type="text" name="repoName" id=""> <br><br>
             부제목 : <input type="text" name="repoDescription" id=""> <br><br>
             private : <input type="radio" name="visibility" id="" value="true"> <br>
             public : <input type="radio" name="visibility" id="" value="false"> <br>
             README : <input type="checkbox" name="readMe" value="true"> <br><br>
+            <input type="hidden" name="readMe" value=""> <!-- readMe 안할 시 넘길 값 -->
             <button type="submit">생성</button>
           </form>
         </div>
@@ -192,12 +194,10 @@
           <h4 class="modal-title">Invite Repository</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
-        
         <div class="modal-body">
             이름 : <input type="text" name="inviteUserName" id="inviteUserName"> <br><br>
             <button onclick="inviteRepo()">초대</button>
         </div>
-
       </div>
     </div>
   </div>

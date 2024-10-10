@@ -22,6 +22,7 @@
                                     border-radius: 6px;
                                     padding: 5px;
                                     box-shadow: 0 4px 10px rgba(61, 60, 60, 0.1);
+                                    margin-bottom: 20px;
                                 }
 
                                 form {
@@ -36,89 +37,101 @@
                                     width: 100%;
                                     height: 40px;
                                     overflow: hidden;
+
+
+                                    & .swiper-slide {
+                                        display: flex;
+                                        flex-direction: column;
+                                        justify-content: center;
+                                        align-items: center;
+                                        text-align: center;
+                                        height: 40px;
+                                        padding: 0 10px;
+                                        gap: 3px;
+                                    }
+
+                                    & .swiper-slide a {
+                                        text-decoration: none;
+                                        color: #4A90E2;
+                                        font-size: 20px;
+                                    }
+
+                                    & .swiper-slide p {
+                                        margin: 0;
+                                        color: #666;
+                                        font-size: 12px;
+                                    }
                                 }
 
-                                .swiper {
+                                .swiper-container2 {
                                     width: 100%;
-                                    height: 100%;
-                                }
+                                    height: 450px;
+                                    overflow: hidden;
 
-                                .swiper-slide {
-                                    display: flex;
-                                    flex-direction: column;
-                                    justify-content: center;
-                                    align-items: center;
-                                    text-align: center;
-                                    height: 40px;
-                                    padding: 0 10px;
-                                    gap: 3px;
-                                }
+                                    & .swiper-slide {
+                                        display: flex;
+                                        gap: 20px;
+                                    }
 
-                                .swiper-slide a {
-                                    text-decoration: none;
-                                    color: #4A90E2;
-                                    font-size: 20px;
-                                }
-
-                                .swiper-slide p {
-                                    margin: 0;
-                                    color: #666;
-                                    font-size: 12px;
-                                }
-
-                                .topic-box-left {
-                                    width: 99%;
-                                    height: auto;
-                                    display: flex;
-                                    gap: 1%;
-                                    margin: 2% auto;
-
-                                    & .img-box {
+                                    & .swiper-thumbnail {
                                         width: 40%;
-                                        height: auto;
+                                        height: 95%;
+                                        position: relative;
+                                        border: 1px solid gainsboro;
                                         overflow: hidden;
                                         border-radius: 10px;
 
-                                        & img {
+                                        & pre {
+                                            overflow: auto;
                                             width: 100%;
                                             height: 100%;
-                                            object-fit: cover;
-                                            transition: .4s;
-
-                                            &:hover {
-                                                cursor: pointer;
-                                                transform: scale(1.03);
-                                            }
+                                            padding: 0;
+                                            margin: 0;
+                                            scrollbar-width: none;
+                                            -ms-overflow-style: none;
                                         }
+
+                                        & .language-js {
+                                            width: 100%;
+                                            height: 100%;
+                                            display: block;
+                                        }
+                                    }
+
+                                }
+
+                                .swiper-thumbnail pre::-webkit-scrollbar {
+                                    display: none;
+                                }
+
+                                @keyframes blink {
+
+                                    0%,
+                                    100% {
+                                        opacity: 0.5;
+                                    }
+
+                                    50% {
+                                        opacity: 1;
+                                        font-weight: bolder;
                                     }
                                 }
 
-                                .topic-box-right {
-                                    width: 99%;
-                                    height: auto;
-                                    display: flex;
-                                    gap: 1%;
-                                    margin: 2% auto;
-                                    justify-content: flex-end;
+                                .dot {
+                                    font-size: 34px;
+                                    animation: blink 1.5s linear infinite;
+                                }
 
-                                    & .img-box {
-                                        width: 40%;
-                                        height: auto;
-                                        overflow: hidden;
-                                        border-radius: 10px;
+                                .dot:nth-child(1) {
+                                    animation-delay: 0s;
+                                }
 
-                                        & img {
-                                            width: 100%;
-                                            height: 100%;
-                                            object-fit: cover;
-                                            transition: .4s;
+                                .dot:nth-child(2) {
+                                    animation-delay: 0.3s;
+                                }
 
-                                            &:hover {
-                                                cursor: pointer;
-                                                transform: scale(1.03);
-                                            }
-                                        }
-                                    }
+                                .dot:nth-child(3) {
+                                    animation-delay: 0.6s;
                                 }
                             </style>
                         </head>
@@ -152,30 +165,50 @@
 
                                 </div>
 
-                                <div class="topic-box-left">
-                                    <div class="img-box">
-                                        <img src="resources/image/Designer2.jpeg">
+                                <script>
+                                    let dataLoaded = false;
+
+                                    $(function () {
+                                        if (!dataLoaded) {
+                                            $.ajax({
+                                                url: 'viewCount.bo',
+                                                method: 'GET',
+                                                success: () => {
+                                                    dataLoaded = true; // 데이터가 로드되었음을 표시
+                                                }
+                                            });
+                                        }
+                                    });
+                                </script>
+
+                                <div class="box-section">
+
+                                    <div class="swiper-container2">
+
+                                        <div style="color: #DAA520; font-size: 19px;">
+                                            구조 요청중<span class="dot">.</span>
+                                            <span class="dot">.</span>
+                                            <span class="dot">.</span>
+                                        </div>
+
+                                        <div class="swiper-wrapper">
+                                            <c:forEach var="b" items="${list}">
+                                                <div class="swiper-slide">
+                                                    <div class="swiper-thumbnail">
+                                                        <pre>
+                                                            <code class="language-js"><c:forEach var="chunk" items="${codeMap[b.boardNo]}"><c:out value="${chunk.chunkContent}" escapeXml="true" /></c:forEach></code>
+                                                        </pre>
+                                                    </div>
+                                                    <div class="helpCall" data-bNo="${b.boardNo}">Help!</div>
+                                                </div>
+                                            </c:forEach>
+
+                                        </div>
+
                                     </div>
 
-                                    <div class="description-box">
-                                        <p>
-                                            이거는~ 어쩌구~
-                                            저쩌구~~
-                                        </p>
-                                    </div>
-                                </div>
 
-                                <div class="topic-box-right">
-                                    <div class="description-box">
-                                        <p>
-                                            이거는~ 어쩌구~
-                                            저쩌구~~
-                                        </p>
-                                    </div>
 
-                                    <div class="img-box">
-                                        <img src="resources/image/Designer5.jpeg">
-                                    </div>
                                 </div>
 
                             </div>
@@ -192,6 +225,23 @@
                                     },
                                     mousewheel: true,
                                     keyboard: true,
+                                });
+
+                                var swiper = new Swiper('.swiper-container2', {
+                                    direction: 'horizontal',
+                                    slidesPerView: 1,
+                                    spaceBetween: 0,
+                                    loop: true,
+                                    autoplay: {
+                                        delay: 12000,
+                                        disableOnInteraction: true,
+                                    },
+                                    keyboard: true,
+                                });
+
+                                $(document).on('click', '.helpCall', function () {
+                                    const bNo = $(this).data("bno");
+                                    location.href = "detail.bo?bNo=" + bNo;
                                 });
                             </script>
 

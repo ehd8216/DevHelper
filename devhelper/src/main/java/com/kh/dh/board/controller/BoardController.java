@@ -125,7 +125,25 @@ public class BoardController {
 		
 	}
 	
-	
+	@RequestMapping("viewCount.bo")
+	public String selectBoardByCount(HttpSession session) {
+		
+		ArrayList<Board> list = bs.selectBoardByCount();
+		
+		Map<Integer, ArrayList<CodeChunk>> codeChunksMap = new HashMap<>();
+
+		for (Board board : list) {
+		     ArrayList<CodeChunk> codeChunks = bs.selectCodeChunks(board.getBoardNo());
+		     codeChunksMap.put(board.getBoardNo(), codeChunks);
+		}
+		
+		session.setAttribute("alertMsg", "조회수별 구조요청 수신완료");
+		session.setAttribute("list", list);
+		session.setAttribute("codeMap", codeChunksMap);
+		
+		return null;
+		
+	}
 	
 	
 	

@@ -9,17 +9,18 @@
 			<style>
 				.enrollForm {
 					width: 98%;
-					height: 85vh;
+					height: 88vh;
 					display: flex;
 					margin: auto;
+					transition: .4s;
 
 					& .enroll-left {
 						width: 50%;
-						height: 90%;
+						height: 100%;
 
 						& .codeInput {
 							width: 95%;
-							height: 90%;
+							height: 98%;
 							resize: none;
 							margin: auto;
 							border-radius: 6px;
@@ -45,47 +46,90 @@
 
 				.enroll-right {
 					width: 50%;
-					padding: 20px;
-				}
-
-				.form-table {
-					width: 100%;
-					border-collapse: collapse;
-				}
-
-				.form-row {
+					height: 100%;
 					display: flex;
+					flex-direction: column;
+					gap: 20px;
+					font-size: 20px;
+				}
+
+				.er1 {
+					display: flex;
+					height: 5%;
+					width: 100%;
 					align-items: center;
-					width: 100%;
-					margin-bottom: 10px;
+					gap: 10px;
+
+					& .er1_input {
+						width: 80%;
+						height: 100%;
+					}
+
+					& .form-input {
+						display: flex;
+						width: 100%;
+						height: 60%;
+						box-sizing: border-box;
+						font-size: 20px;
+						margin: auto 5%;
+						padding: 2%;
+					}
 				}
 
-				.form-input,
-				.form-textarea {
-					width: 100%;
-					box-sizing: border-box;
-					padding: 10px;
-					border-radius: 4px;
-					border: 1px solid #ccc;
-					font-size: 16px;
-					margin-left: 10px;
+				.er2 {
+					display: flex;
+					gap: 1%;
+					justify-content: flex-end;
+					margin-right: 10.5%;
+					align-items: center;
 				}
 
-				.form-textarea {
-					resize: none;
-					height: 400px;
+				#language {
+					height: 100%;
 				}
 
-				.form-button-cell {
-					text-align: right;
+				.er3 {
+					display: flex;
+					gap: 10px;
+
+					& .er3_input {
+						width: 80%;
+
+						& textarea {
+							display: flex;
+							width: 100%;
+							box-sizing: border-box;
+							font-size: 20px;
+							margin: auto 5%;
+							padding: 2%;
+						}
+					}
 				}
 
-				.submit-button {
-					width: 100%;
-					padding: 10px;
-					font-size: 16px;
-					border-radius: 4px;
-					cursor: pointer;
+				.er4 {
+					width: 39.6%;
+					display: flex;
+					margin: auto;
+					position: absolute;
+					bottom: 2.6%;
+					right: 5.6%;
+
+					& .submit-button {
+						width: 100%;
+						height: 40px;
+						box-sizing: border-box;
+						margin-right: 4px;
+						cursor: pointer;
+						font-size: 15px;
+						background-color: antiquewhite;
+						border-radius: 5px;
+						opacity: .8;
+						transition: .4s;
+
+						&:hover {
+							opacity: 1;
+						}
+					}
 				}
 			</style>
 		</head>
@@ -99,30 +143,32 @@
 				</div>
 				<div class="enroll-right">
 
-					<table class="form-table">
-						<tr class="form-row">
-							<td>제목 :</td>
-							<td><input type="text" class="form-input"></td>
-						</tr>
-						<tr class="form-row">
-							<div id="languages"> 사용언어
-								<select id="language">
-									<option>JavaScript</option>
-									<option>HTML</option>
-									<option>JAVA</option>
-								</select>
-							</div>
-						</tr>
-						<tr class="form-row">
-							<td>내용 :</td>
-							<td><textarea class="form-textarea"></textarea></td>
-						</tr>
-						<tr>
-							<td class="form-button-cell" colspan="2">
-								<button type="submit" class="submit-button">Submit Code</button>
-							</td>
-						</tr>
-					</table>
+					<div class="er1">
+						<div>제목 :</div>
+						<div class="er1_input"><input type="text" class="form-input" maxlength="50"
+								placeholder="제목을 입력하세요 (최대 50자)"></div>
+					</div>
+
+					<div class="er2" id="languages">
+						사용언어 :
+						<select id="language">
+							<option>JavaScript</option>
+							<option>HTML</option>
+							<option>JAVA</option>
+						</select>
+					</div>
+
+					<div class="er3">
+						<div>내용 :</div>
+						<div class="er3_input"><textarea class="form-textarea" rows="25" style="resize: none;"
+								maxlength="500" placeholder="내용을 입력하세요 (최대 500자)"></textarea></div>
+					</div>
+
+					<div>
+						<div class="er4">
+							<button type="submit" class="submit-button">등록하기</button>
+						</div>
+					</div>
 
 				</div>
 			</div>
