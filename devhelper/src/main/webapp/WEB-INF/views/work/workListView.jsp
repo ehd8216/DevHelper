@@ -268,6 +268,7 @@
   let pageSize = 15;
   let totalPages = 10;
   let ncsCdLst;
+  let recrutPbancTtl = "";
   
   $(function(){
 	  loadData(currentPage);
@@ -282,6 +283,7 @@
         pageNo:page, 
         numOfRows:pageSize,
         ncsCdLst:ncsCdLst,
+        recrutPbancTtl: recrutPbancTtl,
       },
 			success:function(data){
 				console.log(data);
@@ -406,9 +408,16 @@
     $('#job-dropdown-grid').hide(); 
     currentPage = 1;
     loadData(currentPage); 
-
     console.log(ncsCdLst)
     });
+
+    $(document).on('click', '.search-bar button', function() {
+    const searchTerm = $('input[name="keyword"]').val().trim();  // Get the search term
+    ncsCdLst = ncsCdLst || "";  
+    recrutPbancTtl = searchTerm; 
+    console.log(ncsCdLst)
+    loadData(currentPage);  
+});
   
 });
   </script>
