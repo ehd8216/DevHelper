@@ -18,5 +18,6 @@ public interface BoardService {
 	int insertCodeChunk(String chunk, int chunkOrder);
 	ArrayList<CodeChunk> selectCodeChunks(int bNo);
 	ArrayList<Board> selectBoardByCount();
+	ArrayList<Board> selectBoardByRandom();
 	
 }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="roomMapper">
+
+	<insert id="insertRoom" parameterType="RoomDTO" useGeneratedKeys="true" keyProperty="roomId">
+		insert 
+		  into room
+		     (
+		       room_id
+		     , room_name
+		     , room_pwd
+		     )
+		values
+		     (
+		       seq_rno.nextval
+		     , #{name}
+		     , #{password}
+		     )
+	</insert>
+
+
+
+
+
+
+
+
+</mapper>
