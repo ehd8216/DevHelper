@@ -87,6 +87,11 @@
             gap: 10px;
             margin-bottom: 20px;
         }
+
+        input,
+        textarea{
+            font-size: 18px;
+        }
     </style>
     </head>
     <body>
@@ -106,7 +111,7 @@
                 <tr class="static">
                     <td>지원 기업</td>
                     <td>지원 직무</td>
-                    <td>최대 길이</td>
+                    <td>글자 수</td>
                 </tr>
                 <tr class="answer">
                     <td><input type="text" id="companyName" placeholder="기업명을 입력하세요"></td>

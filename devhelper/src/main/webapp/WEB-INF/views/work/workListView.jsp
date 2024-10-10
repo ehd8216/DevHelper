@@ -144,6 +144,56 @@
       background-color: #000;
       color: #fff;
   }
+  
+
+ #job-dropdown-btn {
+    height: 24px;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background-color: white;
+    
+}
+
+#job-dropdown-btn:hover{
+  background-color: #f0f0f0;
+}
+
+.dropdown-grid-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    width: 100%;
+    max-width: 800px;
+    border: 1px solid #ccc;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    padding: 10px;
+    left: 525px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 columns */
+    grid-template-rows: repeat(2, 1fr);    /* 2 rows */
+    gap: 10px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.grid-item {
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    text-align: center;
+    cursor: pointer;
+}
+
+.grid-item:hover {
+    background-color: #f0f0f0;
+}
   </style>
 </head>
 
@@ -153,11 +203,29 @@
   <div class="title" align="center">채용 공고 확인하기</div>
 
   <div class="search-bar-container">
-    <div class="search-bar" id="search-bar">
+    <div class="search-bar" id="search-bar" style="display: flex;">
       <span class="material-symbols-outlined">search</span>
       <input type="text" name="keyword" placeholder="검색어를 입력하세요">
-      <input type="text" name="job" placeholder="희망 분야를 선택해주세요">
-      <button>찾기</button>
+
+      <div class="dropdown">
+        <div id="job-dropdown-btn">희망 분야를 선택해주세요</div>
+        <div id="job-dropdown-grid" class="dropdown-grid-content">
+            <div class="grid-container">
+              <div class="grid-item" id="management_office" data-job="R600002">경영·사무·회계</div>
+				<div class="grid-item" id="mechanical" data-job="R600015">기계</div>
+				<div class="grid-item" id="education" data-job="R600004">교육·자연·사회과학</div>
+				<div class="grid-item" id="construction" data-job="R600014">건설</div>
+				<div class="grid-item" id="materials" data-job="R600016">재료</div>
+				<div class="grid-item" id="chemical" data-job="R600017">화학</div>
+				<div class="grid-item" id="electrical" data-job="R600019">전기·전자</div>
+				<div class="grid-item" id="information" data-job="R600020">정보통신</div>
+				<div class="grid-item" id="environment" data-job="R600023">환경·에너지·안전</div>
+				<div class="grid-item" id="research" data-job="R600025">연구</div>  
+            </div>
+        </div>
+    </div>
+
+      <button onclick="">찾기</button>
       <span class="material-symbols-outlined" id="close-btn">close</span>
     </div>
     
@@ -199,20 +267,27 @@
   let currentPage = 1;
   let pageSize = 15;
   let totalPages = 10;
+  let ncsCdLst;
   
   $(function(){
 	  loadData(currentPage);
     updatePagination(currentPage);
+      
   });
   
   function loadData(page){
 		$.ajax({
 			url:"work.wo",
-			data:{pageNo:page, numOfRows:pageSize},
+			data:{
+        pageNo:page, 
+        numOfRows:pageSize,
+        ncsCdLst:ncsCdLst,
+      },
 			success:function(data){
 				console.log(data);
 				let items = data.result;
 				let html = "";
+        
 				
 				$.each(items,function(index,job){
 					 html += "<tr data-sn='"+job.recrutPblntSn+"'> ";
@@ -236,9 +311,12 @@
 			}
 		})
 	}
+
   
   
-  // 디테일로 넘어가는 스크립트(ssn 줘야함)
+  
+  
+  // 디테일로 넘어가는 스크립트(sn 줘야함)
   $(document).on("click", "#result1>tbody>tr", function() {
       const sn = $(this).data("sn");
       location.href = "detail.wo?sn=" + sn; 
@@ -305,6 +383,34 @@
             updatePagination(currentPage);
         }
     });
+
+
+    // 검색 드롭다운
+     
+    $(document).ready(function () {
+    $('#job-dropdown-btn').click(function () {
+        $('#job-dropdown-grid').toggle();
+    });
+
+    $(document).mouseup(function(e) {
+        let container = $("#job-dropdown-grid");
+        if (!container.is(e.target) && container.has(e.target).length === 0) {
+            container.hide();
+        }
+    });
+
+  
+    $(document).on('click', '.grid-item', function() {
+    ncsCdLst = $(this).data("job");
+    $('#job-dropdown-btn').text($(this).text());
+    $('#job-dropdown-grid').hide(); 
+    currentPage = 1;
+    loadData(currentPage); 
+
+    console.log(ncsCdLst)
+    });
+  
+});
   </script>
 </body>
 
