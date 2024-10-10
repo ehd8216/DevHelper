@@ -226,9 +226,5 @@ public class RepoController {
 		return "repository/commitList";
 	}
 	
-	@RequestMapping("test.re")
-	public String test() {
-		return "repository/commitList";
-	}
 	
 }
