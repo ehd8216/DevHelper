@@ -145,12 +145,6 @@ public class RepoController {
 	    System.out.println(url);
 	    GHRepository repo = github.getRepository(url);
 	    GHIssue issueDe = repo.getIssue(issueNum);
-		/*
-		 * System.out.println(issueDe.getTitle());
-		 * System.out.println(issueDe.getBody());
-		 * System.out.println(issueDe.getUser().getLogin());
-		 * System.out.println(issueDe.getCreatedAt());
-		 */
 	    request.setAttribute("issueDe", issueDe);
 		return "repository/issuesDetail";
 	}
