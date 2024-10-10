@@ -225,7 +225,7 @@
         </div>
     </div>
 
-      <button onclick="">찾기</button>
+      <button id="btn1">찾기</button>
       <span class="material-symbols-outlined" id="close-btn">close</span>
     </div>
     
@@ -268,7 +268,7 @@
   let pageSize = 15;
   let totalPages = 10;
   let ncsCdLst;
-  let recrutPbancTtl = "";
+  let recrutPbancTtl;
   
   $(function(){
 	  loadData(currentPage);
@@ -305,8 +305,7 @@
 				});
 				
 				$("#result1 tbody").html(html);	
-
-        		$("#currentPage").text(currentPage);
+        $("#currentPage").text(currentPage);
 			},
 			error:function(){
 				console.log("API AJAX에러")
@@ -403,21 +402,21 @@
 
   
     $(document).on('click', '.grid-item', function() {
-    ncsCdLst = $(this).data("job");
-    $('#job-dropdown-btn').text($(this).text());
-    $('#job-dropdown-grid').hide(); 
-    currentPage = 1;
-    loadData(currentPage); 
-    console.log(ncsCdLst)
-    });
+      ncsCdLst = $(this).data("job");
+      $('#job-dropdown-btn').text($(this).text());
+      $('#job-dropdown-grid').hide(); 
+      currentPage = 1;
+      loadData(currentPage); 
+      console.log(ncsCdLst)
+     });
 
-    $(document).on('click', '.search-bar button', function() {
+    $(document).on('click', '#btn1', function() {
     const searchTerm = $('input[name="keyword"]').val().trim();  // Get the search term
-    ncsCdLst = ncsCdLst || "";  
-    recrutPbancTtl = searchTerm; 
-    console.log(ncsCdLst)
-    loadData(currentPage);  
-});
+      recrutPbancTtl =searchTerm;
+      currentPage = 1
+      console.log(recrutPbancTtl)
+      loadData(currentPage);  
+    });
   
 });
   </script>
