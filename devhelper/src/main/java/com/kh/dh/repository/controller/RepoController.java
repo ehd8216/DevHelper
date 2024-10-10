@@ -100,6 +100,7 @@ public class RepoController {
 		mv.addObject("repo", repo)
 		  .addObject("writer", writer)
 		  .addObject("repoDirectory", list)
+		  .addObject("url", url)
 		  .setViewName("repository/repoDetail");
 		return mv;
 	}
@@ -231,5 +232,9 @@ public class RepoController {
 		return "repository/commitList";
 	}
 	
+	@RequestMapping("test.re")
+	public String test() {
+		return "repository/commitList";
+	}
 	
 }

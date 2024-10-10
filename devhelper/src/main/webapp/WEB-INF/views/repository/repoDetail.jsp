@@ -20,25 +20,30 @@
 
 <style>
     .repoDetail{
-        min-height: 900px;
-        width: 80%;
+        height: auto;
+        width: 90%;
         margin: auto;
+        backdrop-filter: blur(5px);
+        display: flex;
     }
     #btns button{
-        margin-right: 20px;
+        margin: 50px 20px 0 0;
         padding-top: 10px;
         width: 8%;
         height: 40px;
+        position: fixed;
     }
     #repoInfo{
         display: flex;
+        position: fixed;
     }
     #repoInfo h1{
         margin: 20px 10px;
         font-size: 24px;
     }
     #repoDetailFile{
-        margin: 20px 0 0 10px;
+        margin: 10px 0 0 10px;
+        
     }
     #repoDetailFile span{
         margin-top: 10px;
@@ -55,6 +60,16 @@
     'GRAD' 0,
     'opsz' 24
     }
+    #dual{
+        width: 40%;
+        height: 695px;
+        overflow: auto;
+        margin-top: 100px;
+    }
+    #dual2{
+        width: 55%;
+        margin-left: 50px;
+    }
 </style>
 
 </style>
@@ -70,31 +85,36 @@
                 <h1>${repo.language}</h1>
             </div>
             <div id="btns">
-                <button class="btn btn-danger" id="issues">Issues</button>
-                <button class="btn btn-warning">milestone</button>
-                <button class="btn btn-info" id="commit">commit</button>
-                <button class="btn btn-primary">Pull Request</button>
+                <button style="left: 0;" class="btn btn-danger" id="issues">Issues</button>
+                <button style="left: 150px;" class="btn btn-warning" id="test">milestone</button>
+                <button style="left: 300px;" class="btn btn-info" id="commit">commit</button>
+                <button style="left: 450px;" class="btn btn-primary">Pull Request</button>
             </div>
             <br>
-            <div id="repoDetailFile">
-            	<!-- 폴더가 위로가게 배치 -->
-            	<c:forEach var="l" items="${ repoDirectory }">
-	            	<c:if test="${ l.isFile eq false }">
-	            		<span class="material-symbols-outlined" style="color: #2854C5;">folder</span>
-		                <span>${ l.dirName }</span>
-		                <br>
-		            </c:if>
-				</c:forEach>
-				<!-- 폴더가 아닌 파일들은 아래로 위치 -->
-	            <c:forEach var="l" items="${ repoDirectory }">
-	            	<c:if test="${ l.isFile eq true }">
-	            		<span class="material-symbols-outlined">description</span>
-		                <span>${ l.dirName }</span>
-		                <br>
-		            </c:if>
-				</c:forEach>
+            <div id="dual">
+                <div id="repoDetailFile">
+                    <!-- 폴더가 위로가게 배치 -->
+                    <c:forEach var="l" items="${ repoDirectory }">
+                        <c:if test="${ l.isFile eq false }">
+                            <span class="material-symbols-outlined" style="color: #2854C5;">folder</span>
+                            <span>${ l.dirName }</span>
+                            <br>
+                        </c:if>
+                    </c:forEach>
+                    <!-- 폴더가 아닌 파일들은 아래로 위치 -->
+                    <c:forEach var="l" items="${ repoDirectory }">
+                        <c:if test="${ l.isFile eq true }">
+                            <span class="material-symbols-outlined">description</span>
+                            <span>${ l.dirName }</span>
+                            <br>
+                        </c:if>
+                    </c:forEach>
+                </div>
             </div>
 
+            <div id="dual2" style="border: 1px solid black;">
+                <iframe width="100%" height="100%" src="commitList.re?repoUserUrl=${ url }"></iframe>
+            </div>
         </div>
 
     </div>
@@ -110,6 +130,10 @@ $(function(){
     $(".repoDetail #commit").click(function(){
     	let repoUserUrl = $("#writer").text() + '/' + $("#repoName").text();
         location.href="commitList.re?repoUserUrl=" + repoUserUrl;
+    })
+    
+    $(".repoDetail #test").click(function(){
+        location.href="test.re";
     })
 });
 </script>
