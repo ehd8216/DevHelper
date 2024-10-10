@@ -7,50 +7,124 @@
     <meta charset="UTF-8">
     <title>Issues List</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        /* 중앙 정렬을 위한 스타일 */
+        .outer {
+            padding: 30px;
+            margin: 0 auto;
+            width: 80%;
+        }
+
         #boardList {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        #boardList>tbody>tr:hover {
+            background-color: #f2f2f2;
+            cursor: pointer;
+        }
+
+        /* 테이블 스타일 */
+        table, th, td {
+            border: 1px solid #dee2e6;
+        }
+
+        th {
+            background-color: #343a40;
+            color: rgb(0, 0, 0);
             text-align: center;
         }
-        #boardList>tbody>tr:hover {
-            cursor: pointer;
+
+        td {
+            text-align: center;
         }
 
         /* 모달 스타일 */
         .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 1; 
+            display: none;
+            position: fixed;
+            z-index: 1;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.5);
+            background-color: rgba(0, 0, 0, 0.5);
         }
+
         .modal-content {
             background-color: white;
-            margin: 15% auto; 
+            margin: 10% auto;
             padding: 20px;
-            border: 1px solid #888;
-            width: 50%;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            width: 40%;
         }
+
         .close {
             color: #aaa;
             float: right;
             font-size: 28px;
             font-weight: bold;
         }
+
         .close:hover,
         .close:focus {
-            color: black;
+            color: #000;
             text-decoration: none;
             cursor: pointer;
+        }
+
+        /* 버튼 스타일 */
+        #openModalBtn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #openModalBtn:hover {
+            background-color: #0056b3;
+        }
+
+        /* 이슈 작성 폼 스타일 */
+        form label {
+            font-weight: bold;
+        }
+
+        form input, form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        form button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #218838;
         }
     </style>
 </head>
 <body>
     <jsp:include page="../common/menubar.jsp" />
     <div class="outer">
-        <table id="boardList" class="table table-hover" align="center">
+        <h2 class="text-center">Issues List</h2>
+        <table id="boardList" class="table table-hover">
             <thead>
                 <tr>
                     <th>번호</th>
@@ -78,20 +152,23 @@
     </div>
 
     <!-- 이슈 작성 버튼 -->
-    <button id="openModalBtn">이슈 작성하기</button>
+    <div class="text-center">
+        <button id="openModalBtn" class="btn btn-primary">이슈 작성하기</button>
+    </div>
 
     <!-- 이슈 작성 모달 -->
     <div id="issueModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <form id="issueForm" action="issuesInsert.re" method="post">
-            	<input id="writer" type="hidden" value="${writer}" name="writer">
-            	<input id="repoName" type="hidden" value="${repoName}" name="repoName">
+                <input id="writer" type="hidden" value="${writer}" name="writer">
+                <input id="repoName" type="hidden" value="${repoName}" name="repoName">
+
                 <label for="title">이슈 제목:</label>
-                <input type="text" id="title" name="title" required><br><br>
-                
+                <input type="text" id="title" name="title" required>
+
                 <label for="body">이슈 내용:</label>
-                <textarea id="body" name="body" required></textarea><br><br>
+                <textarea id="body" name="body" required></textarea>
 
                 <button type="submit">이슈 생성</button>
             </form>
@@ -115,17 +192,15 @@
                 $("#issueModal").hide();
             }
         });
-        $(function()
-        {
-        	$("#boardList tbody tr").click(function()
-        	{
-        		var issueNum = $(this).children('td').first().text();
-        		var writer = $("#writer").val();
-        		var repoName = $("#repoName").val();
-        		console.log(writer,repoName)
-        		location.href = "issuesDetail.re?issueNum=" + issueNum + "&writer=" + writer + "&repoName=" + repoName;
-        	})
-        })
+
+        $(function() {
+            $("#boardList tbody tr").click(function() {
+                var issueNum = $(this).children('td').first().text();
+                var writer = $("#writer").val();
+                var repoName = $("#repoName").val();
+                location.href = "issuesDetail.re?issueNum=" + issueNum + "&writer=" + writer + "&repoName=" + repoName;
+            });
+        });
     </script>
 </body>
 </html>

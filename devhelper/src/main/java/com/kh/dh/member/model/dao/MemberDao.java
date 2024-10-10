@@ -16,4 +16,8 @@ public class MemberDao
 	{
 		return sqlSession.selectOne("memberMapper.selectMember", m);
 	}
+	public Member selectMemberDetail(SqlSessionTemplate sqlSession, int memNo)
+	{
+		return sqlSession.selectOne("memberMapper.selectMemberDetail", memNo);
+	}
 }

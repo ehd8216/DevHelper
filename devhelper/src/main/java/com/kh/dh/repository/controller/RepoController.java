@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.kohsuke.github.GHIssue;
@@ -136,18 +137,21 @@ public class RepoController {
 	    return "redirect:issueslist.re?repoName=" + repoName + "&writer=" + writer ;
 	}
 	@RequestMapping(value = "issuesDetail.re")
-	public void issuesDetail(int issueNum,String writer,String repoName, HttpSession session) throws IOException
+	public String issuesDetail(int issueNum,String writer,String repoName, HttpSession session,HttpServletRequest request) throws IOException
 	{
 	    GitHub github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
 	    String url = writer + "/" + repoName;
 	    System.out.println(url);
 	    GHRepository repo = github.getRepository(url);
 	    GHIssue issueDe = repo.getIssue(issueNum);
-	    System.out.println(issueDe.getTitle());
-	    System.out.println(issueDe.getBody());
-	    System.out.println(issueDe.getUser().getLogin());
-	    System.out.println(issueDe.getCreatedAt());
-	    
+		/*
+		 * System.out.println(issueDe.getTitle());
+		 * System.out.println(issueDe.getBody());
+		 * System.out.println(issueDe.getUser().getLogin());
+		 * System.out.println(issueDe.getCreatedAt());
+		 */
+	    request.setAttribute("issueDe", issueDe);
+		return "repository/issuesDetail";
 	}
 	@RequestMapping("createRepo.re")
 	public String createRepo(Repository repo, HttpSession session) throws IOException {

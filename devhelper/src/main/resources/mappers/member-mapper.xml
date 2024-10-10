@@ -52,6 +52,16 @@
 		  from member
 		  where mem_id = #{memId}
 	</select>
+	<select id="selectMemberDetail" resultMap="memberResult">
+		select 
+		        git_nick
+		      , mem_intro
+		      , stack_name
+		      , create_date
+		      , profile
+		  from member
+		  where mem_no = #{memNo}
+	</select>
 </mapper>
 
 
