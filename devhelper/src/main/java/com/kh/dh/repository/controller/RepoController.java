@@ -154,23 +154,22 @@ public class RepoController {
 	}
 	@RequestMapping("deleteRepo.re")
 	public String deleteRepo(String reUserUrl, HttpSession session) throws IOException {
-//		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
-//		GitHub github = new GitHubBuilder().withOAuthToken("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").build();
+		
 		WebClient webClient = WebClient.create();
 		
 		String deleteRepoUrl = "https://api.github.com/repos/" + reUserUrl;
 		
 		webClient
-		.delete()
-		.uri(deleteRepoUrl)
-		.header(HttpHeaders.AUTHORIZATION, "Bearer " + (String)session.getAttribute("token"))
-		.header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-		.retrieve()
-		.toBodilessEntity()  // No body is returned on a successful DELETE
-		.doOnError(error -> {
-			System.out.println("Error occurred while deleting the repository: " + error.getMessage());
-		})
-		.block();  // Blocking to wait for the request to complete
+			.delete()
+			.uri(deleteRepoUrl)
+			.header(HttpHeaders.AUTHORIZATION, "Bearer " + (String)session.getAttribute("token"))
+			.header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+			.retrieve()
+			.toBodilessEntity() 
+			.doOnError(error -> {
+				System.out.println("Error occurred while deleting the repository: " + error.getMessage());
+			})
+			.block();
 		
 		session.setAttribute("alertMsg", "레파지토리 삭제 완료");
 		return "redirect:myRepo.re";

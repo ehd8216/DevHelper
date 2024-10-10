@@ -119,5 +119,26 @@
         WHERE board_no = #{boardNo}
         ORDER BY chunk_order
     </select>
+    
+    <select id="selectBoardByCount" resultMap="boardResult">
+    	    SELECT board_no
+				 , board_title
+				 , board_content
+				 , board_count
+				 , to_char(create_date, 'YYYY-MM-DD') as "create_date"
+				 , answer
+				 , board_lang
+			  from (
+			       select * 
+			         from board 
+			        order 
+			           by board_count desc
+			       )
+		     where rownum <![CDATA[<]]> 11
+		       and status = 'Y'
+		       and answer = 'N'
+		     ORDER 
+		        BY DBMS_RANDOM.VALUE
+    </select>
 
 </mapper>

@@ -143,12 +143,14 @@
     }
 
     function deleteRepo(repoUrl){
-      let deleteRepo = confirm("정말로 삭제하시겠습니까?");
-      if(deleteRepo){
-        reUserUrlq(repoUrl);
-        location.href="deleteRepo.re?reUserUrl=" + reUserUrl;
+      let deleteRepo1 = confirm("정말로 삭제하시겠습니까?");
+      if(deleteRepo1){
+    	  let deleteRepo2 = confirm("삭제하면 복구할 수 없습니다. 정말로 삭제하시겠습니까?");
+        if(deleteRepo2){
+          reUserUrlq(repoUrl);
+          location.href="deleteRepo.re?reUserUrl=" + reUserUrl;
+        }
       }
-    	
     }
     
     function inviteRepo(){
