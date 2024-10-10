@@ -28,4 +28,10 @@ public class MemberServiceImpl implements MemberService
 		return mDao.selectMember(sqlSession, m);
 	}
 
+	@Override
+	public Member selectMemberDetail(int memNo) {
+
+		return mDao.selectMemberDetail(sqlSession, memNo);
+	}
+
 }

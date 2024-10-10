@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.dh.common.model.service.GitService;
 import com.kh.dh.member.model.service.MemberServiceImpl;
@@ -65,6 +66,14 @@ public class MemberController
 	{
 		session.invalidate();
 		return "redirect:/";
+	}
+	@RequestMapping("mypage.me")
+	public ModelAndView mypage(int memNo, ModelAndView mv)
+	{
+		Member m = mService.selectMemberDetail(memNo);
+		mv.addObject("m", m)
+		  .setViewName("member/myPage");
+		return mv;
 	}
 	
 }
