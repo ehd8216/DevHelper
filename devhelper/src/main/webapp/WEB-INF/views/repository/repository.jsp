@@ -19,6 +19,7 @@
 
 <style>
   .repoList{
+    min-height: 900px;
     margin: auto;
     width: 80%;
     backdrop-filter: blur(5px);
@@ -35,6 +36,9 @@
   }
   #repoHead tr td{
     padding-top: 20px;
+  }
+  #repoHead tr td button{
+    margin-top: 20px;
   }
   #repoBody{
     font-size: 18px;
@@ -104,7 +108,7 @@
 		              <td>${ r.createDate }</td>
 		              <td id="repoBtn">
 		                <button class="btn btn-danger" id="deleteRepo" onclick="deleteRepo('${r.repoUrl}')">삭제</button>
-		                <button class="btn btn-success" id="invite" data-toggle="modal" data-target="#inviteRepo" onclick="reUserUrlq('${r.repoUrl}')">초대</button>
+		                <button class="btn btn-success" id="invite" data-toggle="modal" data-target="#inviteRepo" onclick="getRepoUserUrl('${r.repoUrl}')">초대</button>
 		              </td>
                   <input id="repoUrl" class="url" type="hidden" value="${r.repoUrl}">
 		            </tr>
@@ -118,7 +122,7 @@
   </div>
 
   <script>
-    let reUserUrl = "";
+    let repoUserUrl = "";
   $(function(){
 
 	    $("#repoBody tr td").click(function(){
@@ -128,7 +132,7 @@
 	        var repoUrl = $(this).parent().find(".url").val();
 	        
 	        // repoName과 repoUrl을 파라미터로 추가하여 이동
-	        location.href="repoDetail.re?repoName=" + repoName + "&repoUrl=" + encodeURIComponent(repoUrl);
+	        location.href="repoDetail.re?repoUrl=" + encodeURIComponent(repoUrl);
 	      }
 	    });
 
@@ -138,7 +142,7 @@
   
   
 
-    function reUserUrlq(repoUrl){
+    function getRepoUserUrl(repoUrl){
       reUserUrl = repoUrl.substr(29);
     }
 
@@ -147,15 +151,15 @@
       if(deleteRepo1){
     	  let deleteRepo2 = confirm("삭제하면 복구할 수 없습니다. 정말로 삭제하시겠습니까?");
         if(deleteRepo2){
-          reUserUrlq(repoUrl);
-          location.href="deleteRepo.re?reUserUrl=" + reUserUrl;
+          getRepoUserUrl(repoUrl);
+          location.href="deleteRepo.re?reUserUrl=" + repoUserUrl;
         }
       }
     }
     
     function inviteRepo(){
     	const inviteUserName = $("#inviteUserName").val();
-    	location.href="inviteRepo.re?inviteUserName=" + inviteUserName + "&reUserUrl=" + reUserUrl;
+    	location.href="inviteRepo.re?inviteUserName=" + inviteUserName + "&reUserUrl=" + repoUserUrl;
     }
     
   </script>

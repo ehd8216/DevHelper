@@ -13,6 +13,7 @@ import lombok.ToString;
 @ToString
 public class Repository {
 	
+	private String repoNo;
 	private String repoName;
 	private String repoDescription;
 	private String visibility;
