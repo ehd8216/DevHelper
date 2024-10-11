@@ -232,8 +232,7 @@
 					background-color: #f1f1f1;
 				}
 
-				/* 이거 모달 css때문에 menubar include한 파일들 다 css 이상해짐 이슈.... */
-				/* .modal {
+				.modals {
 					width: 400px;
 					height: 300px;
 					right: 10%;
@@ -243,9 +242,9 @@
 					z-index: 10;
 				}
 
-				.modal.show {
+				.modals.show {
 					display: none;
-				} */
+				}
 			</style>
 		</head>
 
@@ -291,7 +290,7 @@
 				</c:choose>
 			</header>
 
-			<div class="modal show">
+			<div class="modals show">
 
 				<div class="modal_body">
 
@@ -313,11 +312,11 @@
 				$(document).ready(() => {
 
 					$(".modal_btn").on("click", () => {
-						$(".modal").toggleClass("show")
+						$(".modals").toggleClass("show")
 					});
 
 					$(".close_modal").on("click", () => {
-						$(".modal").toggleClass("show")
+						$(".modals").toggleClass("show")
 					});
 
 				});

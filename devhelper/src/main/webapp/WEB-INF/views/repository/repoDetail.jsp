@@ -111,7 +111,7 @@
                 <div id="repoDetailFile">
                     <!-- 폴더가 위로가게 배치 -->
                     <c:forEach var="l" items="${ repoDirectory }">
-                        <div>
+                        <div class="rd">
                             <c:if test="${ l.isFile eq false }">
                                 <span class="material-symbols-outlined" style="color: #2854C5;">folder</span>
                                 <span>${ l.dirName }</span>
@@ -121,7 +121,7 @@
                     </c:forEach>
                     <!-- 폴더가 아닌 파일들은 아래로 위치 -->
                     <c:forEach var="l" items="${ repoDirectory }">
-                        <div>
+                        <div class="rd">
                             <c:if test="${ l.isFile eq true }">
                                 <span class="material-symbols-outlined">description</span>
                                 <span>${ l.dirName }</span>
@@ -145,6 +145,19 @@ $(function(){
       var writer = $("#writer").text();
       location.href="issueslist.re?repoName=" + $("#repoName").text()+"&writer=" + writer;
     });
+
+    $(".rd").click(function(){
+        $.ajax({
+            uri:"",
+            data:{},
+            success:function(){
+
+            },
+            error:function(){
+
+            },
+        })
+    })
     
 });
 </script>

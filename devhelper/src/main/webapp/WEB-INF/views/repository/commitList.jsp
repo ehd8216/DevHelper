@@ -57,14 +57,20 @@
   #commitDetail{
     border: 1px solid black;
   }
+  #commitTitle{
+    height: 30px;
+    padding: auto;
+  }
 </style>
 </head>
 <body>
 	<div class="outer">
     <div class="commitList">
+
       <div id="commitTitle">
         ${ repoName } Commits
       </div>
+
       <div id="commitContent">
         <table id="cListTable">
           <thead>
