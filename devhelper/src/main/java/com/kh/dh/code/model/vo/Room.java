@@ -14,5 +14,6 @@ public class Room {
 	private String roomId;
 	private String roomName;
 	private String roomPwd;
+	private String language;
 	
 }

@@ -259,6 +259,7 @@
 					<div class="menuEls" onclick="toThe('searchNews')">HOME</div>
 					<div class="menuEls" onclick="toThe('myRepo.re')">My Repository</div>
 					<div class="menuEls">코딩테스트</div>
+					<!-- codeForces api 받아서 해볼것 -->
 					<div class="menuEls" onclick="toThe('list.wo')">취업관련</div>
 					<c:if test="${not empty loginMember}">
 						<div class="menuEls" onclick="toThe('list.bo?memNo=${loginMember.memNo}')">게시판</div>
@@ -301,6 +302,13 @@
 					<form id="createRoomForm">
 						<input type="text" id="roomName" placeholder="Room Name" required />
 						<input type="password" id="roomPassword" placeholder="Password" required />
+						<select id="languageSelect">
+							<option value="javascript">JavaScript</option>
+							<option value="html">HTML</option>
+							<option value="css">CSS</option>
+							<option value="python">Python</option>
+							<option value="java">Java</option>
+						</select>
 						<button type="button" onclick="createRoom()">Create Room</button>
 					</form>
 					</p>
@@ -326,26 +334,29 @@
 				function createRoom() {
 					const roomName = $('#roomName').val();
 					const roomPassword = $('#roomPassword').val();
+					const selectedLanguage = document.getElementById('languageSelect').value;
 
 					$.ajax({
 						url: "createRoom",
 						data: {
 							name: roomName,
 							password: roomPassword,
+							language: selectedLanguage,
 						},
 						success: (result) => {
 
 							if (result == 0) {
 								toastr.warning("${warningMsg1}")
-							} else if (result == 1) {
-								toastr.success("${alertMsg1}"
-									+ "콘솔창을 확인하세요"
-								)
-								console.log("${alertMsg1}")
-							} else {
+							} else if (result == 2) {
 								toastr.error("${errorMsg1}")
+							} else {
+								const message = "<a href='http://localhost:8234/dh/" + result + "' style='color: white;'>룸 아이디는 " + result + "입니다. <br>여기를 눌러서 입장하거나,<br>콘솔창을 확인하세요</a>";
+								toastr.success(message, "", {
+									allowHtml: true,
+									tapToDismiss: false
+								});
+								console.log(result + "주소창의 dh/ 뒤에 아이디를 붙여주세요")
 							}
-
 						},
 					})
 

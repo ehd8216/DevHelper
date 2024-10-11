@@ -208,6 +208,9 @@
 										console.log('New comment added:', comment);
 									}];
 
+									// 내 게시글에 댓글달렸을때 문자든, 카톡이든 api를 통한 알림기능
+									// 그리고 고정댓글 박으면 답변됨으로 고치게
+
 								};
 
 								(function () { // DON'T EDIT BELOW THIS LINE

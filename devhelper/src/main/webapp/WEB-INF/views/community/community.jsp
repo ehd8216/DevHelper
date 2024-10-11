@@ -285,6 +285,8 @@
 
                                     <br><br><br>
 
+                                    <!-- 여기에 오픈토론장 10개정도 해가지고 제목, 비밀번호랑 링크로 주소달아주는 그런거 추가하면 낫배드.. -->
+
                                 </div>
 
                             </div>
@@ -320,40 +322,7 @@
                                     location.href = "detail.bo?bNo=" + bNo;
                                 });
                             </script>
-                            <!-- 
-                            <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
-                            <div id="editor" style="height: 300px; width: 100%;"></div>
-                            <script>
-                                // Ace Editor 초기화
-                                const editor = ace.edit("editor");
-                                editor.setTheme("ace/theme/monokai");
-                                editor.session.setMode("ace/mode/javascript");
-                            </script>
 
-                            <script>
-                                const socket = new WebSocket('ws://localhost:8234/dh/collab'); // yourContextPath는 실제 경로로 변경
-
-                                socket.onopen = function () {
-                                    console.log("WebSocket 연결됨");
-                                };
-
-                                socket.onmessage = function (event) {
-                                    const data = JSON.parse(event.data);
-                                    if (data.type === 'codeUpdate') {
-                                        editor.setValue(data.code); // 코드 에디터에 업데이트
-                                    }
-                                };
-
-                                function sendCodeUpdate(code) {
-                                    socket.send(JSON.stringify({ type: 'codeUpdate', code }));
-                                }
-
-                                // 코드 에디터에서 변화가 생겼을 때 호출
-                                editor.on('change', () => {
-                                    const code = editor.getValue();
-                                    sendCodeUpdate(code);
-                                });
-                            </script> -->
 
                         </body>
 
