@@ -26,7 +26,7 @@
         backdrop-filter: blur(5px);
         display: flex;
     }
-    #btns button{
+    .btn{
         margin: 50px 20px 0 0;
         padding-top: 10px;
         width: 8%;
@@ -86,7 +86,8 @@
         border: 1px solid #e5e5e5;
         display: none;
     }
-    
+
+
 </style>
 
 </style>
@@ -105,16 +106,16 @@
                 <button style="left: 0;" class="btn btn-danger" id="issues">Issues</button>
                 <button style="left: 150px;" class="btn btn-info" id="commit">commit</button>
                 <button style="left: 300px;" class="btn btn-primary">Pull Request</button>
-                <button style="left: 450px;" class="btn btn-secondary">
-					<div class="custom-select" style="width:200px;">
-                        <select>
-                            <option value="0">Select car:</option>
-                            <option value="1">Audi</option>
-                            <option value="2">BMW</option>
-                            <option value="3">Citroen</option>
-                        </select>
-                    </div>
-				</button>
+                <select class="btn btn-secondary" style="left: 450px;">
+              		<c:forEach var="b" items="${ bList }">
+              			<c:if test="${ b.branchName eq 'main' }">
+                   			<option selected>${ b.branchName }</option>
+                   		</c:if>
+                   		<c:if test="${ b.branchName ne 'main' }">
+                   			<option>${ b.branchName }</option>
+                   		</c:if>
+                  	</c:forEach>
+                </select>
             </div>
             <br>
             <div id="dual">

@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import org.kohsuke.github.GHIssue;
 import org.kohsuke.github.GHIssueState;
 import org.kohsuke.github.GHPermissionType;
+import org.kohsuke.github.GHBranch;
 import org.kohsuke.github.GHCommit;
 import org.kohsuke.github.GHContent;
 import org.kohsuke.github.GHCreateRepositoryBuilder;
@@ -27,6 +29,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.dh.member.model.vo.Member;
+import com.kh.dh.repository.model.vo.Branch;
 import com.kh.dh.repository.model.vo.Commit;
 import com.kh.dh.repository.model.vo.RepoDirectory;
 import com.kh.dh.repository.model.vo.Repository;
@@ -97,10 +100,20 @@ public class RepoController {
         	list.add(rd);
         }
         
+        // 브랜치 리스트 뽑기
+        Map<String, GHBranch> branches = repo.getBranches();
+        ArrayList<Branch> bList = new ArrayList<Branch>();
+        
+        for (String branchName : branches.keySet()) {
+        	Branch b = new Branch();
+        	b.setBranchName(branchName);
+        	bList.add(b);
+        }
 		session.setAttribute("repo", repo);
 		session.setAttribute("writer", writer);
-		session.setAttribute("repoDirectory", list);
 		session.setAttribute("url", url);
+		session.setAttribute("repoDirectory", list);
+		session.setAttribute("bList", bList);
 		return "repository/repoDetail";
 	}
 	
