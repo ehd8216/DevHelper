@@ -7,8 +7,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -88,26 +91,17 @@ public class APIcontroller {
 	}
 	
 	
-	@Controller
-	@RequestMapping("/chat")
-	public class ChatController{
-		
-		private final ChatGPTService chatGPTService;
+		@Controller
+		public class GptController {
 
-	    public ChatController(ChatGPTService chatGPTService) {
-	        this.chatGPTService = chatGPTService;
-	    }
+	    @Autowired
+	    private ChatGPTService gptService;
 
-	    @RequestMapping(value = "/ask", method = RequestMethod.POST)
-	    @ResponseBody
-	    public String askChatGPT(@RequestParam("prompt") String prompt) {
-	        // Call the service to get the response from ChatGPT
-	        return chatGPTService.getChatGPTResponse(prompt);   
-	    }
-	    
-	    @GetMapping
-	    public String chatPage() {
-	        return "coverletter/chat";  // chat.jsp로 이동
+	    @GetMapping("chat")
+	    public String callChatGPT(@RequestParam("prompt") String prompt, Model model) {
+	        String response = gptService.callChatGPT(prompt);
+	        model.addAttribute("response", response);
+	        return "coverletter/chat"; // 결과를 출력할 뷰 이름
 	    }
 	}
 }

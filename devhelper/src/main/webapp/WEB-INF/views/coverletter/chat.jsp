@@ -3,42 +3,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Chat with GPT</title>
+    <title>ChatGPT 응답</title>
 </head>
 <body>
-    <h1>ChatGPT와 대화해보세요</h1>
-    <form id="chatForm" method="post" action="/chat/ask">
-        <label for="prompt">질문:</label>
-        <input type="text" id="prompt" name="prompt" required>
-        <button type="submit">보내기</button>
-    </form>
-
-    <div id="responseArea">
-        <h2>응답:</h2>
-        <p id="chatResponse"></p>
-    </div>
-
-    <script>
-        document.getElementById("chatForm").addEventListener("submit", function(event) {
-            event.preventDefault();  // Prevent default form submission
-
-            const prompt = document.getElementById("prompt").value;
-
-            fetch("/chat/ask", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                },
-                body: new URLSearchParams({ prompt: prompt })
-            })
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("chatResponse").textContent = data;
-            })
-            .catch(error => {
-                console.error("Error:", error);
-            });
-        });
-    </script>
-</body>
+    <h1>ChatGPT의 응답:</h1>
+    <p>${response}</p>
 </html>
