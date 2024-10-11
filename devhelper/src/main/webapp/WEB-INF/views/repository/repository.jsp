@@ -54,10 +54,10 @@
   }
   #nullRepo{
   	height: 500px;
-  }  
-  .modal{
-    transition: .5s;
   }
+  .modal{
+    display: none;
+  }  
   .btn{
   float: right;
   margin-right: 35px;
@@ -184,7 +184,6 @@
             <button type="submit">생성</button>
           </form>
         </div>
-
       </div>
     </div>
   </div>
