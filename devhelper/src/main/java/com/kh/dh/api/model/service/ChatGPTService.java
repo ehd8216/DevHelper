@@ -1,4 +1,4 @@
-package com.kh.dh.employmentAPI.model.service;
+package com.kh.dh.api.model.service;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

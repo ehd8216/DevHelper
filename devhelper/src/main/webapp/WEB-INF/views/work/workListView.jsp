@@ -201,10 +201,10 @@
   <jsp:include page="../common/menubar.jsp" />
 
   <div class="title" align="center">채용 공고 확인하기</div>
-
+  <button onclick="location.href='cover.wo'">자소서버튼</button>
   <div class="search-bar-container">
-    <div class="search-bar" id="search-bar" style="display: flex;">
-      <span class="material-symbols-outlined">search</span>
+    <div class="search-bar" id="search-bar" style="display: none;">
+     
       <input type="text" name="keyword" placeholder="검색어를 입력하세요">
 
       <div class="dropdown">
@@ -328,12 +328,12 @@
      $(document).ready(function () {
       
       $('#search-icon-only').click(function () {
-        $('#search-bar').slideDown(); 
+        $('#search-bar').fadeIn(400).css('display', 'flex');
         $('#search-icon-only').hide();
     });
 
       $('#close-btn').click(function () {
-        $('#search-bar').slideUp(); 
+        $('#search-bar').css('display','none')
         $('#search-icon-only').show();
     });
 
