@@ -21,7 +21,7 @@
 <style>
     .repoDetail{
         height: auto;
-        width: 90%;
+        width: 85%;
         margin: auto;
         backdrop-filter: blur(5px);
         display: flex;
@@ -43,7 +43,14 @@
     }
     #repoDetailFile{
         margin: 10px 0 0 10px;
-        
+    }
+    #repoDetailFile div{
+        border-radius: 5px;
+        cursor: pointer;
+        transition: .2s;
+    }
+    #repoDetailFile div:hover{
+        background-color: rgb(185, 185, 185);
     }
     #repoDetailFile span{
         margin-top: 10px;
@@ -62,14 +69,23 @@
     }
     #dual{
         width: 40%;
-        height: 695px;
+        height: 698px;
         overflow: auto;
         margin-top: 100px;
     }
-    #dual2{
-        width: 55%;
-        margin-left: 50px;
+    #dual::-webkit-scrollbar{
+        width: 1px;
     }
+    #dual::-webkit-scrollbar-button{
+        display: none;
+    }
+    #dual2{
+        width: 70%;
+        margin-left: 100px;
+        border-radius: 10px;
+        border: 1px solid #e5e5e5;
+    }
+    
 </style>
 
 </style>
@@ -95,25 +111,29 @@
                 <div id="repoDetailFile">
                     <!-- 폴더가 위로가게 배치 -->
                     <c:forEach var="l" items="${ repoDirectory }">
-                        <c:if test="${ l.isFile eq false }">
-                            <span class="material-symbols-outlined" style="color: #2854C5;">folder</span>
-                            <span>${ l.dirName }</span>
-                            <br>
-                        </c:if>
+                        <div>
+                            <c:if test="${ l.isFile eq false }">
+                                <span class="material-symbols-outlined" style="color: #2854C5;">folder</span>
+                                <span>${ l.dirName }</span>
+                                <br>
+                            </c:if>
+                        </div>
                     </c:forEach>
                     <!-- 폴더가 아닌 파일들은 아래로 위치 -->
                     <c:forEach var="l" items="${ repoDirectory }">
-                        <c:if test="${ l.isFile eq true }">
-                            <span class="material-symbols-outlined">description</span>
-                            <span>${ l.dirName }</span>
-                            <br>
-                        </c:if>
+                        <div>
+                            <c:if test="${ l.isFile eq true }">
+                                <span class="material-symbols-outlined">description</span>
+                                <span>${ l.dirName }</span>
+                                <br>
+                            </c:if>
+                        </div>
                     </c:forEach>
                 </div>
             </div>
 
-            <div id="dual2" style="border: 1px solid black;">
-                <iframe width="100%" height="100%" src="commitList.re?repoUserUrl=${ url }"></iframe>
+            <div id="dual2">
+                <iframe id="commitIframe" width="100%" height="100%" src="commitList.re?repoUserUrl=${ url }"></iframe>
             </div>
         </div>
 
@@ -126,15 +146,6 @@ $(function(){
       location.href="issueslist.re?repoName=" + $("#repoName").text()+"&writer=" + writer;
     });
     
-    // commit 화면 ㄱㄱ
-    $(".repoDetail #commit").click(function(){
-    	let repoUserUrl = $("#writer").text() + '/' + $("#repoName").text();
-        location.href="commitList.re?repoUserUrl=" + repoUserUrl;
-    })
-    
-    $(".repoDetail #test").click(function(){
-        location.href="test.re";
-    })
 });
 </script>
 </body>

@@ -232,7 +232,8 @@
 					background-color: #f1f1f1;
 				}
 
-				.modal {
+				/* 이거 모달 css때문에 menubar include한 파일들 다 css 이상해짐 이슈.... */
+				/* .modal {
 					width: 400px;
 					height: 300px;
 					right: 10%;
@@ -244,7 +245,7 @@
 
 				.modal.show {
 					display: none;
-				}
+				} */
 			</style>
 		</head>
 

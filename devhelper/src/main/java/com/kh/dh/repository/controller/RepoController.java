@@ -210,6 +210,7 @@ public class RepoController {
 	public String commitList(String repoUserUrl, HttpSession session) throws IOException {
 		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
 		GHRepository repo = github.getRepository(repoUserUrl);
+		String[] str = repoUserUrl.split("/");
 		
 		// commit 리스트 뽑기
         sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
@@ -219,9 +220,10 @@ public class RepoController {
         	c.setComAuthor(commit.getCommitShortInfo().getAuthor().getName());
         	c.setComMessage(commit.getCommitShortInfo().getMessage());
         	c.setComDate(sdf.format(commit.getCommitDate()));
-        	c.setSHA(commit.getSHA1());
+        	c.setSHA(commit.getSHA1().substring(0, 11));
         	list.add(c);
         }
+        session.setAttribute("repoName", str[1]);
 		session.setAttribute("commitList", list);
 		return "repository/commitList";
 	}
