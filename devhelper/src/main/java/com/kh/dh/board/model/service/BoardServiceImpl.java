@@ -61,6 +61,11 @@ public class BoardServiceImpl implements BoardService {
 	public ArrayList<Board> selectBoardByCount() {
 		return bd.selectBoardByCount(sst);
 	}
+	
+	@Override
+	public ArrayList<Board> selectBoardByRandom() {
+		return bd.selectBoardByRandom(sst);
+	}
 
 
 }

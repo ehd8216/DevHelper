@@ -54,10 +54,10 @@
   }
   #nullRepo{
   	height: 500px;
-  }  
-  .modal{
-    transition: .5s;
   }
+  .modal{
+    display: none;
+  }  
   .btn{
   float: right;
   margin-right: 35px;

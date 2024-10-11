@@ -140,5 +140,24 @@
 		     ORDER 
 		        BY DBMS_RANDOM.VALUE
     </select>
+    
+    <select id="selectBoardByRandom" resultMap="boardResult">
+    	     SELECT board_no
+				  , board_title
+				  , board_content
+				  , board_count
+				  , to_char(create_date, 'YYYY-MM-DD') as "create_date"
+				  , answer
+				  , board_lang 
+    	       FROM (
+				    SELECT *
+				      FROM board
+				     WHERE status = 'Y' 
+				       AND answer = 'N'
+				     ORDER 
+				        BY DBMS_RANDOM.VALUE
+				    ) 
+		      WHERE ROWNUM <![CDATA[<]]> 11
+    </select>
 
 </mapper>

@@ -125,7 +125,8 @@ public class BoardController {
 		
 	}
 	
-	@RequestMapping("viewCount.bo")
+	@ResponseBody
+	@RequestMapping(value="viewCount.bo", produces="application/json; charset=utf-8")
 	public String selectBoardByCount(HttpSession session) {
 		
 		ArrayList<Board> list = bs.selectBoardByCount();
@@ -137,11 +138,30 @@ public class BoardController {
 		     codeChunksMap.put(board.getBoardNo(), codeChunks);
 		}
 		
-		session.setAttribute("alertMsg", "조회수별 구조요청 수신완료");
 		session.setAttribute("list", list);
 		session.setAttribute("codeMap", codeChunksMap);
 		
-		return null;
+		return new Gson().toJson("0");
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="viewRandom.bo", produces="application/json; charset=utf-8")
+	public String selectBoardByRandom(HttpSession session) {
+		
+		ArrayList<Board> list = bs.selectBoardByRandom();
+		
+		Map<Integer, ArrayList<CodeChunk>> codeChunksMap = new HashMap<>();
+		
+		for (Board board : list) {
+			ArrayList<CodeChunk> codeChunks = bs.selectCodeChunks(board.getBoardNo());
+			codeChunksMap.put(board.getBoardNo(), codeChunks);
+		}
+		
+		session.setAttribute("list2", list);
+		session.setAttribute("codeMap2", codeChunksMap);
+		
+		return new Gson().toJson("0");
 		
 	}
 	

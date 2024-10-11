@@ -67,6 +67,7 @@
                                     width: 100%;
                                     height: 450px;
                                     overflow: hidden;
+                                    margin-left: .5%;
 
                                     & .swiper-slide {
                                         display: flex;
@@ -75,7 +76,7 @@
 
                                     & .swiper-thumbnail {
                                         width: 40%;
-                                        height: 95%;
+                                        height: 90%;
                                         position: relative;
                                         border: 1px solid gainsboro;
                                         overflow: hidden;
@@ -133,6 +134,33 @@
                                 .dot:nth-child(3) {
                                     animation-delay: 0.6s;
                                 }
+
+                                .swiper-inners {
+                                    display: flex;
+                                    flex-direction: column;
+                                    gap: 30px;
+                                    width: 58%;
+                                    height: 95%;
+                                }
+
+                                .swiper-title {
+                                    font-size: 20px;
+                                    line-height: 20px;
+                                    display: flex;
+                                    gap: 20px;
+                                }
+
+                                .helpCall {
+                                    font-size: 15px;
+                                    color: red;
+                                    border: 1px solid red;
+                                    height: 18px;
+                                    border-radius: 10px;
+                                    width: 40px;
+                                    text-align: center;
+                                    background-color: white;
+                                    cursor: pointer;
+                                }
                             </style>
                         </head>
 
@@ -166,18 +194,24 @@
                                 </div>
 
                                 <script>
-                                    let dataLoaded = false;
-
                                     $(function () {
-                                        if (!dataLoaded) {
-                                            $.ajax({
-                                                url: 'viewCount.bo',
-                                                method: 'GET',
-                                                success: () => {
-                                                    dataLoaded = true; // 데이터가 로드되었음을 표시
-                                                }
-                                            });
-                                        }
+
+                                        $.ajax({
+                                            url: 'viewCount.bo',
+                                            method: 'GET',
+                                            success: (result) => {
+                                                toastr.success("조회수별 구조요청 수신완료");
+                                            }
+                                        });
+
+                                        $.ajax({
+                                            url: 'viewRandom.bo',
+                                            method: 'GET',
+                                            success: (result) => {
+                                                toastr.success("랜덤 구조요청 수신완료");
+                                            }
+                                        });
+
                                     });
                                 </script>
 
@@ -185,7 +219,7 @@
 
                                     <div class="swiper-container2">
 
-                                        <div style="color: #DAA520; font-size: 19px;">
+                                        <div style="color: #DAA520; font-size: 25px;">
                                             구조 요청중<span class="dot">.</span>
                                             <span class="dot">.</span>
                                             <span class="dot">.</span>
@@ -196,10 +230,18 @@
                                                 <div class="swiper-slide">
                                                     <div class="swiper-thumbnail">
                                                         <pre>
-                                                            <code class="language-js"><c:forEach var="chunk" items="${codeMap[b.boardNo]}"><c:out value="${chunk.chunkContent}" escapeXml="true" /></c:forEach></code>
-                                                        </pre>
+                                                                <code class="language-js"><c:forEach var="chunk" items="${codeMap[b.boardNo]}"><c:out value="${chunk.chunkContent}" escapeXml="true" /></c:forEach></code>
+                                                            </pre>
                                                     </div>
-                                                    <div class="helpCall" data-bNo="${b.boardNo}">Help!</div>
+                                                    <div class="swiper-inners">
+                                                        <div class="swiper-title">📌${empty b.boardTitle ? "제목 없음" :
+                                                            b.boardTitle}<div class="helpCall" data-bNo="${b.boardNo}">
+                                                                Help!
+                                                            </div>
+                                                        </div>
+                                                        <div class="swiper-content">${empty b.boardContent ? "본문 없음" :
+                                                            b.boardContent}</div>
+                                                    </div>
                                                 </div>
                                             </c:forEach>
 
@@ -207,7 +249,41 @@
 
                                     </div>
 
+                                    <br><br><br>
 
+                                    <div class="swiper-container2">
+
+                                        <div style="color: #DAA520; font-size: 25px; float: right; margin-right: 1%;">
+                                            구조 요청중<span class="dot">.</span>
+                                            <span class="dot">.</span>
+                                            <span class="dot">.</span>
+                                        </div>
+
+                                        <div class="swiper-wrapper">
+                                            <c:forEach var="b" items="${list2}">
+                                                <div class="swiper-slide">
+                                                    <div class="swiper-inners">
+                                                        <div class="swiper-title">📌${empty b.boardTitle ? "제목 없음" :
+                                                            b.boardTitle}<div class="helpCall" data-bNo="${b.boardNo}">
+                                                                Help!
+                                                            </div>
+                                                        </div>
+                                                        <div class="swiper-content">${empty b.boardContent ? "본문 없음" :
+                                                            b.boardContent}</div>
+                                                    </div>
+                                                    <div class="swiper-thumbnail">
+                                                        <pre>
+                                                                <code class="language-js"><c:forEach var="chunk" items="${codeMap2[b.boardNo]}"><c:out value="${chunk.chunkContent}" escapeXml="true" /></c:forEach></code>
+                                                            </pre>
+                                                    </div>
+                                                </div>
+                                            </c:forEach>
+
+                                        </div>
+
+                                    </div>
+
+                                    <br><br><br>
 
                                 </div>
 
@@ -244,6 +320,40 @@
                                     location.href = "detail.bo?bNo=" + bNo;
                                 });
                             </script>
+                            <!-- 
+                            <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+                            <div id="editor" style="height: 300px; width: 100%;"></div>
+                            <script>
+                                // Ace Editor 초기화
+                                const editor = ace.edit("editor");
+                                editor.setTheme("ace/theme/monokai");
+                                editor.session.setMode("ace/mode/javascript");
+                            </script>
+
+                            <script>
+                                const socket = new WebSocket('ws://localhost:8234/dh/collab'); // yourContextPath는 실제 경로로 변경
+
+                                socket.onopen = function () {
+                                    console.log("WebSocket 연결됨");
+                                };
+
+                                socket.onmessage = function (event) {
+                                    const data = JSON.parse(event.data);
+                                    if (data.type === 'codeUpdate') {
+                                        editor.setValue(data.code); // 코드 에디터에 업데이트
+                                    }
+                                };
+
+                                function sendCodeUpdate(code) {
+                                    socket.send(JSON.stringify({ type: 'codeUpdate', code }));
+                                }
+
+                                // 코드 에디터에서 변화가 생겼을 때 호출
+                                editor.on('change', () => {
+                                    const code = editor.getValue();
+                                    sendCodeUpdate(code);
+                                });
+                            </script> -->
 
                         </body>
 
