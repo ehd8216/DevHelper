@@ -74,7 +74,7 @@ public class RepoController {
 	}
 	
 	@RequestMapping("repoDetail.re")
-	public ModelAndView repoDetail(String repoUrl,  ModelAndView mv,HttpSession session) throws IOException {
+	public String repoDetail(String repoUrl, HttpSession session) throws IOException {
 		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
 		String url = repoUrl.substring(29);
 		GHRepository repo = github.getRepository(url);
@@ -97,12 +97,11 @@ public class RepoController {
         	list.add(rd);
         }
         
-		mv.addObject("repo", repo)
-		  .addObject("writer", writer)
-		  .addObject("repoDirectory", list)
-		  .addObject("url", url)
-		  .setViewName("repository/repoDetail");
-		return mv;
+		session.setAttribute("repo", repo);
+		session.setAttribute("writer", writer);
+		session.setAttribute("repoDirectory", list);
+		session.setAttribute("url", url);
+		return "repository/repoDetail";
 	}
 	
 
@@ -226,6 +225,11 @@ public class RepoController {
         session.setAttribute("repoName", str[1]);
 		session.setAttribute("commitList", list);
 		return "repository/commitList";
+	}
+	
+	@RequestMapping("github.re")
+	public String githubGo() {
+		return "repository/github";
 	}
 	
 	

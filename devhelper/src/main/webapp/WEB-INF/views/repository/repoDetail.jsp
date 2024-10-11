@@ -84,6 +84,7 @@
         margin-left: 100px;
         border-radius: 10px;
         border: 1px solid #e5e5e5;
+        display: none;
     }
     
 </style>
@@ -102,9 +103,18 @@
             </div>
             <div id="btns">
                 <button style="left: 0;" class="btn btn-danger" id="issues">Issues</button>
-                <button style="left: 150px;" class="btn btn-warning" id="test">milestone</button>
-                <button style="left: 300px;" class="btn btn-info" id="commit">commit</button>
-                <button style="left: 450px;" class="btn btn-primary">Pull Request</button>
+                <button style="left: 150px;" class="btn btn-info" id="commit">commit</button>
+                <button style="left: 300px;" class="btn btn-primary">Pull Request</button>
+                <button style="left: 450px;" class="btn btn-secondary">
+					<div class="custom-select" style="width:200px;">
+                        <select>
+                            <option value="0">Select car:</option>
+                            <option value="1">Audi</option>
+                            <option value="2">BMW</option>
+                            <option value="3">Citroen</option>
+                        </select>
+                    </div>
+				</button>
             </div>
             <br>
             <div id="dual">
@@ -146,17 +156,8 @@ $(function(){
       location.href="issueslist.re?repoName=" + $("#repoName").text()+"&writer=" + writer;
     });
 
-    $(".rd").click(function(){
-        $.ajax({
-            uri:"",
-            data:{},
-            success:function(){
-
-            },
-            error:function(){
-
-            },
-        })
+    $("#commit").click(function(){
+        $("#dual2").css("display","block")
     })
     
 });

@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<% int num = 1; %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
   html::-webkit-scrollbar{
     width: 10px;
@@ -78,6 +80,7 @@
       <table id="cListTable">
         <thead>
           <tr style="height: 50px;">
+          	<th style="width: 30px;">NO</th>
             <th style="width: 80px;">확정자</th>
             <th style="width: 80px;">메시지</th>
             <th style="width: 80px;">일자</th>
@@ -88,14 +91,24 @@
         
           <c:forEach var="c" items="${ commitList }">
             <tr id="lTr" style="height: 40px;">
+              <td><%= num++ %></td>
               <td>${ c.comAuthor }</td>
               <td>${ c.comMessage }</td>
               <td>${ c.comDate }</td>
-              <td>${ c.SHA }</td>
+              <td id="sha">${ c.SHA }</td>
             </tr>
           </c:forEach>
         </tbody>
       </table>
+
+      <script>
+        $(function(){
+          $("tbody tr").click(function(){
+          	window.open("https://github.com/${url}/commit/" + $(this).children("#sha").text() ,"_blank");
+          })
+        })
+
+      </script>
       
     </div>
   </div>
