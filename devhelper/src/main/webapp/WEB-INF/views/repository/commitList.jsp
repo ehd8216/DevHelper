@@ -43,23 +43,27 @@
     width: 100%;
     backdrop-filter: blur(5px);
   }
+  thead tr{
+    font-size: 20px;
+  }
   tbody tr td{
+    cursor: pointer;
     text-align: center;
     font-size: 14px;
+    border-top: 1px solid #e5e5e5;
+
   }
   #commitContent{
     width: 100%;
-    display: flex;
   }
-  #cListTable, #commitDetail{
+  #cListTable{
     width: 100%;
-  }
-  #commitDetail{
-    border: 1px solid black;
   }
   #commitTitle{
     height: 30px;
-    padding: auto;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
   }
 </style>
 </head>
@@ -71,31 +75,29 @@
         ${ repoName } Commits
       </div>
 
-      <div id="commitContent">
-        <table id="cListTable">
-          <thead>
-            <tr style="height: 50px;">
-              <th style="width: 80px;">확정자</th>
-              <th style="width: 80px;">메시지</th>
-              <th style="width: 80px;">일자</th>
-              <th style="width: 80px;">SHA</th>
+      <table id="cListTable">
+        <thead>
+          <tr style="height: 50px;">
+            <th style="width: 80px;">확정자</th>
+            <th style="width: 80px;">메시지</th>
+            <th style="width: 80px;">일자</th>
+            <th style="width: 80px;">SHA</th>
+          </tr>
+        </thead>
+        <tbody>
+        
+          <c:forEach var="c" items="${ commitList }">
+            <tr id="lTr" style="height: 40px;">
+              <td>${ c.comAuthor }</td>
+              <td>${ c.comMessage }</td>
+              <td>${ c.comDate }</td>
+              <td>${ c.SHA }</td>
             </tr>
-          </thead>
-          <tbody>
-          
-            <c:forEach var="c" items="${ commitList }">
-              <tr style="height: 40px;">
-                <td>${ c.comAuthor }</td>
-                <td>${ c.comMessage }</td>
-                <td>${ c.comDate }</td>
-                <td>${ c.SHA }</td>
-              </tr>
-            </c:forEach>
-          </tbody>
-        </table>
-      </div>
+          </c:forEach>
+        </tbody>
+      </table>
+      
     </div>
-
   </div>
 </body>
 </html>
