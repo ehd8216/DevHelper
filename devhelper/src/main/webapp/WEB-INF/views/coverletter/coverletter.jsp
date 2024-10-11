@@ -134,6 +134,7 @@
                     <td colspan="3"><button>AI를 통해 작성</button></td>
                 </tr>
             </table>
+            <div class="resultAPI"></div>
         </div>
     </div>
 
