@@ -147,7 +147,7 @@
              
             </table>
             <button class="write" id="generateAI">AI를 통해 작성</button>
-            <div class="resultAPI"></div>
+            <div class="resultAPI">${response}</div>
         </div>
     </div>
 
@@ -157,24 +157,55 @@
             e.preventDefault();
             
             let prompt = [];
-
-            // Push the variables into the array
-            prompt.push($("#companyName").val());
-            prompt.push($("#jobTitle").val());
-            prompt.push($("#maxLength").val());
-            prompt.push($("#motivation").val());
-            prompt.push($("#question").val());
-            prompt.push($("#experience").val());
+		  
+           const companyName = $("#companyName").val();
+           const jobTitle = $("#jobTitle").val()
+           const maxLength = $("#maxLength").val();
+           const motivation = $("#motivation").val();
+           const question = $("#question").val();
+           const experience = $("#experience").val()
+            // prompt.push($("#companyName").val());
+            // prompt.push($("#jobTitle").val());
+            // prompt.push($("#maxLength").val());
+            // prompt.push($("#motivation").val());
+            // prompt.push($("#question").val());
+            // prompt.push($("#experience").val());
+            console.log({
+                companyName: companyName,
+                jobTitle: jobTitle,
+                maxLength: maxLength,
+                motivation: motivation,
+                question: question,
+                experience: experience
+                });
+           
+            
 
             $.ajax({
                 url:"chat",
-                type:"GET",
-                data:{prompt:prompt},
+                type:"POST",
+                contentType: "application/json",
+                data:JSON.stringify({
+                	  companyName:companyName
+                    , jobTitle:jobTitle
+                    , maxLength:maxLength
+                    , motivation:motivation
+                    , question:question
+                    , experience:experience
+                }),
                 success:function(response){
+                	var jsonResponse = JSON.parse(response);
 
+               
+                    var decodedResponse = decodeHTMLEntities(jsonResponse.response);
+                    
+                    $('.resultAPI').html(jsonResponse.response.replace(/\n/g, '<br>'));
+                
+                
                 },
-                error:function(){
-                    console.log("chat API 에러");
+                error: function(xhr) {
+			        console.log("Error Status: " + xhr.status);
+			        console.log("Error Response: " + xhr.responseText);
                 }
             })
             

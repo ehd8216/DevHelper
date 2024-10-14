@@ -6,14 +6,18 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.dh.api.model.service.ChatGPTService;
 
@@ -89,17 +93,25 @@ public class APIcontroller {
 	}
 	
 	
-		@Controller
-		public class GptController {
-
 	    @Autowired
 	    private ChatGPTService gptService;
+	    
+	    // @GetMapping("chat")
+	    @ResponseBody
+	    @RequestMapping(value="chat", produces = "application/json; charset=utf-8")
+	    public String callChatGPT(@RequestBody Map<String, String> requestData) {
+	    	
+	        String companyName = requestData.get("companyName");
+	        String jobTitle = requestData.get("jobTitle");
+	        String maxLength = requestData.get("maxLength");
+	        String motivation = requestData.get("motivation");
+	        String question = requestData.get("question");
+	        String experience = requestData.get("experience");
 
-	    @GetMapping("chat")
-	    public String callChatGPT(@RequestParam("prompt") String prompt, Model model) {
-	        String response = gptService.callChatGPT(prompt);
-	        model.addAttribute("response", response);
-	        return "coverletter/chat"; // 결과를 출력할 뷰 이름
+	        String generatedText = gptService.callChatGPT(companyName, jobTitle, maxLength, motivation, question, experience);
+	        
+	       
+	        return "{\"response\": \"" + generatedText + "\"}";
 	    }
-	}
 }
+
