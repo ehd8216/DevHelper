@@ -7,6 +7,7 @@
 		<result column="room_name" property="roomName" />
 		<result column="room_pwd" property="roomPwd" />
 		<result column="language" property="language" />
+		<result column="accessibility" property="accessibility" />
 	</resultMap>
 
 	<insert id="insertRoom" parameterType="Room">
@@ -22,6 +23,7 @@
 		     , room_name
 		     , room_pwd
 		     , language
+		     , accessibility
 		     )
 		values
 		     (
@@ -29,6 +31,7 @@
 		     , #{roomName}
 		     , #{roomPwd}
 		     , #{language}
+		     , #{accessibility}
 		     )
 
 	</insert>
@@ -43,7 +46,20 @@
 		 where room_id = #{roomId}
 	</select>
 
-
+	<select id="selectRoomByRandom" resultMap="roomResult">
+    	     SELECT room_id
+				  , room_name
+				  , room_pwd
+			      , language
+    	       FROM (
+				    SELECT *
+				      FROM ROOM
+				     WHERE accessibility = 'o'
+				     ORDER 
+				        BY DBMS_RANDOM.VALUE
+				    ) 
+		      WHERE ROWNUM <![CDATA[<]]> 11
+    </select>
 
 
 </mapper>
