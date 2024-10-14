@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html><html><head>
     <meta charset="UTF-8">
@@ -66,7 +66,7 @@
         table .answer {
             padding-bottom: 10px;
         }
-        button {
+        .write {
             background-color: antiquewhite;
             color:black;
             border: none;
@@ -78,7 +78,7 @@
             display: block;
             width: 100%;
         }
-        button:hover {
+        .write:hover {
             background-color:rgba(250, 235, 215, 0.89);
         }
         .example-toggle {
@@ -96,7 +96,7 @@
     </head>
     <body>
     <jsp:include page="../common/menubar.jsp" />
-
+    <jsp:include page="../common/backToTop.jsp" />
     <div class="coverletter">
         <h1 style="font-size: 40px; padding-top: 30px;">자기소개서 도우미</h1>
         <h2 style="font-size: 20px; padding: 15px 0 15px 0;">질문에 답변하고 openAI와 함께 자기소개서를 작성해보세요!</h2>
@@ -105,6 +105,13 @@
             <input type="checkbox" id="exampleToggle">
             <label for="exampleToggle">예시로 채우기</label>
         </div>
+        <div style="font-size: 20px;">나의 스킬
+            <input type="text" id="newSkill" style="width: 15%;">
+            <button id="addSkillBtn">추가</button>
+            <button id="delSkillBtn">삭제</button>
+            <div id="skill"></div>
+        </div>
+    
 
         <div class="form-container" style="font-size: 20px;">
             <table>
@@ -114,37 +121,74 @@
                     <td>글자 수</td>
                 </tr>
                 <tr class="answer">
-                    <td><input type="text" id="companyName" placeholder="기업명을 입력하세요"></td>
-                    <td><input type="text" id="jobTitle" placeholder="지원 직무"></td>
-                    <td><input type="number" id="maxLength" step="100" max="1000" min="500" placeholder="500"></td>
+                    <td><input type="text" id="companyName" placeholder="기업명을 입력하세요" required></td>
+                    <td><input type="text" id="jobTitle" placeholder="지원 직무를 입력하세요" required></td>
+                    <td><input type="number" id="maxLength" step="100" max="700" min="300" placeholder="500" required></td>
                 </tr>
                 <tr class="static">
-                    <td colspan="3">질문</td>
+                    <td colspan="3">지원동기</td>
                 </tr>
                 <tr class="answer">
-                    <td colspan="3"><textarea id="question" placeholder="질문을 입력하세요"></textarea></td>
+                    <td colspan="3"><textarea id="motivation" placeholder="간단한 지원동기를 입력하세요" required></textarea>
+                    </td>
+                </tr>
+                <tr class="static">
+                    <td colspan="3">질문
+                        <input type="text" id="question" placeholder="질문을 입력하세요" required>
+                    </td>
                 </tr>
                 <tr class="static">
                     <td colspan="3">질문에 대한 나의 경험</td>
                 </tr>
                 <tr class="answer">
-                    <td colspan="3"><textarea id="experience" placeholder="경험을 입력하세요"></textarea></td>
+                    <td colspan="3"><textarea id="experience" placeholder="간단한 경험을 입력하세요" required></textarea>
+                    </td>
                 </tr>
-                <tr>
-                    <td colspan="3"><button>AI를 통해 작성</button></td>
-                </tr>
+             
             </table>
+            <button class="write" id="generateAI">AI를 통해 작성</button>
             <div class="resultAPI"></div>
         </div>
     </div>
 
     <script>
+    
+        $('#generateAI').on('click', function (e) {
+            e.preventDefault();
+            
+            let prompt = [];
+
+            // Push the variables into the array
+            prompt.push($("#companyName").val());
+            prompt.push($("#jobTitle").val());
+            prompt.push($("#maxLength").val());
+            prompt.push($("#motivation").val());
+            prompt.push($("#question").val());
+            prompt.push($("#experience").val());
+
+            $.ajax({
+                url:"chat",
+                type:"GET",
+                data:{prompt:prompt},
+                success:function(response){
+
+                },
+                error:function(){
+                    console.log("chat API 에러");
+                }
+            })
+            
+            
+       
+    });
+
         const exampleData = {
             companyName: "kakao",
             jobTitle: "웹 개발자",
             maxLength: 500,
-            question: "팀원들과 함께 하나의 프로젝트를 진행하면서 힘들었던점은 무엇이고 어떻게 극복했나요?",
-            experience: "서버세팅을 함께 세팅하는 것과 중간에 프로젝트를 그만두는 팀원들 때문에 힘들었다."
+            motivation:"이곳에 지원한 이유는 제가 개발자로서 추구하는 방향과 가장 적합하다고 생각했기때문입니다.",
+            question: "웹 개발자로서 나의 강점은 무엇인가요?",
+            experience: "개발자로서 하나의 완성된 프로젝트를 만들기 위해 팀원들과 의견을 조율하고 소통하는 능력이 제 장점이라고 생각합니다.",
         };
 
  
@@ -152,6 +196,7 @@
             $("#companyName").val(exampleData.companyName);
             $("#jobTitle").val(exampleData.jobTitle);
             $("#maxLength").val(exampleData.maxLength);
+            $("#motivation").val(exampleData.motivation);
             $("#question").val(exampleData.question);
             $("#experience").val(exampleData.experience);
         }
@@ -160,11 +205,11 @@
             $("#companyName").val('');
             $("#jobTitle").val('');
             $("#maxLength").val('');
+            $("#motivation").val('');
             $("#question").val('');
             $("#experience").val('');
         }
 
-        // Toggle filling in the example data
         $('#exampleToggle').on('change', function () {
             if (this.checked) {
                 fillExampleData();
@@ -172,6 +217,32 @@
                 clearForm();
             }
         });
+
+        // 스킬 추가 삭제 버튼
+        let skillsArray = [];
+
+        function updateSkillsDisplay() {
+            $('#skill').text(skillsArray.join(', '));
+        }
+
+        $('#addSkillBtn').on('click', function () {
+        const newSkill = $('#newSkill').val().trim();
+        if (newSkill) {
+            // 새로운 스킬을 배열에 추가
+            skillsArray.push(newSkill);
+            updateSkillsDisplay(); // 화면에 스킬 업데이트
+            $('#newSkill').val(''); // 입력창 초기화
+        }
+        });
+
+        $('#delSkillBtn').on('click',function(){
+            if(skillsArray.length>0){
+                skillsArray.pop();
+                updateSkillsDisplay();
+            }
+        })
+
+
     </script>
     </body>
     </html>

@@ -8,4 +8,5 @@
 <body>
     <h1>ChatGPT의 응답:</h1>
     <p>${response}</p>
+    <a href="coverletter.jsp">돌아가기</a>
 </html>

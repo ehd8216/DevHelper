@@ -31,8 +31,10 @@ public class ChatGPTService {
                   connection.setRequestMethod("POST");
                   connection.setRequestProperty("Authorization", "Bearer " + API_KEY);
                   connection.setRequestProperty("Content-Type", "application/json");
+                  
+                  String userAnwer = prompt + "\n위 정보를 바탕으로, 자신감 있고 설득력 있는 개발자 전자기소개서를 작성해줘.";
 
-                  String body = "{\"model\": \"gpt-3.5-turbo\", \"messages\": [{\"role\": \"user\", \"content\": \"" + prompt + "\"}]}";
+                  String body = "{\"model\": \"gpt-3.5-turbo\", \"messages\": [{\"role\": \"user\", \"content\": \"" + userAnwer + "\"}]}";
                   connection.setDoOutput(true);
                   try (OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream())) {
                       writer.write(body);
