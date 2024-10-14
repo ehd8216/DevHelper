@@ -1,5 +1,7 @@
 package com.kh.dh.code.model.service;
 
+import java.util.ArrayList;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,11 @@ public class RoomServiceImpl implements RoomService {
 	@Override
 	public Room getRoomById(String roomId) {
 		return rd.getRoomById(sst, roomId);
+	}
+
+	@Override
+	public ArrayList<Room> selectRoomByRandom() {
+		return rd.selectRoomByRandom(sst);
 	}
 
 }

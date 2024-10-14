@@ -161,6 +161,25 @@
                                     background-color: white;
                                     cursor: pointer;
                                 }
+
+                                .openForum {
+                                    display: flex;
+                                    flex-direction: column;
+                                    width: 99%;
+                                    height: auto;
+                                    margin: auto;
+                                    gap: 5px;
+
+                                    & a {
+                                        text-decoration: none;
+                                        font-size: 25px;
+                                        color: #666;
+
+                                        &:hover {
+                                            color: black;
+                                        }
+                                    }
+                                }
                             </style>
                         </head>
 
@@ -192,28 +211,6 @@
                                     </div>
 
                                 </div>
-
-                                <script>
-                                    $(function () {
-
-                                        $.ajax({
-                                            url: 'viewCount.bo',
-                                            method: 'GET',
-                                            success: (result) => {
-                                                toastr.success("조회수별 구조요청 수신완료");
-                                            }
-                                        });
-
-                                        $.ajax({
-                                            url: 'viewRandom.bo',
-                                            method: 'GET',
-                                            success: (result) => {
-                                                toastr.success("랜덤 구조요청 수신완료");
-                                            }
-                                        });
-
-                                    });
-                                </script>
 
                                 <div class="box-section">
 
@@ -285,44 +282,108 @@
 
                                     <br><br><br>
 
-                                    <!-- 여기에 오픈토론장 10개정도 해가지고 제목, 비밀번호랑 링크로 주소달아주는 그런거 추가하면 낫배드.. -->
+                                    <div class="openForum"></div>
 
                                 </div>
 
                             </div>
 
                             <script>
-                                var swiper = new Swiper('.swiper-container', {
-                                    direction: 'vertical',
-                                    slidesPerView: 1,
-                                    spaceBetween: 10,
-                                    loop: true,
-                                    autoplay: {
-                                        delay: 5000,
-                                        disableOnInteraction: false,
-                                    },
-                                    mousewheel: true,
-                                    keyboard: true,
+
+                                $(function () {
+
+                                    const ajaxCalls = [
+
+                                        $.ajax({
+                                            url: 'viewCount.bo',
+                                            method: 'GET',
+                                            success: (result) => {
+                                                if (result == 0) {
+                                                    toastr.success("조회수별 구조요청 수신완료");
+                                                }
+                                            }
+                                        }),
+
+                                        $.ajax({
+                                            url: 'viewRandom.bo',
+                                            method: 'GET',
+                                            success: (result) => {
+                                                if (result == 0) {
+                                                    toastr.success("랜덤 구조요청 수신완료");
+                                                }
+
+                                            }
+                                        })
+
+                                    ];
+
+                                    $.when(...ajaxCalls).done(function () {
+                                        initSwiper();
+                                    });
+
+                                    $.ajax({
+                                        url: "random.ro",
+                                        success: result => {
+
+                                            let value = "";
+
+                                            if (result.length > 0) {
+
+                                                for (let i of result) {
+
+                                                    value += `<a href="http://localhost:8234/dh/\${i.roomId}">📣\${i.roomName}</a>`;
+
+                                                }
+
+                                                $(".openForum").html(value);
+
+                                            } else {
+
+                                                $(".openForum").html("<a>열려있는 토론장이 없습니다</a>")
+
+                                            }
+
+                                        }
+                                    })
+
                                 });
 
-                                var swiper = new Swiper('.swiper-container2', {
-                                    direction: 'horizontal',
-                                    slidesPerView: 1,
-                                    spaceBetween: 0,
-                                    loop: true,
-                                    autoplay: {
-                                        delay: 12000,
-                                        disableOnInteraction: true,
-                                    },
-                                    keyboard: true,
-                                });
+                                function initSwiper() {
+
+                                    var swiper = new Swiper('.swiper-container', {
+                                        direction: 'vertical',
+                                        slidesPerView: 1,
+                                        spaceBetween: 10,
+                                        loop: true,
+                                        autoplay: {
+                                            delay: 5000,
+                                            disableOnInteraction: false,
+                                        },
+                                        mousewheel: true,
+                                        keyboard: true,
+                                    });
+
+                                    var swiper = new Swiper('.swiper-container2', {
+                                        direction: 'horizontal',
+                                        slidesPerView: 1,
+                                        spaceBetween: 0,
+                                        loop: true,
+                                        autoplay: {
+                                            delay: 12000,
+                                            disableOnInteraction: true,
+                                        },
+                                        keyboard: true,
+                                        loopedSlides: 1,
+                                    });
+
+                                }
 
                                 $(document).on('click', '.helpCall', function () {
                                     const bNo = $(this).data("bno");
                                     location.href = "detail.bo?bNo=" + bNo;
                                 });
-                            </script>
 
+                            </script>
 
                         </body>
 

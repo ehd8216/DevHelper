@@ -19,5 +19,6 @@ public interface BoardService {
 	ArrayList<CodeChunk> selectCodeChunks(int bNo);
 	ArrayList<Board> selectBoardByCount();
 	ArrayList<Board> selectBoardByRandom();
+	int deleteBoard(Board b);
 	
 }

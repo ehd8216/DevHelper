@@ -83,6 +83,8 @@
 
 								& .dt_ask_right_title {
 									font-size: 25px;
+									display: flex;
+									justify-content: space-between;
 								}
 
 								& .dt_ask_right_infos {
@@ -164,7 +166,13 @@
 									<img src="${b.profile}">
 								</div>
 								<div class="dt_ask_right">
-									<div class="dt_ask_right_title">📌${empty b.boardTitle ? "제목 없음" : b.boardTitle}
+									<div class="dt_ask_right_title">
+										<div>
+											📌${empty b.boardTitle ? "제목 없음" : b.boardTitle}
+										</div>
+										<c:if test="${loginMember.memNo eq b.boardWriter}"><button id="deleteBoard"
+												style="color: red; background-color: transparent;
+										cursor: pointer; border-radius: 5px; border: 1px solid red;">게시글 삭제</button></c:if>
 									</div>
 									<div class="dt_ask_right_infos">
 										<div style="color: #DAA520; font-size: 19px;">
@@ -199,14 +207,14 @@
 									console.log('Disqus config initialized for page:', this.page.url);
 
 									// 여기 어떻게 상호작용 끌어와서 저 답변됨 체크할수있도록 수정할것
-									this.callbacks.onCommentPinned = [function (comment) {
-										// Your custom code when a comment is pinned
-										console.log('Comment pinned:', comment);
-									}];
+									// this.callbacks.onIdentify = [function (comment) {
+									// 	// Your custom code when a comment is pinned
+									// 	console.log('Comment pinned:', comment);
+									// }];
 
-									this.callbacks.onNewComment = [function (comment) {
-										console.log('New comment added:', comment);
-									}];
+									// this.callbacks.onNewComment = [function (comment) {
+									// 	console.log('New comment added:', comment);
+									// }];
 
 									// 내 게시글에 댓글달렸을때 문자든, 카톡이든 api를 통한 알림기능
 									// 그리고 고정댓글 박으면 답변됨으로 고치게
@@ -219,6 +227,29 @@
 									s.setAttribute('data-timestamp', +new Date());
 									(d.head || d.body).appendChild(s);
 								})();
+
+								$(function () {
+
+									$(document).on("click", "#deleteBoard", function () {
+
+										const bWriter = ${ b.boardWriter };
+										const bNo = ${ b.boardNo };
+
+										$.ajax({
+											url: "delete.bo",
+											data: {
+												boardWriter: bWriter,
+												boardNo: bNo,
+											},
+											success: (result) => {
+												if (result) {
+													location.href = "list.bo?memNo=" + bWriter;
+													console.log(result)
+												}
+											}
+										})
+									})
+								});
 							</script>
 							<noscript>Please enable JavaScript to view the <a
 									href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>

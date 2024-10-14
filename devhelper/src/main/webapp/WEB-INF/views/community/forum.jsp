@@ -7,8 +7,11 @@
 			<meta charset="UTF-8">
 			<title>Insert title here</title>
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+			<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 			<script>
 				window.onload = function () {
+
 					var password = prompt("비밀번호 : ");
 
 					if (password) {
@@ -17,6 +20,8 @@
 						alert("비밀번호를 제대로 입력하세요");
 						window.location.href = "previousPage.html";
 					}
+
+
 				};
 
 				function validatePassword(password) {
@@ -105,7 +110,6 @@
 						width: 39%;
 						height: 81.8vh;
 						border-radius: 5px;
-						background-color: rgb(182, 228, 247);
 						position: relative;
 						overflow: auto;
 					}

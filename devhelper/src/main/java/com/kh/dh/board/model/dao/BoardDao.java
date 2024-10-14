@@ -57,4 +57,8 @@ public class BoardDao {
 		return (ArrayList)sst.selectList("boardMapper.selectBoardByRandom");
 	}
 
+	public int deleteBoard(SqlSessionTemplate sst, Board b) {
+		return sst.update("boardMapper.deleteBoard", b);
+	}
+
 }

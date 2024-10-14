@@ -1,5 +1,7 @@
 package com.kh.dh.code.model.dao;
 
+import java.util.ArrayList;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +17,10 @@ public class RoomDao {
 
 	public Room getRoomById(SqlSessionTemplate sst, String roomId) {
 		return sst.selectOne("roomMapper.getRoomById", roomId);
+	}
+
+	public ArrayList<Room> selectRoomByRandom(SqlSessionTemplate sst) {
+		return (ArrayList)sst.selectList("roomMapper.selectRoomByRandom");
 	}
 	
 	

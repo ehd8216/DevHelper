@@ -1,5 +1,7 @@
 package com.kh.dh.code.controller;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -26,7 +28,7 @@ public class CreateRoomController {
 	
 	@ResponseBody
 	@RequestMapping(value="/createRoom", produces="json/application; charset=utf-8")
-	public String createRoom(String name, String password, String language, HttpSession session, HttpServletRequest request) {
+	public String createRoom(String name, String password, String language, String access, HttpSession session, HttpServletRequest request) {
 		
 		String result = "";
 		
@@ -39,6 +41,7 @@ public class CreateRoomController {
 			room.setRoomName(name);
 			room.setRoomPwd(password);
 			room.setLanguage(language);
+			room.setAccessibility(access);
 			
 			if (rs.createRoom(room) > 0) {
 			    result = room.getRoomId();
@@ -81,6 +84,16 @@ public class CreateRoomController {
 			return ""+1;
 		}
   		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="random.ro", produces="application/json; charset=utf-8")
+	public String selectRoomByRandom() {
+		
+		ArrayList<Room> list = rs.selectRoomByRandom();
+		
+		return new Gson().toJson(list);
+		
 	}
 	
 }
