@@ -78,7 +78,6 @@
     }
     #dual::-webkit-scrollbar-button{
         display: none;
-
     }
     #dual2{
         width: 70%;
@@ -104,7 +103,7 @@
     <div class="outer">
         <div class="repoDetail">
             <div id="repoInfo">
-                <h1 id="repoName">${repo.name}</h1>
+                <h1 id="repoName">${repo.name}</h1> 
                 <h1 id="writer">${writer}</h1>
                 <h1>${repo.language}</h1>
             </div>
@@ -130,7 +129,7 @@
                 <select name="bOption" class="btn btn-secondary" style="left: 450px; top: 60px;">
               		<c:forEach var="b" items="${ bList }">
               			<c:if test="${ b.branchName eq 'main' }">
-                   			<option value="${ b.branchName }" selected>${ b.branchName }</option>
+                   			<option value="${ b.branchName }">${ b.branchName }</option>
                    		</c:if>
                   	</c:forEach>
                   	<c:forEach var="b" items="${ bList }">
@@ -140,18 +139,18 @@
                    	</c:forEach>
                 </select>
 
-
                 <button style="left: 450px;" class="btn btn-secondary" id="branch">
                     <svg class="gitIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
                         <path d="M9.5 3.25a2.25 2.25 0 1 1 3 2.122V6A2.5 2.5 0 0 1 10 8.5H6a1 1 0 0 0-1 1v1.128a2.251 2.251 0 1 1-1.5 0V5.372a2.25 2.25 0 1 1 1.5 0v1.836A2.493 2.493 0 0 1 6 7h4a1 1 0 0 0 1-1v-.628A2.25 2.25 0 0 1 9.5 3.25Zm-6 0a.75.75 0 1 0 1.5 0 .75.75 0 0 0-1.5 0Zm8.25-.75a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5ZM4.25 12a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Z"></path>
                     </svg>branch</button>
 
-
             </div>
 
             <script>
+                $("select[name=bOption] option[value='${branchName}']").prop("selected", true);
                 $(function(){
                     $("select[name=bOption]").change(function(){
+                        $("select[name=bOption] option[value='${branchName}']").prop("selected", false);
                         location.href="branchDetail.re?branchName=" + $(this).val();
                     });
                 })
@@ -162,7 +161,7 @@
             <div id="dual">
                 <div id="repoDetailFile">
                     <!-- 폴더가 위로가게 배치 -->
-                    <c:forEach var="l" items="${ repoDirectory }">
+                    <c:forEach var="l" items="${ bDirectory }">
                         <div class="rd">
                             <c:if test="${ l.isFile eq false }">
                                 <span class="material-symbols-outlined" style="color: #2854C5;">folder</span>
@@ -172,7 +171,7 @@
                         </div>
                     </c:forEach>
                     <!-- 폴더가 아닌 파일들은 아래로 위치 -->
-                    <c:forEach var="l" items="${ repoDirectory }">
+                    <c:forEach var="l" items="${ bDirectory }">
                         <div class="rd">
                             <c:if test="${ l.isFile eq true }">
                                 <span class="material-symbols-outlined">description</span>
@@ -185,30 +184,30 @@
             </div>
 
             <div id="dual2">
-                <iframe id="iframe" width="100%" height="100%"></iframe>
+                <iframe id="iframe" width="100%" height="100%""></iframe>
             </div>
         </div>
 
     </div>
-    <script>
-        $(function(){
-            // issue 화면 ㄱㄱ
-            $(".repoDetail #issues").click(function(){
-            var writer = $("#writer").text();
-            location.href="issueslist.re?repoName=" + $("#repoName").text()+"&writer=" + writer;
-            });
+<script>
+$(function(){
+    // issue 화면 ㄱㄱ
+    $(".repoDetail #issues").click(function(){
+      var writer = $("#writer").text();
+      location.href="issueslist.re?repoName=" + $("#repoName").text()+"&writer=" + writer;
+    });
 
-            $("#commit").click(function(){
-                $("#iframe").attr("src", "commitList.re?repoUserUrl=" + '${ url }')
-                $("#dual2").css("display","block")
-            })
-            
-            $("#branch").click(function(){
-                $("#iframe").attr("src", "branch.re?repoUserUrl=" + '${ url }')
-                $("#dual2").css("display","block")
-            })
-            
-        });
-    </script>
+    $("#commit").click(function(){
+        $("#iframe").attr("src", "bCommitList.re?branchName=" + '${ branchName }')
+        $("#dual2").css("display","block")
+    })
+    
+    $("#branch").click(function(){
+        $("#iframe").attr("src", "branch.re?repoUserUrl=" + '${ url }')
+        $("#dual2").css("display","block")
+    })
+    
+});
+</script>
 </body>
 </html>
