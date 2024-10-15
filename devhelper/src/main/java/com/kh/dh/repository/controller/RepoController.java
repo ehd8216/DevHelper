@@ -273,11 +273,10 @@ public class RepoController {
 	}
 	
 	@RequestMapping("branch.re")
-	public String branch(HttpSession session) throws IOException {
+	public String branch(String repoUserUrl, HttpSession session) throws IOException {
 		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
-		String url = (String)session.getAttribute("url");
-		GHRepository repo = github.getRepository(url);
-		String[] str = url.split("/");
+		GHRepository repo = github.getRepository(repoUserUrl);
+		String[] str = repoUserUrl.split("/");
 		
 		Map<String, GHBranch> branches = repo.getBranches();
         ArrayList<Branch> bList = new ArrayList<Branch>();
@@ -286,13 +285,38 @@ public class RepoController {
         	Branch b = new Branch();
         	b.setBranchName(branchName);
         	
+        	List<GHCommit> commits = repo.queryCommits().from(branchName).list().toList();
+			sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
+	        for (GHCommit commit : commits) {
+	        	b.setUpdateDate(sdf.format(commit.getCommitDate()));
+	        	break;
+	        }
+        	
         	bList.add(b);
         }
-		
-		
+        
 		session.setAttribute("bList", bList);
 		session.setAttribute("repoName", str[1]);
 		return "repository/branch";
+	}
+	
+	@RequestMapping("deleteBranch.re")
+	public String deleteBranch(String branchName, HttpSession session) throws IOException {
+		String userUrl = (String)session.getAttribute("url");
+		String[] str = userUrl.split("/");
+		
+		String url = String.format("https://api.github.com/repos/%s/%s/git/refs/heads/%s", str[0], str[1], branchName);
+		WebClient client = WebClient.create();
+
+        client.delete()
+                .uri(url)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + (String)session.getAttribute("token"))
+                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+                .retrieve()
+                .bodyToMono(Void.class)
+                .block();
+        
+        return "repository/branch";
 	}
 	
 	
