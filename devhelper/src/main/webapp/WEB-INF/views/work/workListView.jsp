@@ -328,19 +328,7 @@
 	    event.stopPropagation(); 
 	    event.preventDefault();
 	    const sn = $(this).closest('tr').data("sn");
-	    $.ajax
-	    ({
-	    	url : "scrap.wo",
-	    	data : {sn:sn},
-	    	succes:function(result)
-	    	{
-	    		console.log("성공")
-	    	},
-	    	error : function()
-	    	{
-	    		console.log("실패")
-	    	}
-	    })
+	    console.log(sn);
 	});
   
     // 백 투더 탑 스크립트

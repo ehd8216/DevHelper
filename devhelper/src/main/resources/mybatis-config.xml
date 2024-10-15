@@ -8,7 +8,6 @@
 	
 	<typeAliases>
 		<typeAlias type="com.kh.dh.member.model.vo.Member" alias="Member"/>
-		<typeAlias type="com.kh.dh.employmentAPI.model.vo.Scrap" alias="Scrap"/>
 		<typeAlias type="com.kh.dh.board.model.vo.Board" alias="Board"/>
 		<typeAlias type="com.kh.dh.board.model.vo.CodeChunk" alias="CodeChunk"/>
 		<typeAlias type="com.kh.dh.code.model.vo.Room" alias="Room" />
@@ -19,7 +18,6 @@
 	 	<mapper resource="/mappers/member-mapper.xml" />
 	 	<mapper resource="/mappers/board-mapper.xml" />
 	 	<mapper resource="/mappers/room-mapper.xml" />
-	 	<mapper resource="/mappers/scrap-mapper.xml" />
 	 </mappers>
 
 </configuration>
