@@ -25,7 +25,6 @@
 		  , repo_description
 		  , visibility
 		  , create_date
-		  , readme
 		  , repo_url
 		  )
 		  values

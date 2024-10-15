@@ -17,13 +17,10 @@ import com.kh.dh.repository.model.vo.Repository;
 @Service
 public class RepoServiceImpl implements RepoService {
 	
-	@Autowired
+
 	private GitHub github;
-	
-	@Autowired
 	private SimpleDateFormat sdf;
 	
-	@Autowired
 	private RepoDao rDao;
 	
 	@Autowired
