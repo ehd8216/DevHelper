@@ -31,7 +31,7 @@ public class NewsApiController extends HttpServlet {
         }
 
         String text = URLEncoder.encode(query, "UTF-8");
-        String apiURL = "https://openapi.naver.com/v1/search/news.json?query=" + text + "&display=20"; // JSON 결과
+        String apiURL = "https://openapi.naver.com/v1/search/news.json?query=" + text + "&display=50"; // JSON 결과
         Map<String, String> requestHeaders = new HashMap<String, String>();
         requestHeaders.put("X-Naver-Client-Id", CLIENT_ID);
         requestHeaders.put("X-Naver-Client-Secret", CLIENT_SECRET);

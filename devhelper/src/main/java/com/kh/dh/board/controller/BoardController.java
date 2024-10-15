@@ -33,32 +33,42 @@ public class BoardController {
 
 	@RequestMapping("list.bo")
 	public ModelAndView selectList(@RequestParam(value="cPage", defaultValue="1") int currentPage, ModelAndView mv, Integer memNo, @RequestParam(value="boardLang", required=false) String boardLang, 
-	        @RequestParam(value="boardAnswered", required=false) String boardAnswered) {
+	        @RequestParam(value="boardAnswered", required=false) String boardAnswered, HttpSession session) {
 		
-		Map<String, Object> conditions = new HashMap<String, Object>();
-		conditions.put("lang", boardLang);
-		conditions.put("answer", boardAnswered);
-		
-		int listCount = bs.selectListCount(conditions);
-		
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 6);
-		
-		conditions.put("memNo", memNo);
-		ArrayList<Board> list = bs.selectList(pi, conditions);
-		
-		Map<Integer, ArrayList<CodeChunk>> codeChunksMap = new HashMap<>();
-
-		for (Board board : list) {
-		     ArrayList<CodeChunk> codeChunks = bs.selectCodeChunks(board.getBoardNo());
-		     codeChunksMap.put(board.getBoardNo(), codeChunks);
+		if (session.getAttribute("loginMember") == null) {
+			
+			session.setAttribute("alertMsg", "로그인 후 이용 가능합니다.");
+			mv.setViewName("redirect:/");
+			return mv;
+			
+		} else {
+			
+			Map<String, Object> conditions = new HashMap<String, Object>();
+			conditions.put("lang", boardLang);
+			conditions.put("answer", boardAnswered);
+			
+			int listCount = bs.selectListCount(conditions);
+			
+			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 6);
+			
+			conditions.put("memNo", memNo);
+			ArrayList<Board> list = bs.selectList(pi, conditions);
+			
+			Map<Integer, ArrayList<CodeChunk>> codeChunksMap = new HashMap<>();
+	
+			for (Board board : list) {
+			     ArrayList<CodeChunk> codeChunks = bs.selectCodeChunks(board.getBoardNo());
+			     codeChunksMap.put(board.getBoardNo(), codeChunks);
+			}
+			
+			mv.addObject("pi", pi)
+			  .addObject("list", list)
+			  .addObject("codeChunksMap", codeChunksMap)
+			  .setViewName("board/boardListView");
+			
+			return mv;
+			
 		}
-		
-		mv.addObject("pi", pi)
-		  .addObject("list", list)
-		  .addObject("codeChunksMap", codeChunksMap)
-		  .setViewName("board/boardListView");
-		
-		return mv;
 		
 	}
 	
