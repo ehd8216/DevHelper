@@ -20,7 +20,7 @@
 
 <style>
     .repoDetail{
-        height: auto;
+        height: 800px;
         width: 85%;
         margin: auto;
         backdrop-filter: blur(5px);

@@ -12,5 +12,6 @@ import lombok.ToString;
 public class Branch {
 	
 	private String branchName;
+	private String updateDate;
 
 }

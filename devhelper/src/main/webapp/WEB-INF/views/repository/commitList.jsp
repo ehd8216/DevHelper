@@ -41,7 +41,7 @@
       background-color: transparent;
   }
   .commitList{
-    min-height: 900px;
+    min-height: 500px;
     width: 100%;
     backdrop-filter: blur(5px);
   }
