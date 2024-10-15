@@ -92,6 +92,10 @@
         textarea{
             font-size: 18px;
         }
+        .resultAPI {
+            display: none;
+            margin-top: 20px;
+        }
     </style>
     </head>
     <body>
@@ -147,7 +151,9 @@
              
             </table>
             <button class="write" id="generateAI">AI를 통해 작성</button>
-            <div class="resultAPI">${response}</div>
+            <textarea type="text" class="resultAPI" style="min-height: 200px;"></textarea>
+            <span id="charCount">0 characters</span>
+            
         </div>
     </div>
 
@@ -170,14 +176,7 @@
             // prompt.push($("#motivation").val());
             // prompt.push($("#question").val());
             // prompt.push($("#experience").val());
-            console.log({
-                companyName: companyName,
-                jobTitle: jobTitle,
-                maxLength: maxLength,
-                motivation: motivation,
-                question: question,
-                experience: experience
-                });
+           
            
             
 
@@ -193,25 +192,38 @@
                     , question:question
                     , experience:experience
                 }),
-                success:function(response){
-                	var jsonResponse = JSON.parse(response);
-
-               
-                    var decodedResponse = decodeHTMLEntities(jsonResponse.response);
-                    
-                    $('.resultAPI').html(jsonResponse.response.replace(/\n/g, '<br>'));
-                
-                
-                },
-                error: function(xhr) {
-			        console.log("Error Status: " + xhr.status);
-			        console.log("Error Response: " + xhr.responseText);
+                success:function(result){
+                    try {
+                if (typeof result === 'object' && result.response) {
+                    $('.resultAPI').val(result.response).show();
+                } else {
+                    console.log("Unexpected format:", result);
+                    $('.resultAPI').val('Unexpected format: ' + JSON.stringify(result, null, 2)).show();
                 }
+                // Set focus to the resultAPI and scroll to it
+                $('.resultAPI').focus()[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } catch (e) {
+                console.error("Error parsing response:", e);
+                $('.resultAPI').val("Please try again").show();
+                $('.resultAPI').focus()[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            updateCharCount(); // Update character count after response
+        },
+            error: function(xhr) {
+                console.log("재시도 해주세요");
+                $('.resultAPI').val("재시도 해주세요").show(); 
+            }
             })
-            
-            
-       
     });
+
+        function updateCharCount() {const charCount = $('.resultAPI').val().length;  // Get length of resultAPI content
+        $('#charCount').text(charCount + ' characters');  // Update the span text
+        }
+
+        // Update the character count whenever the textarea content changes
+        $('.resultAPI').on('input', updateCharCount);
+
+    
 
         const exampleData = {
             companyName: "kakao",

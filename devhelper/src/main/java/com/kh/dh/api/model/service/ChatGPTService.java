@@ -24,7 +24,7 @@ public class ChatGPTService {
 
     public String callChatGPT(String companyName, String jobTitle, String maxLength, String motivation, String question, String experience) {
     	  int attempts = 0;
-          while (attempts < 5) {
+          while (attempts < 8) {
               try {
                   URL url = new URL(API_URL);
                   HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -38,8 +38,8 @@ public class ChatGPTService {
                 		  + "내가 이 회사에 희망하는 이유는" + motivation + "이고," 
                 		  + "이 회사에서 나에게 물어보는 질문은 : " + question +"이야."
                 		  + "이 질문에 대한 내 경험은 : " + experience +"야."
-                		  + "/n 이 질문들과 답변들을 토대로 실제로 제출하기에 좋을정도의 퀄리티를 가진 자기소개서를 " + maxLength + "글자 이하로 작성해줘";                
-                  String body = "{\"model\": \"gpt-3.5-turbo\", \"messages\": [{\"role\": \"user\", \"content\": \"" + userMsg + "\"}]}";
+                		  + "/n 이 질문들과 답변들을 토대로 실제로 제출하기에 좋을정도의 퀄리티를 가진 자기소개서를 " + maxLength + "글자 내외로 작성해줘";                
+                  String body = "{\"model\": \"gpt-4o-mini\", \"messages\": [{\"role\": \"user\", \"content\": \"" + userMsg + "\"}]}";
                   connection.setDoOutput(true);
                   try (OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream())) {
                       writer.write(body);
