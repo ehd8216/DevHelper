@@ -273,7 +273,25 @@ public class RepoController {
 	}
 	
 	@RequestMapping("branch.re")
-	public String branch() {
+	public String branch(HttpSession session) throws IOException {
+		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
+		String url = (String)session.getAttribute("url");
+		GHRepository repo = github.getRepository(url);
+		String[] str = url.split("/");
+		
+		Map<String, GHBranch> branches = repo.getBranches();
+        ArrayList<Branch> bList = new ArrayList<Branch>();
+        
+        for (String branchName : branches.keySet()) {
+        	Branch b = new Branch();
+        	b.setBranchName(branchName);
+        	
+        	bList.add(b);
+        }
+		
+		
+		session.setAttribute("bList", bList);
+		session.setAttribute("repoName", str[1]);
 		return "repository/branch";
 	}
 	
