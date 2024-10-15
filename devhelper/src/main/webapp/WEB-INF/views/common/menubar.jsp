@@ -107,7 +107,7 @@
 					width: 98vw;
 					height: auto;
 					border-radius: 10px;
-					margin: 10px auto;
+					margin: 10px auto 0;
 					overflow: hidden;
 					padding: 5px;
 					display: flex;

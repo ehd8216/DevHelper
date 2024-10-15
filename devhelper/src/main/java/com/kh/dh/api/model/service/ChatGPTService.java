@@ -1,4 +1,4 @@
-package com.kh.dh.employmentAPI.model.service;
+package com.kh.dh.api.model.service;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +22,7 @@ public class ChatGPTService {
 	private static final String API_URL = "https://api.openai.com/v1/chat/completions";
     
 
-    public String callChatGPT(String prompt) {
+    public String callChatGPT(String companyName, String jobTitle, String maxLength, String motivation, String question, String experience) {
     	  int attempts = 0;
           while (attempts < 5) {
               try {
@@ -31,8 +31,15 @@ public class ChatGPTService {
                   connection.setRequestMethod("POST");
                   connection.setRequestProperty("Authorization", "Bearer " + API_KEY);
                   connection.setRequestProperty("Content-Type", "application/json");
-
-                  String body = "{\"model\": \"gpt-3.5-turbo\", \"messages\": [{\"role\": \"user\", \"content\": \"" + prompt + "\"}]}";
+                  
+                  String userMsg = 
+                		  "내가 지원하는 회사 : " + companyName + "이고 이곳에서"
+                		  + "내 희망 직무 : " + jobTitle + "이야."
+                		  + "내가 이 회사에 희망하는 이유는" + motivation + "이고," 
+                		  + "이 회사에서 나에게 물어보는 질문은 : " + question +"이야."
+                		  + "이 질문에 대한 내 경험은 : " + experience +"야."
+                		  + "/n 이 질문들과 답변들을 토대로 실제로 제출하기에 좋을정도의 퀄리티를 가진 자기소개서를 " + maxLength + "글자 이하로 작성해줘";                
+                  String body = "{\"model\": \"gpt-3.5-turbo\", \"messages\": [{\"role\": \"user\", \"content\": \"" + userMsg + "\"}]}";
                   connection.setDoOutput(true);
                   try (OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream())) {
                       writer.write(body);
@@ -63,11 +70,11 @@ public class ChatGPTService {
       }
 
       private String extractMessageFromJSONResponse(String response) {
-          // Parse the JSON response using Gson
+         
           Gson gson = new Gson();
           JsonObject jsonObject = gson.fromJson(response, JsonObject.class);
 
-          // Extract the 'choices' array and find the 'content' field
+       
           JsonArray choices = jsonObject.getAsJsonArray("choices");
           if (choices != null && choices.size() > 0) {
               JsonObject firstChoice = choices.get(0).getAsJsonObject();
