@@ -2,27 +2,64 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
 <mapper namespace="roomMapper">
 
-	<insert id="insertRoom" parameterType="RoomDTO" useGeneratedKeys="true" keyProperty="roomId">
+	<resultMap type="Room" id="roomResult">
+		<result column="room_id" property="roomId" />
+		<result column="room_name" property="roomName" />
+		<result column="room_pwd" property="roomPwd" />
+		<result column="language" property="language" />
+		<result column="accessibility" property="accessibility" />
+	</resultMap>
+
+	<insert id="insertRoom" parameterType="Room">
+			     
+		<selectKey keyProperty="roomId" resultType="String" order="AFTER">
+	    	SELECT concat('forum-', seq_rno.currval) FROM DUAL
+	    </selectKey>
+	    
 		insert 
 		  into room
 		     (
 		       room_id
 		     , room_name
 		     , room_pwd
+		     , language
+		     , accessibility
 		     )
 		values
 		     (
-		       seq_rno.nextval
-		     , #{name}
-		     , #{password}
+		       concat('forum-', seq_rno.nextval)
+		     , #{roomName}
+		     , #{roomPwd}
+		     , #{language}
+		     , #{accessibility}
 		     )
+
 	</insert>
 
+	<select id="getRoomById" resultMap="roomResult">
+		select 
+		       room_id
+		     , room_name
+		     , room_pwd
+		     , language
+		  from room
+		 where room_id = #{roomId}
+	</select>
 
-
-
-
-
+	<select id="selectRoomByRandom" resultMap="roomResult">
+    	     SELECT room_id
+				  , room_name
+				  , room_pwd
+			      , language
+    	       FROM (
+				    SELECT *
+				      FROM ROOM
+				     WHERE accessibility = 'o'
+				     ORDER 
+				        BY DBMS_RANDOM.VALUE
+				    ) 
+		      WHERE ROWNUM <![CDATA[<]]> 11
+    </select>
 
 
 </mapper>

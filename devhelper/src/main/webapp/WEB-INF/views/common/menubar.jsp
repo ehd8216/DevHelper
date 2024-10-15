@@ -22,8 +22,10 @@
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
 				integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
 				crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-			<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-			<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+			<!-- <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+			<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />  -->
+			<link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+			<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
 			<style>
 				@font-face {
 					font-family: 'GangwonEdu_OTFBoldA';
@@ -259,6 +261,7 @@
 					<div class="menuEls" onclick="toThe('searchNews')">HOME</div>
 					<div class="menuEls" onclick="toThe('myRepo.re')">My Repository</div>
 					<div class="menuEls">코딩테스트</div>
+					<!-- codeForces api 받아서 해볼것 -->
 					<div class="menuEls" onclick="toThe('list.wo')">취업관련</div>
 					<c:if test="${not empty loginMember}">
 						<div class="menuEls" onclick="toThe('list.bo?memNo=${loginMember.memNo}')">게시판</div>
@@ -290,19 +293,42 @@
 				</c:choose>
 			</header>
 
-			<div class="modals show">
+			<div class="modals show"
+				style="width: 400px; height: 200px; background-color: skyblue; position: absolute; right: 14%; top: 18%; border-radius: 10px; box-shadow: 1px 1px 4px rgb(9, 88, 134);">
 
-				<div class="modal_body">
+				<div class="modal_body" style="width: 100%;">
 
-					<h2>title</h2>
+					<div
+						style="display: flex; justify-content: space-between; width: 90%; height: 20%; margin: auto; align-items: center; font-size: 30px;">
+						<span>Make Forum</span><span class="close_modal" style="cursor: pointer;">x</span>
+					</div>
 					<p>
-					<form id="createRoomForm">
-						<input type="text" id="roomName" placeholder="Room Name" required />
-						<input type="password" id="roomPassword" placeholder="Password" required />
-						<button type="button" onclick="createRoom()">Create Room</button>
+					<form id="createRoomForm"
+						style="display: flex; flex-direction: column; width: 90%; margin: auto; font-size: 30px; justify-content: space-between; height: 70%;">
+						<input type="text" id="roomName" placeholder="Room Name" required
+							style="outline: none; height: 20px; font-size: 20px;" />
+						<div>
+							<select id="languageSelect" style="height: 20px; font-size: 20px; width: 70%;">
+								<option value="javascript">JavaScript</option>
+								<option value="html">HTML</option>
+								<option value="css">CSS</option>
+								<option value="python">Python</option>
+								<option value="java">Java</option>
+							</select>
+							<select id="private" style="height: 20px; font-size: 20px;">
+								<option value="x">private</option>
+								<option value="o">public</option>
+							</select>
+						</div>
+						<input type="password" id="roomPassword" placeholder="Password" required
+							style="outline: none; height: 20px; font-size: 20px;" />
+						<button type="button"
+							style="height: 20px; font-size: 20px; border-radius: 5px; border: none; cursor: pointer;"
+							onclick="createRoom()">Create
+							Room</button>
 					</form>
 					</p>
-					<span class="close_modal">x</span>
+
 
 				</div>
 
@@ -324,25 +350,35 @@
 				function createRoom() {
 					const roomName = $('#roomName').val();
 					const roomPassword = $('#roomPassword').val();
+					const selectedLanguage = document.getElementById('languageSelect').value;
+					const access = $("#private").val();
 
 					$.ajax({
 						url: "createRoom",
 						data: {
 							name: roomName,
 							password: roomPassword,
+							language: selectedLanguage,
+							access: access,
 						},
 						success: (result) => {
 
 							if (result == 0) {
 								toastr.warning("${warningMsg1}")
-							} else if (result == 1) {
-								toastr.success("${alertMsg1}"
-									+ "콘솔창을 확인하세요"
-								)
-								console.log("${alertMsg1}")
-							} else {
+							} else if (result == 2) {
 								toastr.error("${errorMsg1}")
+							} else {
+								const message = "<a href='http://localhost:8234/dh/" + result + "' style='color: white;'>룸 아이디는 " + result + "입니다. <br>여기를 눌러서 입장하거나,<br>콘솔창을 확인하세요</a>";
+								toastr.success(message, "", {
+									allowHtml: true,
+									tapToDismiss: false
+								});
+								console.log(result + "주소창의 dh/ 뒤에 아이디를 붙여주세요")
 							}
+
+							$('#roomName').val("");
+							$('#roomPassword').val("");
+							$(".modals").toggleClass("show");
 
 						},
 					})

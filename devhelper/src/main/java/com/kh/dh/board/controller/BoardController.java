@@ -165,7 +165,19 @@ public class BoardController {
 		
 	}
 	
-	
+	@ResponseBody
+	@RequestMapping(value="delete.bo", produces="application/json; charset=utf-8")
+	public String deleteBoard(HttpSession session, String boardWriter, int boardNo) {
+		
+		Board b = new Board();
+		b.setBoardNo(boardNo);
+		b.setBoardWriter(boardWriter);
+		
+		bs.deleteBoard(b);
+		session.setAttribute("alertMsg", "게시글이 삭제되었습니다");
+		String result = "yes";
+		return new Gson().toJson(result);
+	}
 	
 	
 	

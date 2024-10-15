@@ -184,7 +184,6 @@
             <button type="submit">생성</button>
           </form>
         </div>
-
       </div>
     </div>
   </div>

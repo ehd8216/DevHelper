@@ -161,6 +161,25 @@
                                     background-color: white;
                                     cursor: pointer;
                                 }
+
+                                .openForum {
+                                    display: flex;
+                                    flex-direction: column;
+                                    width: 99%;
+                                    height: auto;
+                                    margin: auto;
+                                    gap: 5px;
+
+                                    & a {
+                                        text-decoration: none;
+                                        font-size: 25px;
+                                        color: #666;
+
+                                        &:hover {
+                                            color: black;
+                                        }
+                                    }
+                                }
                             </style>
                         </head>
 
@@ -192,28 +211,6 @@
                                     </div>
 
                                 </div>
-
-                                <script>
-                                    $(function () {
-
-                                        $.ajax({
-                                            url: 'viewCount.bo',
-                                            method: 'GET',
-                                            success: (result) => {
-                                                toastr.success("조회수별 구조요청 수신완료");
-                                            }
-                                        });
-
-                                        $.ajax({
-                                            url: 'viewRandom.bo',
-                                            method: 'GET',
-                                            success: (result) => {
-                                                toastr.success("랜덤 구조요청 수신완료");
-                                            }
-                                        });
-
-                                    });
-                                </script>
 
                                 <div class="box-section">
 
@@ -285,75 +282,108 @@
 
                                     <br><br><br>
 
+                                    <div class="openForum"></div>
+
                                 </div>
 
                             </div>
 
                             <script>
-                                var swiper = new Swiper('.swiper-container', {
-                                    direction: 'vertical',
-                                    slidesPerView: 1,
-                                    spaceBetween: 10,
-                                    loop: true,
-                                    autoplay: {
-                                        delay: 5000,
-                                        disableOnInteraction: false,
-                                    },
-                                    mousewheel: true,
-                                    keyboard: true,
+
+                                $(function () {
+
+                                    const ajaxCalls = [
+
+                                        $.ajax({
+                                            url: 'viewCount.bo',
+                                            method: 'GET',
+                                            success: (result) => {
+                                                if (result == 0) {
+                                                    toastr.success("조회수별 구조요청 수신완료");
+                                                }
+                                            }
+                                        }),
+
+                                        $.ajax({
+                                            url: 'viewRandom.bo',
+                                            method: 'GET',
+                                            success: (result) => {
+                                                if (result == 0) {
+                                                    toastr.success("랜덤 구조요청 수신완료");
+                                                }
+
+                                            }
+                                        })
+
+                                    ];
+
+                                    $.when(...ajaxCalls).done(function () {
+                                        initSwiper();
+                                    });
+
+                                    $.ajax({
+                                        url: "random.ro",
+                                        success: result => {
+
+                                            let value = "";
+
+                                            if (result.length > 0) {
+
+                                                for (let i of result) {
+
+                                                    value += `<a href="http://localhost:8234/dh/\${i.roomId}">📣\${i.roomName}</a>`;
+
+                                                }
+
+                                                $(".openForum").html(value);
+
+                                            } else {
+
+                                                $(".openForum").html("<a>열려있는 토론장이 없습니다</a>")
+
+                                            }
+
+                                        }
+                                    })
+
                                 });
 
-                                var swiper = new Swiper('.swiper-container2', {
-                                    direction: 'horizontal',
-                                    slidesPerView: 1,
-                                    spaceBetween: 0,
-                                    loop: true,
-                                    autoplay: {
-                                        delay: 12000,
-                                        disableOnInteraction: true,
-                                    },
-                                    keyboard: true,
-                                });
+                                function initSwiper() {
+
+                                    var swiper = new Swiper('.swiper-container', {
+                                        direction: 'vertical',
+                                        slidesPerView: 1,
+                                        spaceBetween: 10,
+                                        loop: true,
+                                        autoplay: {
+                                            delay: 5000,
+                                            disableOnInteraction: false,
+                                        },
+                                        mousewheel: true,
+                                        keyboard: true,
+                                    });
+
+                                    var swiper = new Swiper('.swiper-container2', {
+                                        direction: 'horizontal',
+                                        slidesPerView: 1,
+                                        spaceBetween: 0,
+                                        loop: true,
+                                        autoplay: {
+                                            delay: 12000,
+                                            disableOnInteraction: true,
+                                        },
+                                        keyboard: true,
+                                        loopedSlides: 1,
+                                    });
+
+                                }
 
                                 $(document).on('click', '.helpCall', function () {
                                     const bNo = $(this).data("bno");
                                     location.href = "detail.bo?bNo=" + bNo;
                                 });
+
                             </script>
-                            <!-- 
-                            <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
-                            <div id="editor" style="height: 300px; width: 100%;"></div>
-                            <script>
-                                // Ace Editor 초기화
-                                const editor = ace.edit("editor");
-                                editor.setTheme("ace/theme/monokai");
-                                editor.session.setMode("ace/mode/javascript");
-                            </script>
-
-                            <script>
-                                const socket = new WebSocket('ws://localhost:8234/dh/collab'); // yourContextPath는 실제 경로로 변경
-
-                                socket.onopen = function () {
-                                    console.log("WebSocket 연결됨");
-                                };
-
-                                socket.onmessage = function (event) {
-                                    const data = JSON.parse(event.data);
-                                    if (data.type === 'codeUpdate') {
-                                        editor.setValue(data.code); // 코드 에디터에 업데이트
-                                    }
-                                };
-
-                                function sendCodeUpdate(code) {
-                                    socket.send(JSON.stringify({ type: 'codeUpdate', code }));
-                                }
-
-                                // 코드 에디터에서 변화가 생겼을 때 호출
-                                editor.on('change', () => {
-                                    const code = editor.getValue();
-                                    sendCodeUpdate(code);
-                                });
-                            </script> -->
 
                         </body>
 

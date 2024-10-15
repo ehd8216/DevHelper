@@ -67,5 +67,10 @@ public class BoardServiceImpl implements BoardService {
 		return bd.selectBoardByRandom(sst);
 	}
 
+	@Override
+	public int deleteBoard(Board b) {
+		return bd.deleteBoard(sst, b);
+	}
+
 
 }

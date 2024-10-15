@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import org.kohsuke.github.GHIssue;
 import org.kohsuke.github.GHIssueState;
 import org.kohsuke.github.GHPermissionType;
+import org.kohsuke.github.GHBranch;
 import org.kohsuke.github.GHCommit;
 import org.kohsuke.github.GHContent;
 import org.kohsuke.github.GHCreateRepositoryBuilder;
@@ -27,6 +29,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.dh.member.model.vo.Member;
+import com.kh.dh.repository.model.vo.Branch;
 import com.kh.dh.repository.model.vo.Commit;
 import com.kh.dh.repository.model.vo.RepoDirectory;
 import com.kh.dh.repository.model.vo.Repository;
@@ -74,7 +77,7 @@ public class RepoController {
 	}
 	
 	@RequestMapping("repoDetail.re")
-	public ModelAndView repoDetail(String repoUrl,  ModelAndView mv,HttpSession session) throws IOException {
+	public String repoDetail(String repoUrl, HttpSession session) throws IOException {
 		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
 		String url = repoUrl.substring(29);
 		GHRepository repo = github.getRepository(url);
@@ -97,12 +100,21 @@ public class RepoController {
         	list.add(rd);
         }
         
-		mv.addObject("repo", repo)
-		  .addObject("writer", writer)
-		  .addObject("repoDirectory", list)
-		  .addObject("url", url)
-		  .setViewName("repository/repoDetail");
-		return mv;
+        // 브랜치 리스트 뽑기
+        Map<String, GHBranch> branches = repo.getBranches();
+        ArrayList<Branch> bList = new ArrayList<Branch>();
+        
+        for (String branchName : branches.keySet()) {
+        	Branch b = new Branch();
+        	b.setBranchName(branchName);
+        	bList.add(b);
+        }
+		session.setAttribute("repo", repo);
+		session.setAttribute("writer", writer);
+		session.setAttribute("url", url);
+		session.setAttribute("repoDirectory", list);
+		session.setAttribute("bList", bList);
+		return "repository/repoDetail";
 	}
 	
 
@@ -173,22 +185,6 @@ public class RepoController {
 	public String deleteRepo(String repoUserUrl, HttpSession session) throws IOException {
 		// 현재 토큰 받아오는 코드로 가져온 토큰값이 삭제 권한이 없어 삭제기능은 실현 불가능 이슈
 		
-//		WebClient webClient = WebClient.create();
-//		
-//		String deleteRepoUrl = "https://api.github.com/repos/" + repoUserUrl;
-//		
-//		webClient
-//			.delete()
-//			.uri(deleteRepoUrl)
-//			.header(HttpHeaders.AUTHORIZATION, "Bearer " + (String)session.getAttribute("token"))
-//			.header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-//			.retrieve()
-//			.toBodilessEntity() 
-//			.doOnError(error -> {
-//				System.out.println("Error occurred while deleting the repository: " + error.getMessage());
-//			})
-//			.block();
-		
 		session.setAttribute("alertMsg", "레파지토리 삭제 완료");
 		return "redirect:myRepo.re";
 	}
@@ -227,6 +223,60 @@ public class RepoController {
 		session.setAttribute("commitList", list);
 		return "repository/commitList";
 	}
+	
+	@RequestMapping("branchDetail.re")
+	public String branchDetail(String branchName, HttpSession session) throws IOException {
+		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
+		GHRepository repo = github.getRepository((String)session.getAttribute("url"));
+        
+        List<GHContent> contents = repo.getDirectoryContent("/", branchName);
+        ArrayList<RepoDirectory> list = new ArrayList<RepoDirectory>();
+
+        for (GHContent content : contents) {
+        	RepoDirectory rd = new RepoDirectory();
+        	rd.setDirName(content.getName());
+        	if(content.isFile()) {
+        		rd.setIsFile("true");
+        	}else {
+        		rd.setIsFile("false");
+        	}
+        	list.add(rd);
+        }
+        
+        session.setAttribute("bDirectory", list);
+		session.setAttribute("branchName", branchName);
+		return "repository/repoBranchDetail";
+	}
+	
+	@RequestMapping("bCommitList.re")
+	public String bCommitList(String branchName, HttpSession session) throws IOException {
+		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
+		String url = (String)session.getAttribute("url");
+		GHRepository repo = github.getRepository(url);
+		String[] str = url.split("/");
+		List<GHCommit> commits = repo.queryCommits().from(branchName).list().toList();
+		
+		// commit 리스트 뽑기
+        sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
+        ArrayList<Commit> list = new ArrayList<>();
+        for (GHCommit commit : commits) {
+        	Commit c = new Commit();
+        	c.setComAuthor(commit.getCommitShortInfo().getAuthor().getName());
+        	c.setComMessage(commit.getCommitShortInfo().getMessage());
+        	c.setComDate(sdf.format(commit.getCommitDate()));
+        	c.setSHA(commit.getSHA1().substring(0, 11));
+        	list.add(c);
+        }
+        session.setAttribute("repoName", str[1]);
+		session.setAttribute("commitList", list);
+		return "repository/commitList";
+	}
+	
+	@RequestMapping("branch.re")
+	public String branch() {
+		return "repository/branch";
+	}
+	
 	
 	
 }

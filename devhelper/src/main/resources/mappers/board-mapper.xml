@@ -159,5 +159,12 @@
 				    ) 
 		      WHERE ROWNUM <![CDATA[<]]> 11
     </select>
+    
+    <update id="deleteBoard">
+    	update board
+    	   set status = 'N'
+    	 where board_writer = #{boardWriter}
+    	   and board_no = #{boardNo}
+    </update>
 
 </mapper>
