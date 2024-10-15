@@ -10,7 +10,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class Work 
+public class Scrap 
 {
 	private String instNm;				// 채용기업 이름
 	private String recrutPbancTtl;      // 공고제목
@@ -23,5 +23,7 @@ public class Work
 	private String aplyQlfcCn;          // 응시자격
 	private String prefCn;				// 우대조건
 	private String scrnprcdrMthdExpln;  // 전형절차방법
+	private int recrutPblntSn;
+	private int userId;                 // 유저 아이디
 	
 }
