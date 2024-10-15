@@ -13,11 +13,13 @@ import lombok.ToString;
 @ToString
 public class Repository {
 	
-	private String repoNo;
+	private int repoNo;
+	private int memNo;
 	private String repoName;
 	private String repoDescription;
 	private String visibility;
 	private String createDate;
 	private String readMe;
 	private String repoUrl;
+	private String status;
 }

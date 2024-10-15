@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="repositoryMapper">
+
+	<resultMap type="Repository" id="repositoryResult">
+		<result column="repo_no" property="repoNo" />
+		<result column="mem_no" property="memNo" />
+		<result column="repo_name" property="repoName" />
+		<result column="repo_description" property="repoDescription" />
+		<result column="visibility" property="visibility" />
+		<result column="create_date" property="createDate" />
+		<result column="update_date" property="updateDate" />
+		<result column="readme" property="readMe" />
+		<result column="repo_url" property="repoUrl" />
+		<result column="status" property="status" />
+	</resultMap>
+
+	<insert>
+		insert
+		  into repository
+		  (
+		    repo_no
+		  , mem_no
+		  , repo_name
+		  , repo_description
+		  , visibility
+		  , create_date
+		  , readme
+		  , repo_url
+		  )
+		  values
+		  (
+		    seq_repo.NEXTVAL
+		  , #{memNo}
+		  , #{repoName}
+		  , #{repoDescription}
+		  , #{visibility}
+		  , #{createDate}
+		  , #{repoUrl}
+		  )
+	</insert>
+
+
+
+
+
+
+
+
+
+</mapper>

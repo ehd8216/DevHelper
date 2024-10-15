@@ -52,8 +52,7 @@ public class GitService {
 	private String extractTokenFromResponse(String response) {
         return response.split("&")[0].split("=")[1]; // Simplistic parsing
     }
-	public Member getUserInfo(String token) 
-	{
+	public Member getUserInfo(String token) {
 		String response = WebClient.create()
 				.get()
 				.uri("https://api.github.com/user")
@@ -64,21 +63,18 @@ public class GitService {
 				.bodyToMono(String.class)
 				.block();
 		
-		
 		ObjectMapper objecMapper = new ObjectMapper();
 		JsonNode jsonNode = null;
 		Member m = new Member();
 		
 		// login => nickname
-		try 
-		{
+		try {
 			jsonNode = objecMapper.readTree(response);
 			m.setMemId(jsonNode.get("id").asText());
 			m.setGitNick(jsonNode.get("login").asText());
 			m.setProfile(jsonNode.get("avatar_url").asText());
 		}
-		catch (JsonProcessingException e) 
-		{
+		catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
 		return m;

@@ -12,6 +12,7 @@
 		<typeAlias type="com.kh.dh.board.model.vo.CodeChunk" alias="CodeChunk"/>
 		<typeAlias type="com.kh.dh.code.model.vo.Room" alias="Room" />
 		<typeAlias type="com.kh.dh.code.model.vo.RoomDTO" alias="RoomDTO" />
+		<typeAlias type="com.kh.dh.repository.model.vo.Repository" alias="Repository" />
 	</typeAliases>
 	
 	 <mappers>
