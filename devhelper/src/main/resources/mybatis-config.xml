@@ -20,6 +20,8 @@
 	 	<mapper resource="/mappers/member-mapper.xml" />
 	 	<mapper resource="/mappers/board-mapper.xml" />
 	 	<mapper resource="/mappers/room-mapper.xml" />
+	 	<mapper resource="/mappers/scrap-mapper.xml" />
+	 	<mapper resource="/mappers/repository-mapper.xml" />
 	 </mappers>
 
 </configuration>
