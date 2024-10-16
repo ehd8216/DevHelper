@@ -151,8 +151,9 @@
              
             </table>
             <button class="write" id="generateAI">AI를 통해 작성</button>
-            <textarea type="text" class="resultAPI" style="min-height: 200px;"></textarea>
+            <textarea type="text" class="resultAPI" style="min-height: 300px; height: auto;"></textarea>
             <span id="charCount">0 characters</span>
+            <button>복사</button>
             
         </div>
     </div>
@@ -193,36 +194,56 @@
                     , experience:experience
                 }),
                 success:function(result){
-                    try {
-                if (typeof result === 'object' && result.response) {
-                    $('.resultAPI').val(result.response).show();
+                  console.log("sucess : " + result);  
+
+            try {
+            
+                let jsonResponse = JSON.parse(result);
+
+            
+                if (jsonResponse && jsonResponse.response) {
+                    let responseText = jsonResponse.response;
+                    $('.resultAPI').val(responseText).show();
                 } else {
-                    console.log("Unexpected format:", result);
-                    $('.resultAPI').val('Unexpected format: ' + JSON.stringify(result, null, 2)).show();
+                    console.log("Unexpected format:", jsonResponse);
+                    $('.resultAPI').val('Unexpected format: ' + JSON.stringify(jsonResponse, null, 2)).show();
                 }
-                // Set focus to the resultAPI and scroll to it
+
                 $('.resultAPI').focus()[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
             } catch (e) {
                 console.error("Error parsing response:", e);
                 $('.resultAPI').val("Please try again").show();
                 $('.resultAPI').focus()[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
-            updateCharCount(); // Update character count after response
+
+    updateCharCount();
         },
             error: function(xhr) {
-                console.log("재시도 해주세요");
-                $('.resultAPI').val("재시도 해주세요").show(); 
-            }
-            })
-    });
+                
+                const str = xhr.responseText;
+                const substr = str.substring(13, str.length - 2);
+                
+                     console.log("error : "+ substr);
 
-        function updateCharCount() {const charCount = $('.resultAPI').val().length;  // Get length of resultAPI content
-        $('#charCount').text(charCount + ' characters');  // Update the span text
-        }
+                   
+                    $('.resultAPI').val(substr).show();
 
-        // Update the character count whenever the textarea content changes
+                    
+                    $('.resultAPI').focus()[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                   
+                    updateCharCount();
+                        }
+                    })
+            });
+
+
+
+
+        function updateCharCount() {const charCount = $('.resultAPI').val().length;
+        $('#charCount').text(charCount + ' characters'); }
         $('.resultAPI').on('input', updateCharCount);
-
+    
     
 
         const exampleData = {
