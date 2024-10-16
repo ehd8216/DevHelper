@@ -1,6 +1,7 @@
 package com.kh.dh.member.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpSession;
 
@@ -15,12 +16,15 @@ import com.kh.dh.common.model.service.GitService;
 import com.kh.dh.member.model.service.MemberServiceImpl;
 import com.kh.dh.member.model.vo.Member;
 import com.kh.dh.repository.model.service.RepoServiceImpl;
+import com.kh.dh.repository.model.vo.Repositorys;
 
 @Controller
 public class MemberController 
 {
 	@Autowired
 	private MemberServiceImpl mService;
+	
+	@Autowired
 	private RepoServiceImpl rService;
 	
 	@Autowired
@@ -50,6 +54,10 @@ public class MemberController
 	    	int result = mService.insertMember(gitMember);
 	    	if(result  > 0) {
 	    		loginMember = mService.selectMember(gitMember);
+	    		
+	    		// 가입시 db에 레파지토리 입력
+	    		System.out.println(loginMember.getMemNo());
+	    		System.out.println(token);
 	    		rService.insertRepo(loginMember.getMemNo(), token);
 	    	}
         }

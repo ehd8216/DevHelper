@@ -13,7 +13,7 @@
 		<typeAlias type="com.kh.dh.code.model.vo.Room" alias="Room" />
 		<typeAlias type="com.kh.dh.employmentAPI.model.vo.Scrap" alias="Scrap" />
 		<typeAlias type="com.kh.dh.code.model.vo.RoomDTO" alias="RoomDTO" />
-		<typeAlias type="com.kh.dh.repository.model.vo.Repository" alias="Repository" />
+		<typeAlias type="com.kh.dh.repository.model.vo.Repositorys" alias="Repository" />
 	</typeAliases>
 	
 	 <mappers>
@@ -21,6 +21,7 @@
 	 	<mapper resource="/mappers/board-mapper.xml" />
 	 	<mapper resource="/mappers/room-mapper.xml" />
 	 	<mapper resource="/mappers/scrap-mapper.xml" />
+	 	<mapper resource="/mappers/repository-mapper.xml" />
 	 </mappers>
 
 </configuration>
