@@ -170,7 +170,8 @@ public class APIcontroller {
 
 	        String generatedText = gptService.callChatGPT(companyName, jobTitle, maxLength, motivation, question, experience);
 	        
-	       
+	        System.out.println("Request Data: " + requestData);
+	        System.out.println(generatedText);
 	        return "{\"response\": \"" + generatedText + "\"}";
 	    }
 }
