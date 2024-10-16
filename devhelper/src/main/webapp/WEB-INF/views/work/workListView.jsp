@@ -206,7 +206,7 @@
     <div class="search-bar" id="search-bar" style="display: none;">
      
       <input type="text" name="keyword" placeholder="검색어를 입력하세요">
-
+      
       <div class="dropdown">
         <div id="job-dropdown-btn">희망 분야를 선택해주세요</div>
         <div id="job-dropdown-grid" class="dropdown-grid-content">
@@ -328,9 +328,28 @@
 	    event.stopPropagation(); 
 	    event.preventDefault();
 	    const sn = $(this).closest('tr').data("sn");
-	    console.log(sn);
+	    $.ajax
+	    ({
+	    	url:"scrap.wo",
+	    	data:{sn},
+	    	success: function(result) {
+	            console.log(result);
+
+	            if (result > 0) {
+	                alert('스크랩이 성공적으로 완료되었습니다!');  // 성공 메시지
+	            } else {
+	                alert('스크랩에 실패했습니다. 다시 시도해주세요.');  // 실패 메시지
+	            }
+	        },
+	        error: function() {
+	            alert('서버 에러가 발생했습니다. 잠시 후 다시 시도해주세요.');
+	        }
+	    });
 	});
-  
+  	setTimeout(function() 
+  	{
+	    messageArea.hide();
+	}, 3000);  
     // 백 투더 탑 스크립트
      $(document).ready(function () {
       

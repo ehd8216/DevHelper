@@ -32,7 +32,7 @@ import com.kh.dh.member.model.vo.Member;
 import com.kh.dh.repository.model.vo.Branch;
 import com.kh.dh.repository.model.vo.Commit;
 import com.kh.dh.repository.model.vo.RepoDirectory;
-import com.kh.dh.repository.model.vo.Repository;
+import com.kh.dh.repository.model.vo.Repositorys;
 
 @Controller
 public class RepoController {
@@ -52,7 +52,7 @@ public class RepoController {
 			String token = (String)session.getAttribute("token");
 			github = GitHub.connectUsingOAuth(token);
 			
-			ArrayList<Repository> repoList = new ArrayList();
+			ArrayList<Repositorys> repoList = new ArrayList();
 			sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
 			Map<String , GHRepository> list = github.getMyself().getRepositories();
 			
@@ -61,7 +61,7 @@ public class RepoController {
 				
 				String url = repo.getUrl().toString().substring(29);
 				
-				Repository r = new Repository();
+				Repositorys r = new Repositorys();
 				r.setRepoName(repo.getName());
 				r.setRepoDescription(repo.getDescription());
 				r.setVisibility(repo.getVisibility().toString());
@@ -161,7 +161,7 @@ public class RepoController {
 		return "repository/issuesDetail";
 	}
 	@RequestMapping("createRepo.re")
-	public String createRepo(Repository repo, HttpSession session) throws IOException {
+	public String createRepo(Repositorys repo, HttpSession session) throws IOException {
 		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
 		GHCreateRepositoryBuilder builder = github.createRepository(repo.getRepoName());
         builder.description(repo.getRepoDescription());

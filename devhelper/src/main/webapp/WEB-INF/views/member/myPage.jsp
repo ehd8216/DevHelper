@@ -159,7 +159,7 @@
 	                    <p>최근 본 공고</p>
 	                </div>
 	            </a>
-	            <a href="#">
+	            <a href="scraplist.wo?memNo=${loginMember.memNo}">
 	                <div>
 	                    <i class="bi bi-star"></i>
 	                    <p>스크랩 공고</p>

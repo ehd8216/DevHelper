@@ -8,6 +8,10 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,12 +24,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.dh.api.model.service.ChatGPTService;
+import com.kh.dh.employmentAPI.model.vo.Scrap;
+import com.kh.dh.member.model.vo.Member;
+import com.kh.dh.work.model.service.WorkServiceImpl;
 
 @Controller
 public class APIcontroller {
 	
 	private static final String serviceKey = "2mj%2BiKt4iQ0xuf1PfeDRzkWy7KaPiuBO8Ui%2FD8QBuF8Bo4%2BN3i8nYJIOzizmAebj0MaiTJRJFwNahQZ5O1kARA%3D%3D";
-
+	
+	@Autowired
+	private WorkServiceImpl wService;
+	
 	@ResponseBody
 	@RequestMapping(value="work.wo", produces = "application/json; charset=utf-8")
 	public String employAPI(
@@ -91,7 +101,57 @@ public class APIcontroller {
 				
 		return responseText;
 	}
-	
+	@ResponseBody
+	@RequestMapping(value = "scrap.wo", produces = "application/json; charset=utf-8")
+    public int scrapinsert(HttpServletRequest request, HttpSession session) throws IOException {
+        String sn = request.getParameter("sn");
+        String url = "https://apis.data.go.kr/1051000/recruitment/detail";
+        url += "?serviceKey=" + serviceKey;
+        url += "&resultType=json";
+        url += "&sn=" + sn;
+
+        URL requestUrl = new URL(url);
+        HttpURLConnection urlConnection = (HttpURLConnection) requestUrl.openConnection();
+        urlConnection.setRequestMethod("GET");
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "UTF-8"));
+
+        StringBuilder responseText = new StringBuilder();
+        String line;
+
+        while ((line = br.readLine()) != null) {
+            responseText.append(line);
+        }
+        br.close();
+
+        // JSON 파싱
+        JSONObject jsonResponse = new JSONObject(responseText.toString());
+        JSONObject result = jsonResponse.getJSONObject("result");
+
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        int memNo = loginMember.getMemNo();
+
+        // 담기
+        Scrap sc = new Scrap();
+        sc.setInstNm(result.getString("instNm"));
+        sc.setRecrutPbancTtl(result.getString("recrutPbancTtl"));
+        sc.setPbancEndYmd(result.getString("pbancEndYmd"));
+        sc.setNcsCdNmLst(result.getString("ncsCdNmLst"));
+        sc.setHireTypeNmLst(result.getString("hireTypeNmLst"));
+        sc.setReplmprYn(result.getString("replmprYn"));
+        sc.setRecrutSeNm(result.getString("recrutSeNm"));
+        sc.setWorkRgnNmLst(result.getString("workRgnNmLst"));
+        sc.setAplyQlfcCn(result.getString("aplyQlfcCn"));
+        sc.setPrefCn(result.getString("prefCn"));
+        sc.setScrnprcdrMthdExpln(result.getString("scrnprcdrMthdExpln"));
+        sc.setRecrutPblntSn(result.getInt("recrutPblntSn"));
+        sc.setUserId(memNo);
+
+
+        int check = wService.scrapinsert(sc); 
+ 
+        return check;
+    }
 	
 	    @Autowired
 	    private ChatGPTService gptService;
@@ -110,7 +170,8 @@ public class APIcontroller {
 
 	        String generatedText = gptService.callChatGPT(companyName, jobTitle, maxLength, motivation, question, experience);
 	        
-	       
+	        System.out.println("Request Data: " + requestData);
+	        System.out.println(generatedText);
 	        return "{\"response\": \"" + generatedText + "\"}";
 	    }
 }

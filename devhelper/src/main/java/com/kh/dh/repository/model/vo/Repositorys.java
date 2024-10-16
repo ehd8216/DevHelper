@@ -11,7 +11,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class Repository {
+public class Repositorys {
 	
 	private int repoNo;
 	private int memNo;

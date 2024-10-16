@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.dh.common.model.vo.PageInfo;
 import com.kh.dh.common.template.Pagination;
+import com.kh.dh.employmentAPI.model.vo.Scrap;
 import com.kh.dh.work.model.service.WorkServiceImpl;
 import com.kh.dh.work.model.vo.Work;
 
@@ -55,7 +56,16 @@ public class WorkController {
 	private String ToCover() {
 		return "coverletter/coverletter";
 	}
-	
+	// 스크랩 리스트페이지로 이동
+	@RequestMapping("scraplist.wo")
+	private ModelAndView scraplist(int memNo, ModelAndView mv)
+	{
+		ArrayList<Scrap> sc = wService.scraplist(memNo);
+		System.out.println(sc);
+		mv.addObject("sc", sc)
+		  .setViewName("work/scraplist");
+		return mv;
+	}
 	
 	
 	

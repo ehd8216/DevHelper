@@ -92,6 +92,10 @@
         textarea{
             font-size: 18px;
         }
+        .resultAPI {
+            display: none;
+            margin-top: 20px;
+        }
     </style>
     </head>
     <body>
@@ -147,7 +151,10 @@
              
             </table>
             <button class="write" id="generateAI">AI를 통해 작성</button>
-            <div class="resultAPI">${response}</div>
+            <textarea type="text" class="resultAPI" style="min-height: 300px; height: auto;"></textarea>
+            <span id="charCount">0 characters</span>
+            <button>복사</button>
+            
         </div>
     </div>
 
@@ -170,14 +177,7 @@
             // prompt.push($("#motivation").val());
             // prompt.push($("#question").val());
             // prompt.push($("#experience").val());
-            console.log({
-                companyName: companyName,
-                jobTitle: jobTitle,
-                maxLength: maxLength,
-                motivation: motivation,
-                question: question,
-                experience: experience
-                });
+           
            
             
 
@@ -193,25 +193,58 @@
                     , question:question
                     , experience:experience
                 }),
-                success:function(response){
-                	var jsonResponse = JSON.parse(response);
+                success:function(result){
+                  console.log("sucess : " + result);  
 
-               
-                    var decodedResponse = decodeHTMLEntities(jsonResponse.response);
-                    
-                    $('.resultAPI').html(jsonResponse.response.replace(/\n/g, '<br>'));
-                
-                
-                },
-                error: function(xhr) {
-			        console.log("Error Status: " + xhr.status);
-			        console.log("Error Response: " + xhr.responseText);
+            try {
+            
+                let jsonResponse = JSON.parse(result);
+
+            
+                if (jsonResponse && jsonResponse.response) {
+                    let responseText = jsonResponse.response;
+                    $('.resultAPI').val(responseText).show();
+                } else {
+                    console.log("Unexpected format:", jsonResponse);
+                    $('.resultAPI').val('Unexpected format: ' + JSON.stringify(jsonResponse, null, 2)).show();
                 }
-            })
-            
-            
-       
-    });
+
+                $('.resultAPI').focus()[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } catch (e) {
+                console.error("Error parsing response:", e);
+                $('.resultAPI').val("Please try again").show();
+                $('.resultAPI').focus()[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+    updateCharCount();
+        },
+            error: function(xhr) {
+                
+                const str = xhr.responseText;
+                const substr = str.substring(13, str.length - 2);
+                
+                     console.log("error : "+ substr);
+
+                   
+                    $('.resultAPI').val(substr).show();
+
+                    
+                    $('.resultAPI').focus()[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                   
+                    updateCharCount();
+                        }
+                    })
+            });
+
+
+
+
+        function updateCharCount() {const charCount = $('.resultAPI').val().length;
+        $('#charCount').text(charCount + ' characters'); }
+        $('.resultAPI').on('input', updateCharCount);
+    
+    
 
         const exampleData = {
             companyName: "kakao",
