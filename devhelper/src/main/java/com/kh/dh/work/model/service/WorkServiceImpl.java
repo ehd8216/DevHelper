@@ -33,8 +33,13 @@ public class WorkServiceImpl implements WorkService{
 	}
 
 	@Override
-	public int scrapinsert(Scrap sc) {
-		return 0;
+	public int scrapinsert(Scrap sc) { 
+		return wDao.scrapinsert(sqlSession,sc); 
+	}
+
+	@Override
+	public ArrayList<Scrap> scraplist(int memNo) {
+		return wDao.scraplist(sqlSession, memNo);
 	}
 	
 	

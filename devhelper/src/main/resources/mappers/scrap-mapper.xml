@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="scrapMapper">
+
+	<resultMap type="Scrap" id="scrapResult">
+		<result column="company_name" property="instNm"/>
+		<result column="job_title" property="recrutPbancTtl"/>
+		<result column="application_end_date" property="pbancEndYmd"/>
+		<result column="recruitment_field" property="ncsCdNmLst"/>
+		<result column="employment_type" property="hireTypeNmLst"/>
+		<result column="replacement_worker" property="replmprYn"/>
+		<result column="recruitment_type" property="recrutSeNm"/>
+		<result column="work_region" property="workRgnNmLst"/>
+		<result column="eligibility_requirements" property="aplyQlfcCn"/>
+		<result column="preferred_conditions" property="prefCn"/>
+		<result column="selection_process_description" property="scrnprcdrMthdExpln"/>
+		<result column="sn_id" property="recrutPblntSn"/>
+		<result column="user_id" property="userId"/>
+	</resultMap>
+	<insert id="scrapinsert">
+        INSERT INTO scrap (
+            scrap_id,
+            company_name,
+            job_title,
+            application_end_date,
+            recruitment_field,
+            employment_type,
+            replacement_worker,
+            recruitment_type,
+            work_region,
+            eligibility_requirements,
+            preferred_conditions,
+            selection_process_description,
+            sn_id,
+            user_id
+        ) VALUES (
+            scrap_seq.NEXTVAL,
+            #{instNm},
+            #{recrutPbancTtl},
+            #{pbancEndYmd},
+            #{ncsCdNmLst},
+            #{hireTypeNmLst},
+            #{replmprYn},
+            #{recrutSeNm},
+            #{workRgnNmLst},
+            #{aplyQlfcCn},
+            #{prefCn},
+            #{scrnprcdrMthdExpln},
+            #{recrutPblntSn},
+            #{userId}
+        )
+    </insert>
+	<select id="scraplist" resultMap="scrapResult">
+		select 
+            scrap_id,
+            company_name,
+            job_title,
+            application_end_date,
+            recruitment_field,
+            employment_type,
+            replacement_worker,
+            recruitment_type,
+            work_region,
+            eligibility_requirements,
+            preferred_conditions,
+            selection_process_description,
+            sn_id,
+            user_id
+         from scrap
+         where user_id=#{memNo}
+	</select>
+
+</mapper>

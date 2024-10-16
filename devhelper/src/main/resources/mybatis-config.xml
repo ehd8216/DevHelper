@@ -11,6 +11,7 @@
 		<typeAlias type="com.kh.dh.board.model.vo.Board" alias="Board"/>
 		<typeAlias type="com.kh.dh.board.model.vo.CodeChunk" alias="CodeChunk"/>
 		<typeAlias type="com.kh.dh.code.model.vo.Room" alias="Room" />
+		<typeAlias type="com.kh.dh.employmentAPI.model.vo.Scrap" alias="Scrap" />
 		<typeAlias type="com.kh.dh.code.model.vo.RoomDTO" alias="RoomDTO" />
 		<typeAlias type="com.kh.dh.repository.model.vo.Repository" alias="Repository" />
 	</typeAliases>
@@ -19,6 +20,7 @@
 	 	<mapper resource="/mappers/member-mapper.xml" />
 	 	<mapper resource="/mappers/board-mapper.xml" />
 	 	<mapper resource="/mappers/room-mapper.xml" />
+	 	<mapper resource="/mappers/scrap-mapper.xml" />
 	 </mappers>
 
 </configuration>

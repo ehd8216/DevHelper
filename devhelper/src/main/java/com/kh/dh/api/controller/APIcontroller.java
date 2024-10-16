@@ -33,6 +33,7 @@ public class APIcontroller {
 	
 	private static final String serviceKey = "2mj%2BiKt4iQ0xuf1PfeDRzkWy7KaPiuBO8Ui%2FD8QBuF8Bo4%2BN3i8nYJIOzizmAebj0MaiTJRJFwNahQZ5O1kARA%3D%3D";
 	
+	@Autowired
 	private WorkServiceImpl wService;
 	
 	@ResponseBody
@@ -100,6 +101,7 @@ public class APIcontroller {
 				
 		return responseText;
 	}
+	@ResponseBody
 	@RequestMapping(value = "scrap.wo", produces = "application/json; charset=utf-8")
     public int scrapinsert(HttpServletRequest request, HttpSession session) throws IOException {
         String sn = request.getParameter("sn");
@@ -142,10 +144,12 @@ public class APIcontroller {
         sc.setAplyQlfcCn(result.getString("aplyQlfcCn"));
         sc.setPrefCn(result.getString("prefCn"));
         sc.setScrnprcdrMthdExpln(result.getString("scrnprcdrMthdExpln"));
+        sc.setRecrutPblntSn(result.getInt("recrutPblntSn"));
         sc.setUserId(memNo);
 
 
         int check = wService.scrapinsert(sc); 
+ 
         return check;
     }
 	

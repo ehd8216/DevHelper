@@ -14,7 +14,7 @@ public interface WorkService {
 		int selectListCount();
 		ArrayList<Work> selectList(PageInfo pi);
 		int scrapinsert(Scrap sc);
-		
+		ArrayList<Scrap> scraplist(int memNo);
 		// 스크랩 서비스
 
 }
