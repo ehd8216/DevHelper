@@ -147,7 +147,7 @@
 	    <div class="dashboard-container">
 	        <!-- Icon Grid Section -->
 	        <div class="icon-grid">
-	            <a href="#">
+	            <a href="resume.re">
 	                <div>
 	                    <i class="bi bi-file-earmark-text"></i>
 	                    <p>이력서 관리</p>
