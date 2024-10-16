@@ -61,7 +61,6 @@ public class WorkController {
 	private ModelAndView scraplist(int memNo, ModelAndView mv)
 	{
 		ArrayList<Scrap> sc = wService.scraplist(memNo);
-		System.out.println(sc);
 		mv.addObject("sc", sc)
 		  .setViewName("work/scraplist");
 		return mv;
