@@ -257,7 +257,12 @@
 				<artifactId>spring-dotenv</artifactId>
 				<version>4.0.0</version>
 		</dependency>
-		      
+		<!-- scrap 관련 -->
+		<dependency>
+			    <groupId>org.json</groupId>
+			    <artifactId>json</artifactId>
+			    <version>20230227</version>
+		</dependency>    
 		      
 		      
 		      

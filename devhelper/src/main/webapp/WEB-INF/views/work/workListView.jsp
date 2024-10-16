@@ -328,7 +328,11 @@
 	    event.stopPropagation(); 
 	    event.preventDefault();
 	    const sn = $(this).closest('tr').data("sn");
-	    console.log(sn);
+	    $.ajax
+	    ({
+	    	url:"scrap.wo",
+	    	data:{sn}
+	    })
 	});
   
     // 백 투더 탑 스크립트
