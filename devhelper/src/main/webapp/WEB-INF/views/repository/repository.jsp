@@ -72,7 +72,9 @@
     position: absolute;
     top: 15px;
   }
-  
+  #setRepo .model-body tr{
+    text-align: center;
+  }
 </style>
 </head>
 <body>
@@ -90,7 +92,8 @@
         <button class="btn btn-primary" data-toggle="modal" data-target="#createRepo">
           Create Repository 
         </button>
-      	<button class="btn btn-warning" data-toggle="modal" data-target="#setRepo">
+      	<!-- <button class="btn btn-warning" data-toggle="modal" data-target="#setRepo">  -->
+      	<button class="btn btn-warning">
           My Repository Setting
         </button>
       	<c:choose>
@@ -191,13 +194,15 @@
           <table>
             <thead>
               <tr>
-                <th>Repository Name</th>
-                <th>Visibility</th>
+                <th style="width: 50px; height: 20px;">Check</th>
+                <th style="width: 300px;">Repository Name</th>
+                <th style="width: 100px;">Visibility</th>
               </tr>
             </thead>
             <tbody>
               <c:forEach var="r" items="${ repoList }">
                 <tr>
+                  <td><input type="checkbox"></td>
                   <td id="repoName">${ r.repoName }</td>
                   <td>${ r.visibility }</td>
                 </tr>

@@ -39,7 +39,18 @@
 		  )
 	</insert>
 
-
+	<select id="selectRepoList" resultMap="repositoryResult">
+		select
+		       repo_no
+		     , repo_name
+		     , repo_description
+		     , visibility
+		     , create_date
+		     , repo_url
+		  from repository
+		 where mem_no = #{memNo}
+		 order by repo_name
+	</select>
 
 
 

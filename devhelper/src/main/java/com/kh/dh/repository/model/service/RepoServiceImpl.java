@@ -51,10 +51,9 @@ public class RepoServiceImpl implements RepoService {
 		rDao.insertRepo(sqlSession, repoList);
 	}
 	
-//	public ArrayList<Repository> selectMemRepoList(int memNo) {
-//		
-//		
-//	}
+	public ArrayList<Repositorys> selectRepoList(int memNo) {
+		return rDao.selectRepoList(sqlSession, memNo);
+	}
 	
 	
 	
