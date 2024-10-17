@@ -8,6 +8,7 @@
   <title>Insert title here</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <!-- jQuery CDN -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -269,29 +270,32 @@
   let totalPages = 10;
   let ncsCdLst;
   let recrutPbancTtl;
-  
+  let scrapSnList = [];
   $(function(){
 	  loadData(currentPage);
-    updatePagination(currentPage);
-      
+      updatePagination(currentPage);
+      scrapnum();
   });
   
   function loadData(page){
-		$.ajax({
+		$.ajax
+		({
 			url:"work.wo",
 			data:{
-        pageNo:page, 
-        numOfRows:pageSize,
-        ncsCdLst:ncsCdLst,
-        recrutPbancTtl: recrutPbancTtl,
-      },
-			success:function(data){
+		        pageNo:page, 
+		        numOfRows:pageSize,
+		        ncsCdLst:ncsCdLst,
+		        recrutPbancTtl: recrutPbancTtl,
+      		},
+			success:function(data)
+			{
 				console.log(data);
 				let items = data.result;
 				let html = "";
         
 				
-				$.each(items,function(index,job){
+				$.each(items,function(index,job)
+				{
 					 html += "<tr data-sn='"+job.recrutPblntSn+"'> ";
 			          html += "<td>" + job.instNm + "</td>";
 			          html += "<td>" + job.recrutPbancTtl + "</td>";
@@ -300,19 +304,42 @@
 			          html += "<td>" + job.hireTypeNmLst + "</td>";
 			          html += "<td>" + job.recrutSeNm + "</td>";
 			          html += "<td>" + job.workRgnNmLst + "</td>";
-			          html += "<td><span id='scrap' class='material-symbols-outlined favorite'>favorite</span></td>";
-			          html += "</tr>";
-				});
+			          if (scrapSnList.includes(job.recrutPblntSn)) 
+			          {
+			              html += "<td><span id='scrap' class='material-symbols-outlined favorite' style='font-variation-settings: \"FILL\" 1; color:red;'>favorite</span></td>";
+			          } 
+			          else
+			          {
+			              html += "<td><span id='scrap' class='material-symbols-outlined favorite'>favorite</span></td>";
+			          }
+			          	html += "</tr>";
+	            });
+
+
 				
-				$("#result1 tbody").html(html);	
-        $("#currentPage").text(currentPage);
+				 $("#result1 tbody").html(html);	
+       			 $("#currentPage").text(currentPage);
 			},
-			error:function(){
+			error:function()
+			{
 				console.log("API AJAX에러")
 			}
 		})
 	}
 
+  function scrapnum() {
+	  $.ajax({
+	    url: "scrapcheck.wo",
+	    data: { memNo: "${loginMember.memNo}" },
+	    success: function(SnList) {
+	      scrapSnList = SnList; // 스크랩된 목록을 전역 변수에 저장
+	      console.log(scrapSnList); // 스크랩 목록을 확인
+	    },
+	    error: function() {
+	      console.log("스크랩 목록을 불러오는 중 에러 발생");
+	    }
+	  });
+	}
   
   
   
@@ -346,10 +373,6 @@
 	        }
 	    });
 	});
-  	setTimeout(function() 
-  	{
-	    messageArea.hide();
-	}, 3000);  
     // 백 투더 탑 스크립트
      $(document).ready(function () {
       
