@@ -147,7 +147,7 @@
 	    <div class="dashboard-container">
 	        <!-- Icon Grid Section -->
 	        <div class="icon-grid">
-	            <a href="#">
+	            <a href="resume.re">
 	                <div>
 	                    <i class="bi bi-file-earmark-text"></i>
 	                    <p>이력서 관리</p>
@@ -181,7 +181,7 @@
 	
 	        <!-- List Section -->
 	        <div class="list-section">
-			    <form>
+			    <form action="update.me">
 			        <ul>
 			            <li>
 			                <img style="width: 64px; height: 64px" src="${m.profile}">

@@ -202,7 +202,6 @@
   <jsp:include page="../common/menubar.jsp" />
 
   <div class="title" align="center">채용 공고 확인하기</div>
-  <button onclick="location.href='cover.wo'">자소서버튼</button>
   <div class="search-bar-container">
     <div class="search-bar" id="search-bar" style="display: none;">
      
@@ -306,7 +305,7 @@
 			          html += "<td>" + job.workRgnNmLst + "</td>";
 			          if (scrapSnList.includes(job.recrutPblntSn)) 
 			          {
-			              html += "<td><span id='scrap' class='material-symbols-outlined favorite' style='font-variation-settings: \"FILL\" 1; color:red;'>favorite</span></td>";
+			              html += "<td><span id='scrap2' class='material-symbols-outlined favorite' style='font-variation-settings: \"FILL\" 1; color:red;'>favorite</span></td>";
 			          } 
 			          else
 			          {
@@ -394,6 +393,30 @@
 	                alert('스크랩이 성공적으로 완료되었습니다!');  
 	            } else {
 	                alert('스크랩에 실패했습니다. 다시 시도해주세요.');  
+	            }
+	            
+	        },
+	        error: function() {
+	            alert('서버 에러가 발생했습니다. 잠시 후 다시 시도해주세요.');
+	        }
+	    });
+	});
+  //스크랩 취소 스크립트
+  $(document).on("click", "#scrap2", function(event) {
+	    event.stopPropagation(); 
+	    event.preventDefault();
+	    const sn = $(this).closest('tr').data("sn");
+	    $.ajax
+	    ({
+	    	url:"scrapdelete.wo",
+	    	data:{sn},
+	    	success: function(result) {
+	            console.log(result);
+
+	            if (result > 0) {
+	                alert('스크랩이 성공적으로 삭제되었습니다.');  
+	            }else {
+	                alert('스크립 삭제에 실패했습니다.');  
 	            }
 	            
 	        },

@@ -33,4 +33,10 @@ public class MemberServiceImpl implements MemberService {
 		return mDao.selectMemberDetail(sqlSession, memNo);
 	}
 
+	@Override
+	public int updatemember(Member m) 
+	{
+		return mDao.updatemember(sqlSession,m);
+	}
+
 }

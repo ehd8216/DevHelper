@@ -3,6 +3,7 @@ package com.kh.dh.member.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +81,29 @@ public class MemberController
 		mv.addObject("m", m)
 		  .setViewName("member/myPage");
 		return mv;
+	}
+	@RequestMapping("update.me")
+	public String updatemember(HttpServletRequest request, HttpSession session)
+	{
+		Member m = new Member();
+		Member loginmem = (Member)session.getAttribute("loginMember");
+		m.setMemIntro(request.getParameter("memIntro"));
+		m.setStackName(request.getParameter("stackName"));
+		m.setMemNo(loginmem.getMemNo());
+		int result = mService.updatemember(m);
+		if(result > 0)
+		{
+			session.setAttribute("alertMsg", "성공적으로 회원정보가 수정되었습니다"); 
+			return "redirect:mypage.me?memNo="+loginmem.getMemNo();
+		}
+		else
+		{
+			session.setAttribute("alertMsg", "회원정보 수정에 실패 했습니다"); 
+			return "redirect:mypage.me?memNo="+loginmem.getMemNo();
+		}
+		
+				
+		
 	}
 	
 }
