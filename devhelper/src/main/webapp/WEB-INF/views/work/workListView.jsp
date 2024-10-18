@@ -375,10 +375,8 @@ function saveRecentJob(job) {
     // 배열이 10개 이상일 경우 가장 오래된 항목 삭제
     if (recentJobs.length >= 3) {
         recentJobs.shift(); // 가장 오래된 항목 삭제
-        console.log("뭐야")
     }
     recentJobs.push(job); // 새로운 공고 추가
-    console.log("저장하기 전의 recentJobs:", recentJobs);
     setCookieWithObject('recentJob', recentJobs, 7); // 쿠키에 저장
 }
   // 디테일로 넘어가는 스크립트(sn 줘야함)
