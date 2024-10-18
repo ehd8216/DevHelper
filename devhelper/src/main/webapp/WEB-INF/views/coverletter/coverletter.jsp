@@ -152,8 +152,8 @@
             </table>
             <button class="write" id="generateAI">AI를 통해 작성</button>
             <textarea type="text" class="resultAPI" style="min-height: 300px; height: auto;"></textarea>
-            <span id="charCount">0 characters</span>
-            <button>복사</button>
+            <span id="charCount" style="display: none;">0 characters</span>
+            <button id="copyButton" style="display: none;">내 이력서에 복사</button>
             
         </div>
     </div>
@@ -227,11 +227,9 @@
 
                    
                     $('.resultAPI').val(substr).show();
-
-                    
                     $('.resultAPI').focus()[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-                   
+                    $('#charCount').show();
+                    $('#copyButton').show();
                     updateCharCount();
                         }
                     })
