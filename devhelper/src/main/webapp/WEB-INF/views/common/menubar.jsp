@@ -277,6 +277,7 @@
 							<div id="dropdownMenu" class="dropdown-menu">
 								<ul>
 									<li><a href="mypage.me?memNo=${loginMember.memNo}">MyPage</a></li>
+									<li><a href="cover.wo">AI 자소서</a></li>
 									<li><a class="modal_btn" style="cursor: pointer;">MakeForum</a></li>
 									<li><a href="logout.me">Logout</a></li>
 								</ul>

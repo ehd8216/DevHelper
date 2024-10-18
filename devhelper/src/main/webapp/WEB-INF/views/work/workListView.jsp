@@ -202,7 +202,6 @@
   <jsp:include page="../common/menubar.jsp" />
 
   <div class="title" align="center">채용 공고 확인하기</div>
-  <button onclick="location.href='cover.wo'">자소서버튼</button>
   <div class="search-bar-container">
     <div class="search-bar" id="search-bar" style="display: none;">
      
