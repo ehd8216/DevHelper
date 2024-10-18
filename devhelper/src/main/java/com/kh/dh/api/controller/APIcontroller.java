@@ -103,54 +103,62 @@ public class APIcontroller {
 	}
 	@ResponseBody
 	@RequestMapping(value = "scrap.wo", produces = "application/json; charset=utf-8")
-    public int scrapinsert(HttpServletRequest request, HttpSession session) throws IOException {
-        String sn = request.getParameter("sn");
-        String url = "https://apis.data.go.kr/1051000/recruitment/detail";
-        url += "?serviceKey=" + serviceKey;
-        url += "&resultType=json";
-        url += "&sn=" + sn;
-
-        URL requestUrl = new URL(url);
-        HttpURLConnection urlConnection = (HttpURLConnection) requestUrl.openConnection();
-        urlConnection.setRequestMethod("GET");
-
-        BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "UTF-8"));
-
-        StringBuilder responseText = new StringBuilder();
-        String line;
-
-        while ((line = br.readLine()) != null) {
-            responseText.append(line);
-        }
-        br.close();
-
-        // JSON 파싱
-        JSONObject jsonResponse = new JSONObject(responseText.toString());
-        JSONObject result = jsonResponse.getJSONObject("result");
-
-        Member loginMember = (Member) session.getAttribute("loginMember");
-        int memNo = loginMember.getMemNo();
-
-        // 담기
-        Scrap sc = new Scrap();
-        sc.setInstNm(result.getString("instNm"));
-        sc.setRecrutPbancTtl(result.getString("recrutPbancTtl"));
-        sc.setPbancEndYmd(result.getString("pbancEndYmd"));
-        sc.setNcsCdNmLst(result.getString("ncsCdNmLst"));
-        sc.setHireTypeNmLst(result.getString("hireTypeNmLst"));
-        sc.setReplmprYn(result.getString("replmprYn"));
-        sc.setRecrutSeNm(result.getString("recrutSeNm"));
-        sc.setWorkRgnNmLst(result.getString("workRgnNmLst"));
-        sc.setAplyQlfcCn(result.getString("aplyQlfcCn"));
-        sc.setPrefCn(result.getString("prefCn"));
-        sc.setScrnprcdrMthdExpln(result.getString("scrnprcdrMthdExpln"));
-        sc.setRecrutPblntSn(result.getInt("recrutPblntSn"));
-        sc.setUserId(memNo);
-
-
-        int check = wService.scrapinsert(sc); 
- 
-        return check;
+    public int scrapinsert(HttpServletRequest request, HttpSession session) throws IOException 
+	{
+		Member loginMember = (Member) session.getAttribute("loginMember");
+		if (loginMember == null) {
+	        return -1;  // 로그인되지 않은 상태에서의 응답
+	    }
+		else
+		{
+		
+			int memNo = loginMember.getMemNo();
+	        String sn = request.getParameter("sn");
+	        String url = "https://apis.data.go.kr/1051000/recruitment/detail";
+	        url += "?serviceKey=" + serviceKey;
+	        url += "&resultType=json";
+	        url += "&sn=" + sn;
+	
+	        URL requestUrl = new URL(url);
+	        HttpURLConnection urlConnection = (HttpURLConnection) requestUrl.openConnection();
+	        urlConnection.setRequestMethod("GET");
+	
+	        BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "UTF-8"));
+	
+	        StringBuilder responseText = new StringBuilder();
+	        String line;
+	
+	        while ((line = br.readLine()) != null) {
+	            responseText.append(line);
+	        }
+	        br.close();
+	
+	        // JSON 파싱
+	        JSONObject jsonResponse = new JSONObject(responseText.toString());
+	        JSONObject result = jsonResponse.getJSONObject("result");
+	
+	        
+	        // 담기
+	        Scrap sc = new Scrap();
+	        sc.setInstNm(result.getString("instNm"));
+	        sc.setRecrutPbancTtl(result.getString("recrutPbancTtl"));
+	        sc.setPbancEndYmd(result.getString("pbancEndYmd"));
+	        sc.setNcsCdNmLst(result.getString("ncsCdNmLst"));
+	        sc.setHireTypeNmLst(result.getString("hireTypeNmLst"));
+	        sc.setReplmprYn(result.getString("replmprYn"));
+	        sc.setRecrutSeNm(result.getString("recrutSeNm"));
+	        sc.setWorkRgnNmLst(result.getString("workRgnNmLst"));
+	        sc.setAplyQlfcCn(result.getString("aplyQlfcCn"));
+	        sc.setPrefCn(result.getString("prefCn"));
+	        sc.setScrnprcdrMthdExpln(result.getString("scrnprcdrMthdExpln"));
+	        sc.setRecrutPblntSn(result.getInt("recrutPblntSn"));
+	        sc.setUserId(memNo);
+	
+	
+	        int check = wService.scrapinsert(sc); 
+	 
+	        return check;
+		}
     }
 	
 	    @Autowired

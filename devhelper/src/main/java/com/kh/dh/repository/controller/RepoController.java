@@ -21,6 +21,7 @@ import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHUser;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -29,10 +30,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.dh.member.model.vo.Member;
+import com.kh.dh.repository.model.service.RepoServiceImpl;
 import com.kh.dh.repository.model.vo.Branch;
 import com.kh.dh.repository.model.vo.Commit;
 import com.kh.dh.repository.model.vo.RepoDirectory;
-import com.kh.dh.repository.model.vo.Repository;
+import com.kh.dh.repository.model.vo.Repositorys;
 
 @Controller
 public class RepoController {
@@ -40,6 +42,9 @@ public class RepoController {
 	private GitHub github; 
 	
 	private SimpleDateFormat sdf;
+	
+	@Autowired
+	private RepoServiceImpl rService;
 	
 	// 전체 레파지토리 조회
 	@RequestMapping("myRepo.re")
@@ -49,26 +54,9 @@ public class RepoController {
 			session.setAttribute("alertMsg", "로그인 후 이용 가능합니다.");
 			return "redirect:/";
 		}else {
-			String token = (String)session.getAttribute("token");
-			github = GitHub.connectUsingOAuth(token);
+			Member m = (Member)session.getAttribute("loginMember");
+			ArrayList<Repositorys> repoList = rService.selectRepoList(m.getMemNo());
 			
-			ArrayList<Repository> repoList = new ArrayList();
-			sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
-			Map<String , GHRepository> list = github.getMyself().getRepositories();
-			
-			for (Map.Entry<String, GHRepository> entry : list.entrySet()) {
-				GHRepository repo = entry.getValue();
-				
-				String url = repo.getUrl().toString().substring(29);
-				
-				Repository r = new Repository();
-				r.setRepoName(repo.getName());
-				r.setRepoDescription(repo.getDescription());
-				r.setVisibility(repo.getVisibility().toString());
-				r.setCreateDate(sdf.format(repo.getCreatedAt()));
-				r.setRepoUrl(repo.getUrl().toString());
-				repoList.add(r);
-			}
 			session.setAttribute("repoList", repoList);
 			
 			return "repository/repository";
@@ -161,7 +149,7 @@ public class RepoController {
 		return "repository/issuesDetail";
 	}
 	@RequestMapping("createRepo.re")
-	public String createRepo(Repository repo, HttpSession session) throws IOException {
+	public String createRepo(Repositorys repo, HttpSession session) throws IOException {
 		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
 		GHCreateRepositoryBuilder builder = github.createRepository(repo.getRepoName());
         builder.description(repo.getRepoDescription());

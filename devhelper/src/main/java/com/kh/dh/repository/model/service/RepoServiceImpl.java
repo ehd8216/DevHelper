@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.dh.repository.model.dao.RepoDao;
-import com.kh.dh.repository.model.vo.Repository;
+import com.kh.dh.repository.model.vo.Repositorys;
 
 @Service
 public class RepoServiceImpl implements RepoService {
@@ -21,6 +21,7 @@ public class RepoServiceImpl implements RepoService {
 	private GitHub github;
 	private SimpleDateFormat sdf;
 	
+	@Autowired
 	private RepoDao rDao;
 	
 	@Autowired
@@ -29,7 +30,7 @@ public class RepoServiceImpl implements RepoService {
 	public void insertRepo(int memNo, String token) throws IOException {
 		github = GitHub.connectUsingOAuth(token);
 		
-		ArrayList<Repository> repoList = new ArrayList();
+		ArrayList<Repositorys> repoList = new ArrayList();
 		sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
 		Map<String , GHRepository> list = github.getMyself().getRepositories();
 		
@@ -38,7 +39,7 @@ public class RepoServiceImpl implements RepoService {
 			
 			String url = repo.getUrl().toString().substring(29);
 			
-			Repository r = new Repository();
+			Repositorys r = new Repositorys();
 			r.setMemNo(memNo);
 			r.setRepoName(repo.getName());
 			r.setRepoDescription(repo.getDescription());
@@ -49,5 +50,34 @@ public class RepoServiceImpl implements RepoService {
 		}
 		rDao.insertRepo(sqlSession, repoList);
 	}
+	
+	public ArrayList<Repositorys> selectRepoList(int memNo) {
+		return rDao.selectRepoList(sqlSession, memNo);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

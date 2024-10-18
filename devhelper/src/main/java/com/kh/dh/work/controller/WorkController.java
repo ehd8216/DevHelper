@@ -1,11 +1,13 @@
 package com.kh.dh.work.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.dh.common.model.vo.PageInfo;
@@ -61,13 +63,26 @@ public class WorkController {
 	private ModelAndView scraplist(int memNo, ModelAndView mv)
 	{
 		ArrayList<Scrap> sc = wService.scraplist(memNo);
-		System.out.println(sc);
 		mv.addObject("sc", sc)
 		  .setViewName("work/scraplist");
 		return mv;
 	}
-	
-	
+	@ResponseBody
+	@RequestMapping("scrapcheck.wo")
+	public List<Integer> scrapcheck(int memNo) {
+	    ArrayList<Scrap> scrap = wService.scraplist(memNo);
+	    List<Integer> SnList = new ArrayList<>();
+	    for (Scrap sc : scrap) {
+	        SnList.add(sc.getRecrutPblntSn()); // scrap 객체에서 recrutPblntSn을 추출
+	    }
+	    System.out.println(SnList); // 콘솔에 출력하여 확인
+	    return SnList; // SnList를 JSON 형태로 반환
+	}
+	@RequestMapping("recent.wo")
+	public String recentwork()
+	{
+		return"work/workRecentView";
+	}
 	
 
 }

@@ -153,7 +153,7 @@
 	                    <p>이력서 관리</p>
 	                </div>
 	            </a>
-	            <a href="#">
+	            <a href="recent.wo">
 	                <div>
 	                    <i class="bi bi-search"></i>
 	                    <p>최근 본 공고</p>

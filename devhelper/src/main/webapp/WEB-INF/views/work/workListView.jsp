@@ -8,6 +8,7 @@
   <title>Insert title here</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <!-- jQuery CDN -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -268,29 +269,32 @@
   let totalPages = 10;
   let ncsCdLst;
   let recrutPbancTtl;
-  
+  let scrapSnList = [];
   $(function(){
 	  loadData(currentPage);
-    updatePagination(currentPage);
-      
+      updatePagination(currentPage);
+      scrapnum();
   });
   
   function loadData(page){
-		$.ajax({
+		$.ajax
+		({
 			url:"work.wo",
 			data:{
-        pageNo:page, 
-        numOfRows:pageSize,
-        ncsCdLst:ncsCdLst,
-        recrutPbancTtl: recrutPbancTtl,
-      },
-			success:function(data){
+		        pageNo:page, 
+		        numOfRows:pageSize,
+		        ncsCdLst:ncsCdLst,
+		        recrutPbancTtl: recrutPbancTtl,
+      		},
+			success:function(data)
+			{
 				console.log(data);
 				let items = data.result;
 				let html = "";
         
 				
-				$.each(items,function(index,job){
+				$.each(items,function(index,job)
+				{
 					 html += "<tr data-sn='"+job.recrutPblntSn+"'> ";
 			          html += "<td>" + job.instNm + "</td>";
 			          html += "<td>" + job.recrutPbancTtl + "</td>";
@@ -299,19 +303,42 @@
 			          html += "<td>" + job.hireTypeNmLst + "</td>";
 			          html += "<td>" + job.recrutSeNm + "</td>";
 			          html += "<td>" + job.workRgnNmLst + "</td>";
-			          html += "<td><span id='scrap' class='material-symbols-outlined favorite'>favorite</span></td>";
-			          html += "</tr>";
-				});
+			          if (scrapSnList.includes(job.recrutPblntSn)) 
+			          {
+			              html += "<td><span id='scrap' class='material-symbols-outlined favorite' style='font-variation-settings: \"FILL\" 1; color:red;'>favorite</span></td>";
+			          } 
+			          else
+			          {
+			              html += "<td><span id='scrap' class='material-symbols-outlined favorite'>favorite</span></td>";
+			          }
+			          	html += "</tr>";
+	            });
+
+
 				
-				$("#result1 tbody").html(html);	
-        $("#currentPage").text(currentPage);
+				 $("#result1 tbody").html(html);	
+       			 $("#currentPage").text(currentPage);
 			},
-			error:function(){
+			error:function()
+			{
 				console.log("API AJAX에러")
 			}
 		})
 	}
 
+  function scrapnum() {
+	  $.ajax({
+	    url: "scrapcheck.wo",
+	    data: { memNo: "${loginMember.memNo}" },
+	    success: function(SnList) {
+	      scrapSnList = SnList; // 스크랩된 목록을 전역 변수에 저장
+	      console.log(scrapSnList); // 스크랩 목록을 확인
+	    },
+	    error: function() {
+	      console.log("스크랩 목록을 불러오는 중 에러 발생");
+	    }
+	  });
+	}
   
   
   
@@ -319,9 +346,35 @@
   // 디테일로 넘어가는 스크립트(sn 줘야함)
   $(document).on("click", "#result1>tbody>tr", function() {
       const sn = $(this).data("sn");
+      saveRecentlyViewed(sn);
       location.href = "detail.wo?sn=" + sn; 
       console.log(sn)
   });
+  function saveRecentlyViewed(sn) {
+	    // 현재 저장된 쿠키 가져오기
+	    let recentJobs = getCookie('recentJobs');
+	    recentJobs = recentJobs ? JSON.parse(recentJobs) : [];
+
+	    // 이미 존재하는지 확인 후 추가
+	    if (!recentJobs.includes(sn)) {
+	      recentJobs.push(sn);
+	    }
+
+	    // 최대 5개의 최근본 공고 유지
+	    if (recentJobs.length > 5) {
+	      recentJobs.shift(); // 가장 오래된 공고 삭제
+	    }
+
+	    // 쿠키에 저장
+	    document.cookie = "recentJobs=" + JSON.stringify(recentJobs) + "; path=/; max-age=" + (60 * 60 * 24 * 7); // 1주일 유효
+	    console.log(recentJobs)
+	  }
+
+	  function getCookie(name) {
+	    const value = `; ${document.cookie}`;
+	    const parts = value.split(`; ${name}=`);
+	    if (parts.length === 2) return parts.pop().split(';').shift();
+	  }
   //scrap 전파방해 스크랩
   $(document).on("click", "#scrap", function(event) {
 	    event.stopPropagation(); 
@@ -334,21 +387,20 @@
 	    	success: function(result) {
 	            console.log(result);
 
-	            if (result > 0) {
-	                alert('스크랩이 성공적으로 완료되었습니다!');  // 성공 메시지
+	            if (result == -1) {
+	                alert('로그인 후 이용 가능한 서비스입니다.');  
+	            } else if (result > 0) {
+	                alert('스크랩이 성공적으로 완료되었습니다!');  
 	            } else {
-	                alert('스크랩에 실패했습니다. 다시 시도해주세요.');  // 실패 메시지
+	                alert('스크랩에 실패했습니다. 다시 시도해주세요.');  
 	            }
+	            
 	        },
 	        error: function() {
 	            alert('서버 에러가 발생했습니다. 잠시 후 다시 시도해주세요.');
 	        }
 	    });
 	});
-  	setTimeout(function() 
-  	{
-	    messageArea.hide();
-	}, 3000);  
     // 백 투더 탑 스크립트
      $(document).ready(function () {
       
