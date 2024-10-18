@@ -206,6 +206,15 @@
 
 									console.log('Disqus config initialized for page:', this.page.url);
 
+									// this.callbacks.onReady = [function () {
+									// 	var highlightedPost = $('.highlighted-post');
+									// 	if (highlightedPost.length > 0) {
+									// 		console.log('Highlighted post found:', highlightedPost);
+									// 	} else {
+									// 		console.log('No highlighted post found.');
+									// 	}
+									// }];
+
 									// 여기 어떻게 상호작용 끌어와서 저 답변됨 체크할수있도록 수정할것
 									// this.callbacks.onIdentify = [function (comment) {
 									// 	// Your custom code when a comment is pinned
@@ -251,27 +260,30 @@
 									})
 								});
 
-								let pinnedComments = new Set();
+								$(document).ready(() => {
 
-								function checkPinnedComments() {
-									// 댓글 요소를 가져옵니다.
-									const comments = document.querySelectorAll('.dsq-comment');
-
-									comments.forEach(comment => {
-										const commentId = comment.getAttribute('data-id');
-
-										// 댓글이 고정되어 있는지 확인하는 로직 (ex. 특정 클래스가 붙어있는지)
-										if (comment.classList.contains('dsq-comment-pinned') && !pinnedComments.has(commentId)) {
-											pinnedComments.add(commentId);
-											// 고정된 댓글에 대한 동작
-											console.log(`Comment pinned: ${commentId}`);
-											comment.classList.add('highlight'); // 강조 효과 추가
+									setInterval(() => {
+										if ($('.highlighted-post').is(':visible')) {
+											console.log("Highlighted post is visible.");
+										} else {
+											console.log("Highlighted post is not visible.");
 										}
-									});
-								}
+									}, 5000);
 
-								// 주기적으로 댓글 상태를 확인
-								setInterval(checkPinnedComments, 2000); // 2초마다 확인
+									function checkDisplayStatus() {
+										console.log("Aa")
+										console.log($('.highlighted-post').css('display'));
+										if ($('.highlighted-post').css('display') == 'block') {
+											console.log("고댓 있음");
+										} else {
+											console.log("고댓 없음");
+										}
+
+									}
+
+									setInterval(checkDisplayStatus, 5000);
+								})
+
 							</script>
 							<noscript>Please enable JavaScript to view the <a
 									href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
