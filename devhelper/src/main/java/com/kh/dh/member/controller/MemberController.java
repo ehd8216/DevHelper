@@ -57,8 +57,6 @@ public class MemberController
 	    		loginMember = mService.selectMember(gitMember);
 	    		
 	    		// 가입시 db에 레파지토리 입력
-	    		System.out.println(loginMember.getMemNo());
-	    		System.out.println(token);
 	    		rService.insertRepo(loginMember.getMemNo(), token);
 	    	}
         }

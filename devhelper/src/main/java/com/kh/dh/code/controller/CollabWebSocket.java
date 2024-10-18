@@ -8,6 +8,14 @@ import javax.websocket.OnMessage;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+
+
+
+
+
 @ServerEndpoint("/collab")
 public class CollabWebSocket {
 
@@ -16,18 +24,18 @@ public class CollabWebSocket {
 	@OnMessage
 	public void onMessage(String message, Session session) {
 		
-		for (Session client : clients) {
-			
-			if (client != session && client.isOpen()) {
-				
-				try {
-					client.getBasicRemote().sendText(message);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				
-			}
-		}
+	   // JsonObject jo = JsonParser.parseString(message).getAsJsonObject();
+	    //String type = jo.get("type").getAsString();
+
+	    for (Session client : clients) {
+	        if (client.isOpen() && client.equals(session)) { 
+	            try {
+	                client.getBasicRemote().sendText(message); 
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
 	}
 	
 	@javax.websocket.OnOpen

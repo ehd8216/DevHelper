@@ -322,14 +322,18 @@ public class RepoController {
 	
 	@RequestMapping("repoReload.re")
 	public String repoReload(int memNo, HttpSession session) throws IOException {
-		ArrayList<Repositorys> dbRepoList = rService.selectRepoList(memNo);
 		ArrayList<Repositorys> ghRepoList = rService.getGHRepo((String)session.getAttribute("token"), memNo);
-		for(Repositorys r : ghRepoList) {
+		ArrayList<Repositorys> dbRepoList = rService.selectRepoList(memNo);
+		
+		for(Repositorys newr : ghRepoList) {
+			int a = 0;
 			for(Repositorys dbr : dbRepoList) {
-				if(r.getRepoName() != dbr.getRepoName()) {
-					rService.insertRepoPlus(r);
-					break;
+				if(newr.getRepoName().equals(dbr.getRepoName())) {
+					a = 1;
 				}
+			}
+			if(a == 0) {
+				rService.insertRepoPlus(newr);
 			}
 		}
 		session.setAttribute("alertMsg", "레포 불러오기 성공");

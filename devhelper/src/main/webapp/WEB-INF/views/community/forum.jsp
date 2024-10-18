@@ -171,10 +171,10 @@
 					<div class="chat">
 
 
-						<!-- <div class="chat-input">
+						<div class="chat-input">
 							<input type="text" id="chatInput" placeholder="메시지를 입력하세요..." />
 							<button onclick="sendChatMessage()">전송</button>
-						</div> -->
+						</div>
 						<div id="disqus_thread"></div>
 						<script>
 							/**
@@ -231,11 +231,16 @@
 					};
 
 					socket.onmessage = function (event) {
+						console.log("ss")
 						const data = JSON.parse(event.data);
 						if (data.type === 'codeUpdate') {
 							editor.setValue(data.code); // 코드 에디터에 업데이트
+							console.log(data)
+						} else if (data.type === 'chat') {
+							$(".chat").text(data.chat)
 						}
 					};
+					// 이거지금 code는 나한테도 보내면 무한이고 chat은 남한테만 보내면 내가 안보이는 문제발생..! 해결책 필요
 
 					function sendCodeUpdate(code) {
 						socket.send(JSON.stringify({ type: 'codeUpdate', code }));
@@ -246,6 +251,11 @@
 						const code = editor.getValue();
 						sendCodeUpdate(code);
 					});
+
+					function sendChatMessage() {
+						const chat = document.getElementById("chatInput").value;
+						socket.send(JSON.stringify({ type: 'chat', chat }));
+					}
 				</script>
 
 			</div>
