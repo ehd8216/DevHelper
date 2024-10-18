@@ -18,5 +18,9 @@ public class RepoDao {
 	public ArrayList<Repositorys> selectRepoList(SqlSessionTemplate sqlSession, int memNo) {
 		return (ArrayList)sqlSession.selectList("repositoryMapper.selectRepoList", memNo);
 	}
+	
+	public void insertRepoPlus(SqlSessionTemplate sqlSession, Repositorys repo) {
+		sqlSession.insert("repositoryMapper.insertRepo", repo);
+	}
 
 }

@@ -90,11 +90,11 @@
   <div class="outer">
       <div class="repoList">
         <button class="btn btn-primary" data-toggle="modal" data-target="#createRepo">
-          Create Repository 
+          새로운 레파지토리 
         </button>
-      	<!-- <button class="btn btn-warning" data-toggle="modal" data-target="#setRepo">  -->
-      	<button class="btn btn-warning">
-          My Repository Setting
+      	
+      	<button class="btn btn-warning" onclick="repoReload()">
+          레파지토리 불러오기
         </button>
       	<c:choose>
       	
@@ -177,43 +177,13 @@
     	const inviteUserName = $("#inviteUserName").val();
     	location.href="inviteRepo.re?inviteUserName=" + inviteUserName + "&reUserUrl=" + repoUserUrl;
     }
+
+    function repoReload(){
+    	const memNo = `${loginMember.memNo}`
+      location.href="repoReload.re?memNo=" + memNo;
+    }
     
   </script>
-	
-	
-	<!-- 레파지토리  설정용 모달 -->
-  <div class="modal" id="setRepo">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Custom Repository</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        
-        <div class="modal-body">
-          <table>
-            <thead>
-              <tr>
-                <th style="width: 50px; height: 20px;">Check</th>
-                <th style="width: 300px;">Repository Name</th>
-                <th style="width: 100px;">Visibility</th>
-              </tr>
-            </thead>
-            <tbody>
-              <c:forEach var="r" items="${ repoList }">
-                <tr>
-                  <td><input type="checkbox"></td>
-                  <td id="repoName">${ r.repoName }</td>
-                  <td>${ r.visibility }</td>
-                </tr>
-              </c:forEach>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-
 
   <!-- 레파지토리 생성용 모달 -->
   <div class="modal" id="createRepo">
