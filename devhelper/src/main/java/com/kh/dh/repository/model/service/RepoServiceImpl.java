@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -37,8 +39,6 @@ public class RepoServiceImpl implements RepoService {
 		for (Map.Entry<String, GHRepository> entry : list.entrySet()) {
 			GHRepository repo = entry.getValue();
 			
-			String url = repo.getUrl().toString().substring(29);
-			
 			Repositorys r = new Repositorys();
 			r.setMemNo(memNo);
 			r.setRepoName(repo.getName());
@@ -55,7 +55,29 @@ public class RepoServiceImpl implements RepoService {
 		return rDao.selectRepoList(sqlSession, memNo);
 	}
 	
+	public ArrayList<Repositorys> getGHRepo(String token, int memNo) throws IOException {
+		github = GitHub.connectUsingOAuth(token);
+		Map<String , GHRepository> list = github.getMyself().getRepositories();
+		ArrayList<Repositorys> repoList = new ArrayList();
+		sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
+		for (Map.Entry<String, GHRepository> entry : list.entrySet()) {
+			GHRepository repo = entry.getValue();
+			
+			Repositorys r = new Repositorys();
+			r.setMemNo(memNo);
+			r.setRepoName(repo.getName());
+			r.setRepoDescription(repo.getDescription());
+			r.setVisibility(repo.getVisibility().toString());
+			r.setCreateDate(sdf.format(repo.getCreatedAt()));
+			r.setRepoUrl(repo.getUrl().toString());
+			repoList.add(r);
+		}
+		return repoList;
+	}
 	
+	public void insertRepoPlus(Repositorys repo) {
+		rDao.insertRepoPlus(sqlSession, repo);
+	}
 	
 	
 	

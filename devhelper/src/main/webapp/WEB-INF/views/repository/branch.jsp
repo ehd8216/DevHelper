@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
+  
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
@@ -81,6 +81,9 @@
        <div class="branchContent">
          <div id="branchTitle">
            ${ repoName } Branch
+           <button class="btn btn-success" onclick="createBranch()">
+            생성하기
+           </button>
          </div>
          
          <div class="branchList">
@@ -113,6 +116,10 @@
           <script>
             function deleteBranch(branchName){
               location.href="deleteBranch.re?branchName=" + branchName;
+            }
+            function createBranch(bName){
+              
+              // location.href="createBranch.re?bName=" + bName;
             }
           </script>
 </body>

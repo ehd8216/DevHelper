@@ -5,14 +5,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.kohsuke.github.GHIssue;
 import org.kohsuke.github.GHIssueState;
-import org.kohsuke.github.GHPermissionType;
+import org.kohsuke.github.GHRef;
 import org.kohsuke.github.GHBranch;
 import org.kohsuke.github.GHCommit;
 import org.kohsuke.github.GHContent;
@@ -20,7 +19,6 @@ import org.kohsuke.github.GHCreateRepositoryBuilder;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHUser;
 import org.kohsuke.github.GitHub;
-import org.kohsuke.github.GitHubBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -305,6 +303,37 @@ public class RepoController {
                 .block();
         
         return "repository/branch";
+	}
+	
+	@RequestMapping("createBranch.re")
+	public String createBranch(HttpSession session) throws IOException {
+		 github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
+		 String url = (String)session.getAttribute("url");
+		 GHRepository repo = github.getRepository(url);
+
+         GHRef mainBranchRef = repo.getRef("heads/main");
+         String sha = mainBranchRef.getObject().getSha();
+
+         String newBranchName = "new-branch";
+         repo.createRef("refs/heads/" + newBranchName, sha);
+
+		return "";
+	}
+	
+	@RequestMapping("repoReload.re")
+	public String repoReload(int memNo, HttpSession session) throws IOException {
+		ArrayList<Repositorys> dbRepoList = rService.selectRepoList(memNo);
+		ArrayList<Repositorys> ghRepoList = rService.getGHRepo((String)session.getAttribute("token"), memNo);
+		for(Repositorys r : ghRepoList) {
+			for(Repositorys dbr : dbRepoList) {
+				if(r.getRepoName() != dbr.getRepoName()) {
+					rService.insertRepoPlus(r);
+					break;
+				}
+			}
+		}
+		session.setAttribute("alertMsg", "레포 불러오기 성공");
+		return "redirect:myRepo.re";
 	}
 	
 	
