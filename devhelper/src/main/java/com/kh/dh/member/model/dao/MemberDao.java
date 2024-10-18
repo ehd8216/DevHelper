@@ -20,4 +20,5 @@ public class MemberDao
 	{
 		return sqlSession.selectOne("memberMapper.selectMemberDetail", memNo);
 	}
+	
 }
