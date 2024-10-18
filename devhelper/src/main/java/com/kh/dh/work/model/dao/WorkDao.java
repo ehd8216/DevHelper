@@ -22,4 +22,8 @@ public class WorkDao {
 	{
 		return (ArrayList)sqlSession.selectList("scrapMapper.scraplist", memNo); 
 	}
+	public int scrapdelete(SqlSessionTemplate sqlSession, int sn)
+	{
+		return sqlSession.delete("scrapMapper.scrapdelete", sn);
+	}
 }
