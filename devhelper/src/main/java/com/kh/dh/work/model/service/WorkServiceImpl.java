@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.dh.common.model.vo.PageInfo;
+import com.kh.dh.employmentAPI.model.vo.Scrap;
 import com.kh.dh.work.model.dao.WorkDao;
 import com.kh.dh.work.model.vo.Work;
 
@@ -29,6 +30,21 @@ public class WorkServiceImpl implements WorkService{
 	public ArrayList<Work> selectList(PageInfo pi) {
 		
 		return null;
+	}
+
+	@Override
+	public int scrapinsert(Scrap sc) { 
+		return wDao.scrapinsert(sqlSession,sc); 
+	}
+
+	@Override
+	public ArrayList<Scrap> scraplist(int memNo) {
+		return wDao.scraplist(sqlSession, memNo);
+	}
+
+	@Override
+	public int scrapdelete(int sn) {
+		return wDao.scrapdelete(sqlSession,sn);
 	}
 	
 	

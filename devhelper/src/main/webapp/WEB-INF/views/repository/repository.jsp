@@ -30,11 +30,11 @@
     width: 100%;
   }
   #repoHead{
-    height: 80px;
+    height: 60px;
     font-size: 24px;
     text-align: center;
   }
-  #repoHead tr td{
+  #repoHead tr th{
     padding-top: 20px;
   }
   #repoHead tr td button{
@@ -52,6 +52,9 @@
     background-color: rgba(155, 155, 155, 0.3);
     transition: .3s;
   }
+  #repoBody tr td{
+    padding-top: 30px;
+  }
   #nullRepo{
   	height: 500px;
   }
@@ -62,7 +65,16 @@
   float: right;
   margin-right: 35px;
   }
-  
+  #repoBtn{
+    position: relative;
+  }
+  #repoBtn button{
+    position: absolute;
+    top: 15px;
+  }
+  #setRepo .model-body tr{
+    text-align: center;
+  }
 </style>
 </head>
 <body>
@@ -78,7 +90,11 @@
   <div class="outer">
       <div class="repoList">
         <button class="btn btn-primary" data-toggle="modal" data-target="#createRepo">
-          레파지토리 생성
+          새로운 레파지토리 
+        </button>
+      	
+      	<button class="btn btn-warning" onclick="repoReload()">
+          레파지토리 불러오기
         </button>
       	<c:choose>
       	
@@ -92,11 +108,11 @@
 		        <table border="1" class="repoTable">
 		          <thead id="repoHead">
 		            <tr>
-		              <th>Name</th>
-		              <th>Description</th>
-		              <th>Visibility</th>
-		              <th>Create</th>
-		              <td>Sub</td>
+		              <th style="width: 400px;">Name</th>
+		              <th style="width: 400px;">Description</th>
+		              <th style="width: 200px;">Visibility</th>
+		              <th style="width: 200px;">Create</th>
+		              <td></td>
 		            </tr>
 		          </thead>
 		          <tbody id="repoBody">
@@ -107,8 +123,8 @@
 		              <td>${ r.visibility }</td>
 		              <td>${ r.createDate }</td>
 		              <td id="repoBtn">
-		                <button class="btn btn-danger" id="deleteRepo" onclick="deleteRepo('${r.repoUrl}')">삭제</button>
-		                <button class="btn btn-success" id="invite" data-toggle="modal" data-target="#inviteRepo" onclick="getRepoUserUrl('${r.repoUrl}')">초대</button>
+		                <button style="right: 60px;" class="btn btn-danger" id="deleteRepo" onclick="deleteRepo('${r.repoUrl}')">삭제</button>
+		                <button style="left: 60px;" class="btn btn-success" id="invite" data-toggle="modal" data-target="#inviteRepo" onclick="getRepoUserUrl('${r.repoUrl}')">초대</button>
 		              </td>
                   <input id="repoUrl" class="url" type="hidden" value="${r.repoUrl}">
 		            </tr>
@@ -160,6 +176,11 @@
     function inviteRepo(){
     	const inviteUserName = $("#inviteUserName").val();
     	location.href="inviteRepo.re?inviteUserName=" + inviteUserName + "&reUserUrl=" + repoUserUrl;
+    }
+
+    function repoReload(){
+    	const memNo = `${loginMember.memNo}`
+      location.href="repoReload.re?memNo=" + memNo;
     }
     
   </script>

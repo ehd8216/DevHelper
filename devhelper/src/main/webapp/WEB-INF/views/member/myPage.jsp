@@ -147,19 +147,19 @@
 	    <div class="dashboard-container">
 	        <!-- Icon Grid Section -->
 	        <div class="icon-grid">
-	            <a href="#">
+	            <a href="resume.re">
 	                <div>
 	                    <i class="bi bi-file-earmark-text"></i>
 	                    <p>이력서 관리</p>
 	                </div>
 	            </a>
-	            <a href="#">
+	            <a href="recent.wo">
 	                <div>
 	                    <i class="bi bi-search"></i>
 	                    <p>최근 본 공고</p>
 	                </div>
 	            </a>
-	            <a href="#">
+	            <a href="scraplist.wo?memNo=${loginMember.memNo}">
 	                <div>
 	                    <i class="bi bi-star"></i>
 	                    <p>스크랩 공고</p>
@@ -181,7 +181,7 @@
 	
 	        <!-- List Section -->
 	        <div class="list-section">
-			    <form>
+			    <form action="update.me">
 			        <ul>
 			            <li>
 			                <img style="width: 64px; height: 64px" src="${m.profile}">

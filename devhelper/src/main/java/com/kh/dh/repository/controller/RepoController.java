@@ -5,14 +5,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.kohsuke.github.GHIssue;
 import org.kohsuke.github.GHIssueState;
-import org.kohsuke.github.GHPermissionType;
+import org.kohsuke.github.GHRef;
 import org.kohsuke.github.GHBranch;
 import org.kohsuke.github.GHCommit;
 import org.kohsuke.github.GHContent;
@@ -20,7 +19,7 @@ import org.kohsuke.github.GHCreateRepositoryBuilder;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHUser;
 import org.kohsuke.github.GitHub;
-import org.kohsuke.github.GitHubBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -29,10 +28,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.dh.member.model.vo.Member;
+import com.kh.dh.repository.model.service.RepoServiceImpl;
 import com.kh.dh.repository.model.vo.Branch;
 import com.kh.dh.repository.model.vo.Commit;
 import com.kh.dh.repository.model.vo.RepoDirectory;
-import com.kh.dh.repository.model.vo.Repository;
+import com.kh.dh.repository.model.vo.Repositorys;
 
 @Controller
 public class RepoController {
@@ -40,6 +40,9 @@ public class RepoController {
 	private GitHub github; 
 	
 	private SimpleDateFormat sdf;
+	
+	@Autowired
+	private RepoServiceImpl rService;
 	
 	// 전체 레파지토리 조회
 	@RequestMapping("myRepo.re")
@@ -49,26 +52,9 @@ public class RepoController {
 			session.setAttribute("alertMsg", "로그인 후 이용 가능합니다.");
 			return "redirect:/";
 		}else {
-			String token = (String)session.getAttribute("token");
-			github = GitHub.connectUsingOAuth(token);
+			Member m = (Member)session.getAttribute("loginMember");
+			ArrayList<Repositorys> repoList = rService.selectRepoList(m.getMemNo());
 			
-			ArrayList<Repository> repoList = new ArrayList();
-			sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
-			Map<String , GHRepository> list = github.getMyself().getRepositories();
-			
-			for (Map.Entry<String, GHRepository> entry : list.entrySet()) {
-				GHRepository repo = entry.getValue();
-				
-				String url = repo.getUrl().toString().substring(29);
-				
-				Repository r = new Repository();
-				r.setRepoName(repo.getName());
-				r.setRepoDescription(repo.getDescription());
-				r.setVisibility(repo.getVisibility().toString());
-				r.setCreateDate(sdf.format(repo.getCreatedAt()));
-				r.setRepoUrl(repo.getUrl().toString());
-				repoList.add(r);
-			}
 			session.setAttribute("repoList", repoList);
 			
 			return "repository/repository";
@@ -161,7 +147,7 @@ public class RepoController {
 		return "repository/issuesDetail";
 	}
 	@RequestMapping("createRepo.re")
-	public String createRepo(Repository repo, HttpSession session) throws IOException {
+	public String createRepo(Repositorys repo, HttpSession session) throws IOException {
 		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
 		GHCreateRepositoryBuilder builder = github.createRepository(repo.getRepoName());
         builder.description(repo.getRepoDescription());
@@ -317,6 +303,37 @@ public class RepoController {
                 .block();
         
         return "repository/branch";
+	}
+	
+	@RequestMapping("createBranch.re")
+	public String createBranch(HttpSession session) throws IOException {
+		 github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
+		 String url = (String)session.getAttribute("url");
+		 GHRepository repo = github.getRepository(url);
+
+         GHRef mainBranchRef = repo.getRef("heads/main");
+         String sha = mainBranchRef.getObject().getSha();
+
+         String newBranchName = "new-branch";
+         repo.createRef("refs/heads/" + newBranchName, sha);
+
+		return "";
+	}
+	
+	@RequestMapping("repoReload.re")
+	public String repoReload(int memNo, HttpSession session) throws IOException {
+		ArrayList<Repositorys> dbRepoList = rService.selectRepoList(memNo);
+		ArrayList<Repositorys> ghRepoList = rService.getGHRepo((String)session.getAttribute("token"), memNo);
+		for(Repositorys r : ghRepoList) {
+			for(Repositorys dbr : dbRepoList) {
+				if(r.getRepoName() != dbr.getRepoName()) {
+					rService.insertRepoPlus(r);
+					break;
+				}
+			}
+		}
+		session.setAttribute("alertMsg", "레포 불러오기 성공");
+		return "redirect:myRepo.re";
 	}
 	
 	

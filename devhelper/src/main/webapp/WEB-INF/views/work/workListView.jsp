@@ -8,6 +8,7 @@
   <title>Insert title here</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <!-- jQuery CDN -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -201,12 +202,11 @@
   <jsp:include page="../common/menubar.jsp" />
 
   <div class="title" align="center">채용 공고 확인하기</div>
-  <button onclick="location.href='cover.wo'">자소서버튼</button>
   <div class="search-bar-container">
     <div class="search-bar" id="search-bar" style="display: none;">
      
       <input type="text" name="keyword" placeholder="검색어를 입력하세요">
-
+      
       <div class="dropdown">
         <div id="job-dropdown-btn">희망 분야를 선택해주세요</div>
         <div id="job-dropdown-grid" class="dropdown-grid-content">
@@ -269,29 +269,33 @@
   let totalPages = 10;
   let ncsCdLst;
   let recrutPbancTtl;
-  
+  let scrapSnList = [];
   $(function(){
 	  loadData(currentPage);
-    updatePagination(currentPage);
+      updatePagination(currentPage);
+      scrapnum();
       
   });
   
   function loadData(page){
-		$.ajax({
+		$.ajax
+		({
 			url:"work.wo",
 			data:{
-        pageNo:page, 
-        numOfRows:pageSize,
-        ncsCdLst:ncsCdLst,
-        recrutPbancTtl: recrutPbancTtl,
-      },
-			success:function(data){
+		        pageNo:page, 
+		        numOfRows:pageSize,
+		        ncsCdLst:ncsCdLst,
+		        recrutPbancTtl: recrutPbancTtl,
+      		},
+			success:function(data)
+			{
 				console.log(data);
 				let items = data.result;
 				let html = "";
         
 				
-				$.each(items,function(index,job){
+				$.each(items,function(index,job)
+				{
 					 html += "<tr data-sn='"+job.recrutPblntSn+"'> ";
 			          html += "<td>" + job.instNm + "</td>";
 			          html += "<td>" + job.recrutPbancTtl + "</td>";
@@ -300,37 +304,154 @@
 			          html += "<td>" + job.hireTypeNmLst + "</td>";
 			          html += "<td>" + job.recrutSeNm + "</td>";
 			          html += "<td>" + job.workRgnNmLst + "</td>";
-			          html += "<td><span id='scrap' class='material-symbols-outlined favorite'>favorite</span></td>";
-			          html += "</tr>";
-				});
+			          if (scrapSnList.includes(job.recrutPblntSn)) 
+			          {
+			              html += "<td><span id='scrap2' class='material-symbols-outlined favorite' style='font-variation-settings: \"FILL\" 1; color:red;'>favorite</span></td>";
+			          } 
+			          else
+			          {
+			              html += "<td><span id='scrap' class='material-symbols-outlined favorite'>favorite</span></td>";
+			          }
+			          	html += "</tr>";
+	            });
+
+
 				
-				$("#result1 tbody").html(html);	
-        $("#currentPage").text(currentPage);
+				 $("#result1 tbody").html(html);	
+       			 $("#currentPage").text(currentPage);
 			},
-			error:function(){
+			error:function()
+			{
 				console.log("API AJAX에러")
 			}
 		})
 	}
 
-  
-  
-  
-  
+  function scrapnum() {
+	  $.ajax({
+	    url: "scrapcheck.wo",
+	    data: { memNo: "${loginMember.memNo}" },
+	    success: function(SnList) {
+	      scrapSnList = SnList; // 스크랩된 목록을 전역 변수에 저장
+	    },
+	    error: function() {
+	      console.log("스크랩 목록을 불러오는 중 에러 발생");
+	    }
+	  });
+	}
+ //쿠키부분-----------------------------------------------
+function setCookieWithObject(name, object, expireDays) {
+    const date = new Date();
+    date.setTime(date.getTime() + (expireDays * 24 * 60 * 60 * 1000));
+    const expires = "expires=" + date.toUTCString();
+    document.cookie = name + "=" + encodeURIComponent(JSON.stringify(object)) + ";" + expires + ";path=/";
+}
+
+// 쿠키에서 JSON 문자열을 객체로 읽어오는 함수
+function getCookieWithObject(name) {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) {
+            const jsonString = decodeURIComponent(c.substring(nameEQ.length, c.length));
+            try {
+                const parsedData = JSON.parse(jsonString);
+                // 반환된 값이 배열이 아닌 경우 빈 배열로 초기화
+                return Array.isArray(parsedData) ? parsedData : [];
+            } catch (e) {
+                console.error("쿠키 데이터 파싱 오류:", e);
+                return []; // 오류 발생 시 빈 배열 반환
+            }
+        }
+    }
+    return []; // 쿠키가 없는 경우 빈 배열 반환
+}
+//최근 본 공고를 쿠키에 저장하는 함수
+function saveRecentJob(job) {
+    const recentJobs = getCookieWithObject('recentJob'); // 쿠키에서 배열 가져오기
+    // 배열이 10개 이상일 경우 가장 오래된 항목 삭제
+    if (recentJobs.length >= 3) {
+        recentJobs.shift(); // 가장 오래된 항목 삭제
+        console.log("뭐야")
+    }
+    recentJobs.push(job); // 새로운 공고 추가
+    console.log("저장하기 전의 recentJobs:", recentJobs);
+    setCookieWithObject('recentJob', recentJobs, 7); // 쿠키에 저장
+}
   // 디테일로 넘어가는 스크립트(sn 줘야함)
-  $(document).on("click", "#result1>tbody>tr", function() {
-      const sn = $(this).data("sn");
-      location.href = "detail.wo?sn=" + sn; 
-      console.log(sn)
-  });
+ $(document).on("click", "#result1>tbody>tr", function() {
+    const jobInfo = {
+        recrutPblntSn: $(this).data("sn"), 
+        instNm: $(this).find("td").eq(0).text(),
+        recrutPbancTtl: $(this).find("td").eq(1).text(),
+        pbancEndYmd: $(this).find("td").eq(2).text(),
+        ncsCdNmLst: $(this).find("td").eq(3).text(),
+        hireTypeNmLst: $(this).find("td").eq(4).text(),
+        recrutSeNm: $(this).find("td").eq(5).text(),
+        workPlcNm: $(this).find("td").eq(6).text()
+    };
+
+    // 쿠키에 객체로 저장 (7일 유효)
+    saveRecentJob(jobInfo); // 최근 본 공고 저장
+    const sn = $(this).data("sn");
+    setTimeout(() => {
+        location.href = "detail.wo?sn=" + sn; 
+    }, 100); // 100ms 지연
+});
+
   //scrap 전파방해 스크랩
   $(document).on("click", "#scrap", function(event) {
 	    event.stopPropagation(); 
 	    event.preventDefault();
 	    const sn = $(this).closest('tr').data("sn");
-	    console.log(sn);
+	    $.ajax
+	    ({
+	    	url:"scrap.wo",
+	    	data:{sn},
+	    	success: function(result) {
+	            console.log(result);
+
+	            if (result == -1) {
+	                alert('로그인 후 이용 가능한 서비스입니다.');  
+	            } else if (result > 0) {
+	                alert('스크랩이 성공적으로 완료되었습니다!');  
+	            } else {
+	                alert('스크랩에 실패했습니다. 다시 시도해주세요.');  
+	            }
+	            
+	        },
+	        error: function() {
+	            alert('서버 에러가 발생했습니다. 잠시 후 다시 시도해주세요.');
+	        }
+	    });
 	});
-  
+  //스크랩 취소 스크립트
+  $(document).on("click", "#scrap2", function(event) {
+	    event.stopPropagation(); 
+	    event.preventDefault();
+	    const sn = $(this).closest('tr').data("sn");
+	    $.ajax
+	    ({
+	    	url:"scrapdelete.wo",
+	    	data:{sn},
+	    	success: function(result) {
+	            console.log(result);
+
+	            if (result > 0) {
+	                alert('스크랩이 성공적으로 삭제되었습니다.');  
+	            }else {
+	                alert('스크립 삭제에 실패했습니다.');  
+	            }
+	            
+	        },
+	        error: function() {
+	            alert('서버 에러가 발생했습니다. 잠시 후 다시 시도해주세요.');
+	        }
+	    });
+	});
     // 백 투더 탑 스크립트
      $(document).ready(function () {
       

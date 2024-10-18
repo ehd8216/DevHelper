@@ -8,8 +8,7 @@ import com.kh.dh.member.model.dao.MemberDao;
 import com.kh.dh.member.model.vo.Member;
 
 @Service
-public class MemberServiceImpl implements MemberService 
-{
+public class MemberServiceImpl implements MemberService {
 	@Autowired
 	private MemberDao mDao;
 	
@@ -32,6 +31,12 @@ public class MemberServiceImpl implements MemberService
 	public Member selectMemberDetail(int memNo) {
 
 		return mDao.selectMemberDetail(sqlSession, memNo);
+	}
+
+	@Override
+	public int updatemember(Member m) 
+	{
+		return mDao.updatemember(sqlSession,m);
 	}
 
 }
