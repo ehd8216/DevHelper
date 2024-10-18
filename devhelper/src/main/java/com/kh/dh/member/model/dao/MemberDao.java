@@ -18,4 +18,8 @@ public class MemberDao {
 	public Member selectMemberDetail(SqlSessionTemplate sqlSession, int memNo) {
 		return sqlSession.selectOne("memberMapper.selectMemberDetail", memNo);
 	}
+	public int updatemember(SqlSessionTemplate sqlSession,Member m)
+	{
+		return sqlSession.update("memberMapper.updatemember", m);
+	}
 }

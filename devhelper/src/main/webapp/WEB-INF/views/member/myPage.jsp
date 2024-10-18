@@ -181,7 +181,7 @@
 	
 	        <!-- List Section -->
 	        <div class="list-section">
-			    <form>
+			    <form action="update.me">
 			        <ul>
 			            <li>
 			                <img style="width: 64px; height: 64px" src="${m.profile}">

@@ -62,6 +62,13 @@
 		  from member
 		  where mem_no = #{memNo}
 	</select>
+	
+	<update id="updatemember">
+		update member
+		   set mem_intro = #{memIntro}
+		   	 , stack_name = #{stackName}
+		   where mem_no = #{memNo}
+	</update>
 </mapper>
 
 
