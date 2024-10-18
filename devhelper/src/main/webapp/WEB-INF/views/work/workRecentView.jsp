@@ -115,57 +115,78 @@ tbody tr:hover {
                     <th width="75px">근무지</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="recentJobsTable">
             </tbody>
         </table>
     </div>
-        <script>
-        // 쿠키에서 최근 본 공고를 가져오는 함수
-        function getCookie(name) {
-            const value = `; ${document.cookie}`;
-            const parts = value.split(`; ${name}=`);
-            if (parts.length === 2) return parts.pop().split(';').shift();
-        }
 
-        function loadRecentJobs() {
-            const recentJobs = JSON.parse(getCookie('recentJobs') || '[]');
-            if (recentJobs.length === 0) {
-                // 최근 본 공고가 없을 경우
-                $("#result1 tbody").html("<tr><td colspan='7' align='center'>최근 본 공고가 없습니다.</td></tr>");
-                return;
-            }
+    <script>
+        // 쿠키에서 JSON 문자열을 객체로 읽어오는 함수
+        function getCookieWithObject(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
 
-            // 최근 본 공고를 API로 가져오는 부분
-            $.ajax({
-                url: "https://apis.data.go.kr/1051000/recruitment/list", // 실제 API URL로 변경
-                method: "POST",
-                data: { snList: recentJobs }, // 최근 본 공고 목록 전달
-                success: function(data) {
-                    let html = "";
-                    // data는 최근 본 공고의 배열이라고 가정
-                    $.each(data, function(index, job) {
-                        html += "<tr>";
-                        html += "<td>" + job.instNm + "</td>";
-                        html += "<td>" + job.recrutPbancTtl + "</td>";
-                        html += "<td>" + job.pbancEndYmd + "</td>";
-                        html += "<td>" + job.ncsCdNmLst + "</td>";
-                        html += "<td>" + job.hireTypeNmLst + "</td>";
-                        html += "<td>" + job.recrutSeNm + "</td>";
-                        html += "<td>" + job.workRgnNmLst + "</td>";
-                        html += "</tr>";
-                    });
-                    $("#result1 tbody").html(html);
-                },
-                error: function() {
-                    console.log("최근 본 공고를 불러오는 중 오류 발생");
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i].trim();
+                if (c.indexOf(nameEQ) == 0) {
+                    const jsonString = decodeURIComponent(c.substring(nameEQ.length, c.length));
+                    try {
+                        const parsedData = JSON.parse(jsonString);
+                        // 반환된 값이 배열이 아닌 경우 빈 배열로 초기화
+                        return Array.isArray(parsedData) ? parsedData : [];
+                    } catch (e) {
+                        console.error("쿠키 데이터 파싱 오류:", e);
+                        return []; // 오류 발생 시 빈 배열 반환
+                    }
                 }
-            });
+            }
+            return []; // 쿠키가 없는 경우 빈 배열 반환
         }
 
-        // 페이지가 로드될 때 최근 본 공고를 불러옴
-        $(document).ready(function() {
+        // 최근 본 공고를 로드하는 함수
+       function loadRecentJobs() 
+        {
+		    const recentJobs = getCookieWithObject('recentJob'); // 쿠키에서 배열 가져오기
+		    console.log(recentJobs); // 최근 본 공고의 내용을 로그로 확인
+		    const tableBody = document.querySelector('#recentJobsTable');
+
+    		// 공고 정보가 존재하는 경우 테이블에 추가
+		    if (recentJobs.length > 0) 
+		    {
+		        let value = ""; // 초기화
+		
+		        for (let i = 0; i < recentJobs.length; i++) 
+		        {
+		            const job = recentJobs[i];
+		            value += "<tr data-sn='"+job.recrutPblntSn+"'> "+
+		                "<td>" + (job.instNm || 'N/A') + "</td>" +
+		                "<td>" + (job.recrutPbancTtl || 'N/A') + "</td>" +
+		                "<td>" + (job.pbancEndYmd || 'N/A') + "</td>" +
+		                "<td>" + (job.ncsCdNmLst || 'N/A') + "</td>" +
+		                "<td>" + (job.hireTypeNmLst || 'N/A') + "</td>" +
+		                "<td>" + (job.recrutSeNm || 'N/A') + "</td>" +
+		                "<td>" + (job.workPlcNm || 'N/A') + "</td>" +
+		                "</tr>";
+		        }
+		
+		        tableBody.innerHTML = value; // 테이블에 추가
+		    } 
+		    else
+		    {
+		        console.log("최근 본 공고가 없습니다.");
+		    }
+		}
+       $(document).on("click", "#result1>tbody>tr", function()
+       {
+    	    const sn = $(this).data("sn");
+    	    location.href = "detail.wo?sn=" + sn; 
+    	});
+        window.onload = function() {
             loadRecentJobs();
-        });
+        };
     </script>
+
 </body>
+
+
 </html>

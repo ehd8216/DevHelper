@@ -146,6 +146,73 @@ tbody tr:hover {
 	    location.href = "detail.wo?sn=" + sn;
 
 	});
+	// 페이지네이션 설정
+	const rowsPerPage = 10;  // 페이지당 표시할 항목 수
+	let currentPage = 1;    // 현재 페이지 번호
+
+	// 모든 행을 가져옴
+	const rows = document.querySelectorAll("#result1 tbody tr");
+
+	// 총 페이지 수 계산
+	const totalPages = Math.ceil(rows.length / rowsPerPage);
+
+	// 페이지 번호 생성 함수
+	function createPagination() {
+	    const pageNumbers = document.getElementById("page-numbers");
+	    pageNumbers.innerHTML = '';
+
+	    for (let i = 1; i <= totalPages; i++) {
+	        const pageButton = document.createElement("button");
+	        pageButton.textContent = i;
+	        pageButton.classList.add("page-number");
+	        if (i === currentPage) {
+	            pageButton.classList.add("active"); // 현재 페이지 표시
+	        }
+	        pageButton.addEventListener("click", function () {
+	            goToPage(i);
+	        });
+	        pageNumbers.appendChild(pageButton);
+	    }
+	}
+
+	// 페이지로 이동하는 함수
+	function goToPage(page) {
+	    currentPage = page;
+	    showRowsForPage(page);
+	    createPagination(); // 페이지 버튼 갱신
+	}
+
+	// 각 페이지에 맞는 행 표시 함수
+	function showRowsForPage(page) {
+	    // 모든 행 숨기기
+	    rows.forEach((row, index) => {
+	        row.style.display = "none";
+	    });
+
+	    // 현재 페이지에 해당하는 행만 표시
+	    const start = (page - 1) * rowsPerPage;
+	    const end = start + rowsPerPage;
+	    for (let i = start; i < end && i < rows.length; i++) {
+	        rows[i].style.display = "table-row";
+	    }
+	}
+
+	// 이전 페이지로 이동
+	document.getElementById("prevPage").addEventListener("click", function () {
+	    if (currentPage > 1) {
+	        goToPage(currentPage - 1);
+	    }
+	});
+
+	// 다음 페이지로 이동
+	document.getElementById("nextPage").addEventListener("click", function () {
+	    if (currentPage < totalPages) {
+	        goToPage(currentPage + 1);
+	    }
+	});
+
+	// 초기 페이지 표시
+	goToPage(currentPage);
 </script>
 </body>
 </html>

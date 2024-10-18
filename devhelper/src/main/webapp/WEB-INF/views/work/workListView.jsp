@@ -274,6 +274,7 @@
 	  loadData(currentPage);
       updatePagination(currentPage);
       scrapnum();
+      
   });
   
   function loadData(page){
@@ -332,49 +333,75 @@
 	    data: { memNo: "${loginMember.memNo}" },
 	    success: function(SnList) {
 	      scrapSnList = SnList; // 스크랩된 목록을 전역 변수에 저장
-	      console.log(scrapSnList); // 스크랩 목록을 확인
 	    },
 	    error: function() {
 	      console.log("스크랩 목록을 불러오는 중 에러 발생");
 	    }
 	  });
 	}
-  
-  
-  
-  
+ //쿠키부분-----------------------------------------------
+function setCookieWithObject(name, object, expireDays) {
+    const date = new Date();
+    date.setTime(date.getTime() + (expireDays * 24 * 60 * 60 * 1000));
+    const expires = "expires=" + date.toUTCString();
+    document.cookie = name + "=" + encodeURIComponent(JSON.stringify(object)) + ";" + expires + ";path=/";
+}
+
+// 쿠키에서 JSON 문자열을 객체로 읽어오는 함수
+function getCookieWithObject(name) {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) {
+            const jsonString = decodeURIComponent(c.substring(nameEQ.length, c.length));
+            try {
+                const parsedData = JSON.parse(jsonString);
+                // 반환된 값이 배열이 아닌 경우 빈 배열로 초기화
+                return Array.isArray(parsedData) ? parsedData : [];
+            } catch (e) {
+                console.error("쿠키 데이터 파싱 오류:", e);
+                return []; // 오류 발생 시 빈 배열 반환
+            }
+        }
+    }
+    return []; // 쿠키가 없는 경우 빈 배열 반환
+}
+//최근 본 공고를 쿠키에 저장하는 함수
+function saveRecentJob(job) {
+    const recentJobs = getCookieWithObject('recentJob'); // 쿠키에서 배열 가져오기
+    // 배열이 10개 이상일 경우 가장 오래된 항목 삭제
+    if (recentJobs.length >= 3) {
+        recentJobs.shift(); // 가장 오래된 항목 삭제
+        console.log("뭐야")
+    }
+    recentJobs.push(job); // 새로운 공고 추가
+    console.log("저장하기 전의 recentJobs:", recentJobs);
+    setCookieWithObject('recentJob', recentJobs, 7); // 쿠키에 저장
+}
   // 디테일로 넘어가는 스크립트(sn 줘야함)
-  $(document).on("click", "#result1>tbody>tr", function() {
-      const sn = $(this).data("sn");
-      saveRecentlyViewed(sn);
-      location.href = "detail.wo?sn=" + sn; 
-      console.log(sn)
-  });
-  function saveRecentlyViewed(sn) {
-	    // 현재 저장된 쿠키 가져오기
-	    let recentJobs = getCookie('recentJobs');
-	    recentJobs = recentJobs ? JSON.parse(recentJobs) : [];
+ $(document).on("click", "#result1>tbody>tr", function() {
+    const jobInfo = {
+        recrutPblntSn: $(this).data("sn"), 
+        instNm: $(this).find("td").eq(0).text(),
+        recrutPbancTtl: $(this).find("td").eq(1).text(),
+        pbancEndYmd: $(this).find("td").eq(2).text(),
+        ncsCdNmLst: $(this).find("td").eq(3).text(),
+        hireTypeNmLst: $(this).find("td").eq(4).text(),
+        recrutSeNm: $(this).find("td").eq(5).text(),
+        workPlcNm: $(this).find("td").eq(6).text()
+    };
 
-	    // 이미 존재하는지 확인 후 추가
-	    if (!recentJobs.includes(sn)) {
-	      recentJobs.push(sn);
-	    }
+    // 쿠키에 객체로 저장 (7일 유효)
+    saveRecentJob(jobInfo); // 최근 본 공고 저장
+    const sn = $(this).data("sn");
+    setTimeout(() => {
+        location.href = "detail.wo?sn=" + sn; 
+    }, 100); // 100ms 지연
+});
 
-	    // 최대 5개의 최근본 공고 유지
-	    if (recentJobs.length > 5) {
-	      recentJobs.shift(); // 가장 오래된 공고 삭제
-	    }
-
-	    // 쿠키에 저장
-	    document.cookie = "recentJobs=" + JSON.stringify(recentJobs) + "; path=/; max-age=" + (60 * 60 * 24 * 7); // 1주일 유효
-	    console.log(recentJobs)
-	  }
-
-	  function getCookie(name) {
-	    const value = `; ${document.cookie}`;
-	    const parts = value.split(`; ${name}=`);
-	    if (parts.length === 2) return parts.pop().split(';').shift();
-	  }
   //scrap 전파방해 스크랩
   $(document).on("click", "#scrap", function(event) {
 	    event.stopPropagation(); 
