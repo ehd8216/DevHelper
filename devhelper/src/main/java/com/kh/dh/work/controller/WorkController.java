@@ -78,7 +78,11 @@ public class WorkController {
 	    System.out.println(SnList); // 콘솔에 출력하여 확인
 	    return SnList; // SnList를 JSON 형태로 반환
 	}
-	
+	@RequestMapping("recent.wo")
+	public String recentwork()
+	{
+		return"work/workRecentView";
+	}
 	
 
 }

@@ -119,6 +119,7 @@ tbody tr:hover {
       <tbody>
       <c:forEach var="s" items="${sc}">
       	<tr>
+      	  <input type="hidden" value="${s.recrutPblntSn}">
           <td>${s.instNm}</td>
           <td>${s.recrutPbancTtl }</td>
           <td>${s.pbancEndYmd }</td>
@@ -138,6 +139,13 @@ tbody tr:hover {
     <span id="page-numbers"></span>
     <button id="nextPage">Next</button>
   </div>
+  <script>
+	$(document).on("click", "#result1>tbody>tr", function() {
+	    const sn = $(this).find('input[type="hidden"]').val();
+	
+	    location.href = "detail.wo?sn=" + sn;
 
+	});
+</script>
 </body>
 </html>
