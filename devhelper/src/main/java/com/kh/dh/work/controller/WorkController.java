@@ -75,7 +75,6 @@ public class WorkController {
 	    for (Scrap sc : scrap) {
 	        SnList.add(sc.getRecrutPblntSn()); // scrap 객체에서 recrutPblntSn을 추출
 	    }
-	    System.out.println(SnList); // 콘솔에 출력하여 확인
 	    return SnList; // SnList를 JSON 형태로 반환
 	}
 	@RequestMapping("recent.wo")
@@ -83,6 +82,12 @@ public class WorkController {
 	{
 		return"work/workRecentView";
 	}
-	
+	@ResponseBody
+	@RequestMapping("scrapdelete.wo")
+	public int scrapdelete(int sn)
+	{
+		int result = wService.scrapdelete(sn);
+		return result;
+	}
 
 }

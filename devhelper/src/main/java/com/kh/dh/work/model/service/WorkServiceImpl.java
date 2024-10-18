@@ -41,6 +41,11 @@ public class WorkServiceImpl implements WorkService{
 	public ArrayList<Scrap> scraplist(int memNo) {
 		return wDao.scraplist(sqlSession, memNo);
 	}
+
+	@Override
+	public int scrapdelete(int sn) {
+		return wDao.scrapdelete(sqlSession,sn);
+	}
 	
 	
 	

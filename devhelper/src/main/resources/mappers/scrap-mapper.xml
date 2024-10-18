@@ -69,5 +69,9 @@
          from scrap
          where user_id=#{memNo}
 	</select>
-
+	<delete id="scrapdelete">
+		delete
+		from scrap
+		where sn_id = #{scrnprcdrMthdExpln}
+	</delete>
 </mapper>
