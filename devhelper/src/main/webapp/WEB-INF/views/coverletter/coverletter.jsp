@@ -269,6 +269,14 @@
         $('#charCount').text(charCount + ' characters'); }
         $('.resultAPI').on('input', updateCharCount);
 
+
+        $('.resultAPI').on('input', function() {
+            const modifiedResult = $(this).val();
+            sessionStorage.setItem('resultAPI', modifiedResult);  // Save the modified content
+            console.log('Modified result stored in sessionStorage:', modifiedResult);
+        });
+
+
         $(document).ready(function () {
         
         const storedResult = sessionStorage.getItem('resultAPI');
