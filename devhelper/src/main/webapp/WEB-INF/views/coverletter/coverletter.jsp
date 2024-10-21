@@ -226,11 +226,11 @@
             try {
             
                 let jsonResponse = JSON.parse(result);
-
-            
                 if (jsonResponse && jsonResponse.response) {
                     let responseText = jsonResponse.response;
                     $('.resultAPI').val(responseText).show();
+
+                    sessionStorage.setItem('resultAPI',responseText);
                 } else {
                     console.log("Unexpected format:", jsonResponse);
                     $('.resultAPI').val('Unexpected format: ' + JSON.stringify(jsonResponse, null, 2)).show();
@@ -256,19 +256,30 @@
                     $('.resultAPI').focus()[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
                     $('#charCount').show();
                     $('#copyButton').show();
+
+                    sessionStorage.setItem('resultAPI', substr);
+                    console.log('Error stored in sessionStorage:', sessionStorage.getItem('resultAPI'));
+
                     updateCharCount();
                         }
                     })
             });
 
-
-
-
         function updateCharCount() {const charCount = $('.resultAPI').val().length;
         $('#charCount').text(charCount + ' characters'); }
         $('.resultAPI').on('input', updateCharCount);
+
+        $(document).ready(function () {
+        
+        const storedResult = sessionStorage.getItem('resultAPI');
+        
+        if (storedResult) {
+            $('.resultAPI').val(storedResult).show();
+            updateCharCount();  
+        }
+        });
     
-    
+        
 
         const exampleData = {
             companyName: "kakao",
