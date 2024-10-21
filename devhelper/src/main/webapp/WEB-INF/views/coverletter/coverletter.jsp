@@ -96,6 +96,27 @@
             display: none;
             margin-top: 20px;
         }
+        .skill-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px; /* Adds space between skill badges */
+            margin-top: 15px;
+        }
+
+        .skill-container .skill-badge {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #f0f2f5;
+            color: #333;
+            border-radius: 20px;
+            font-size: 16px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+
+        .skill-container .skill-badge:hover {
+            background-color: #e0e2e5;
+        }
     </style>
     </head>
     <body>
@@ -113,7 +134,7 @@
             <input type="text" id="newSkill" style="width: 15%;">
             <button id="addSkillBtn">추가</button>
             <button id="delSkillBtn">삭제</button>
-            <div id="skill"></div>
+            <div id="skill" class="skill-container"></div>
         </div>
     
 
@@ -151,9 +172,12 @@
              
             </table>
             <button class="write" id="generateAI">AI를 통해 작성</button>
-            <textarea type="text" class="resultAPI" style="min-height: 300px; height: auto;"></textarea>
-            <span id="charCount" style="display: none;">0 characters</span>
-            <button id="copyButton" style="display: none;">내 이력서에 복사</button>
+          
+                <textarea type="text" class="resultAPI" style="min-height: 300px; height: auto;"></textarea>
+                <span id="charCount" style="display: none;">0 characters</span>
+                <button id="copyButton" style="display: none;">이력서에 저장</button>
+        
+           
             
         </div>
     </div>
@@ -171,6 +195,8 @@
            const motivation = $("#motivation").val();
            const question = $("#question").val();
            const experience = $("#experience").val()
+           const skill = skillsArray.join(', ');
+
             // prompt.push($("#companyName").val());
             // prompt.push($("#jobTitle").val());
             // prompt.push($("#maxLength").val());
@@ -192,6 +218,7 @@
                     , motivation:motivation
                     , question:question
                     , experience:experience
+                    , skill:skill
                 }),
                 success:function(result){
                   console.log("sucess : " + result);  
@@ -219,7 +246,6 @@
     updateCharCount();
         },
             error: function(xhr) {
-                
                 const str = xhr.responseText;
                 const substr = str.substring(13, str.length - 2);
                 
@@ -284,8 +310,14 @@
         let skillsArray = [];
 
         function updateSkillsDisplay() {
-            $('#skill').text(skillsArray.join(', '));
-        }
+        const skillContainer = $('#skill');
+        skillContainer.empty(); // Clear the container before updating
+
+        skillsArray.forEach(skill => {
+            const skillBadge = $('<span>').addClass('skill-badge').text(skill);
+            skillContainer.append(skillBadge);
+        });
+}
 
         $('#addSkillBtn').on('click', function () {
         const newSkill = $('#newSkill').val().trim();
@@ -304,6 +336,11 @@
             }
         })
 
+
+        
+
+
+        
 
     </script>
     </body>

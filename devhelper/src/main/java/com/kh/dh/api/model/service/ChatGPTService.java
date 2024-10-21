@@ -22,10 +22,10 @@ public class ChatGPTService {
     private static final String API_URL = "https://api.openai.com/v1/chat/completions";
     
     // OpenAI API 호출 메서드
-    public String callChatGPT(String companyName, String jobTitle, String maxLength, String motivation, String question, String experience) {
+    public String callChatGPT(String companyName, String jobTitle, String maxLength, String motivation, String question, String experience, String skill) {
         try {
             HttpURLConnection connection = createConnection();
-            String userMsg = createUserMessage(companyName, jobTitle, motivation, question, experience, maxLength);
+            String userMsg = createUserMessage(companyName, jobTitle, motivation, question, experience, maxLength,skill);
             sendRequest(connection, userMsg);
             
             int responseCode = connection.getResponseCode();
@@ -51,9 +51,10 @@ public class ChatGPTService {
     }
 
     // 사용자 메시지 생성 메서드
-    private String createUserMessage(String companyName, String jobTitle, String motivation, String question, String experience, String maxLength) {
-        return "내가 지원하는 회사 : " + companyName + "이고 이곳에서" +
+    private String createUserMessage(String companyName, String jobTitle, String motivation, String question, String experience, String maxLength, String skill) {
+    	return "내가 지원하는 회사 : " + companyName + "이고 이곳에서" +
                 "내 희망 직무 : " + jobTitle + "이야." +
+        		"내가 가지고 있는 개발스택은 " + skill + "들이고 " + 
                 "내가 이 회사에 희망하는 이유는" + motivation + "이고," +
                 "이 회사에서 나에게 물어보는 질문은 : " + question + "이야." +
                 "이 질문에 대한 내 경험은 : " + experience + "야." +
