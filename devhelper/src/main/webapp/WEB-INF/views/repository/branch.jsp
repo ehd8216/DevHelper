@@ -6,10 +6,20 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
   
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+				integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+				crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
+  body{
+    background-color: transparent;
+  }
   html::-webkit-scrollbar{
     width: 10px;
   }
@@ -51,6 +61,7 @@
     text-align: center;
     font-size: 24px;
     font-weight: 700;
+    position: relative;
   }
   .branchList{
     margin-top: 20px;
@@ -74,14 +85,26 @@
   #bTr td button svg{
     margin-top: 4px;
   }
+  #cBranch{
+    position: absolute;
+    right: 240px;
+  }
 </style>
 </head>
 <body>
+
+	<c:if test="${ not empty alertMsg }">
+		<script>
+			toastr.success("${alertMsg}");
+		</script>
+		<c:remove var="alertMsg" />
+	</c:if>
+	
     <div class="outer">
        <div class="branchContent">
          <div id="branchTitle">
-           ${ repoName } Branch
-           <button class="btn btn-success" onclick="createBranch()">
+           ${ repoName } Branch List
+           <button class="btn btn-success" id="cBranch" data-toggle="modal" data-target="#createBranch">
             생성하기
            </button>
          </div>
@@ -112,14 +135,41 @@
          
        </div>
     </div>
-
+    
+    <div class="container">
+    <!-- createBranch Modal -->
+	  <div class="modal" id="createBranch">
+	    <div class="modal-dialog">
+	      <div class="modal-content">
+	      
+	        <!-- Modal Header -->
+	        <div class="modal-header">
+	          <h4 class="modal-title">Create a Branch</h4>
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        </div>
+	        
+	        <!-- Modal body -->
+	        <div class="modal-body">
+	          New Branch Name : <input type="text" id="newBranchName">
+	        </div>
+	        
+	        <!-- Modal footer -->
+	        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+	          <button type="button" class="btn btn-success" onclick="createBranch()">Create</button>
+	        </div>
+	        
+	      </div>
+	    </div>
+	  </div>
+	</div>
           <script>
             function deleteBranch(branchName){
               location.href="deleteBranch.re?branchName=" + branchName;
             }
-            function createBranch(bName){
-              
-              // location.href="createBranch.re?bName=" + bName;
+            function createBranch(){
+              const nbn = $("#newBranchName").val();
+              location.href="createBranch.re?bName=" + nbn;
             }
           </script>
 </body>

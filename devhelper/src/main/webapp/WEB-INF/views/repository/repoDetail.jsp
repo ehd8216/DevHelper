@@ -204,7 +204,7 @@
             })
             
             $("#branch").click(function(){
-                $("#iframe").attr("src", "branch.re?repoUserUrl=" + '${ url }')
+                $("#iframe").attr("src", "branch.re")
                 $("#dual2").css("display","block")
             })
             

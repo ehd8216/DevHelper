@@ -74,7 +74,7 @@
     <div class="commitList">
 
       <div id="commitTitle">
-        ${ repoName } Commits
+        ${ repoName } Commit List
       </div>
 
       <table id="cListTable">

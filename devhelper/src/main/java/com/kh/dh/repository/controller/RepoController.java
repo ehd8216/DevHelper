@@ -259,8 +259,9 @@ public class RepoController {
 	}
 	
 	@RequestMapping("branch.re")
-	public String branch(String repoUserUrl, HttpSession session) throws IOException {
+	public String branch(HttpSession session) throws IOException {
 		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
+		String repoUserUrl = (String)session.getAttribute("url");
 		GHRepository repo = github.getRepository(repoUserUrl);
 		String[] str = repoUserUrl.split("/");
 		
@@ -302,11 +303,12 @@ public class RepoController {
                 .bodyToMono(Void.class)
                 .block();
         
-        return "repository/branch";
+        session.setAttribute("alertMsg", "브랜치 삭제 완료");
+        return "redirect:branch.re";
 	}
 	
 	@RequestMapping("createBranch.re")
-	public String createBranch(HttpSession session) throws IOException {
+	public String createBranch(String bName, HttpSession session) throws IOException {
 		 github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
 		 String url = (String)session.getAttribute("url");
 		 GHRepository repo = github.getRepository(url);
@@ -314,10 +316,10 @@ public class RepoController {
          GHRef mainBranchRef = repo.getRef("heads/main");
          String sha = mainBranchRef.getObject().getSha();
 
-         String newBranchName = "new-branch";
-         repo.createRef("refs/heads/" + newBranchName, sha);
-
-		return "";
+         repo.createRef("refs/heads/" + bName, sha);
+         
+         session.setAttribute("alertMsg", "브랜치 생성 완료");
+		 return "redirect:branch.re";
 	}
 	
 	@RequestMapping("repoReload.re")
