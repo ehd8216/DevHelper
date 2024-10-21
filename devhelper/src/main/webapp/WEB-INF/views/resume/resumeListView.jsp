@@ -164,40 +164,52 @@
         </div>
     </div>
 
-    <button class="new-resume-btn" style="width: 100%;">새로운 이력서 작성하기</button>
+    <button class="new-resume-btn" style="width: 100%;" onclick="showProfileForm()">새로운 이력서 작성하기</button>
     <br>
     <hr>
     <br>
 
     <!-- Profile Section -->
-    <div class="resume profile">
-        <table class="profile-table">
-            <tr>
-                <td class="profile-info"><span>이름:</span> 홍길동</td>
-                
-            </tr>
-            <tr>
-                <td class="profile-info"><span>생년:</span> 1990</td>
-                <td class="profile-info"><span>이메일:</span> gil_dong@example.com</td>
-            </tr>
-            <tr>
-               
-            </tr>
-            <tr>
-                <td class="profile-info"><span>개발 직무:</span> 백엔드 개발자</td>
-                <td class="profile-info"><span>기술 스택:</span> Java, Spring, MyBatis, SQL</td>
-            </tr>
-            <tr>
-                <td class=""><span>학력:</span> <select name="졸업" id="졸업"></select> kh대학교</td>
-            </tr>
-            <tr>
-                <td class=""><span>자격증:</span> 정보처리기사</td>
-            </tr>
-            <tr>
-                <td class=""><span>자기소개서</span></td>
-            </tr>
-        </table>
+    <div id="profile-section" class="resume profile" style="display: none;">
+        <form action="submitResume" method="post">
+            <table class="profile-table">
+                <tr>
+                    <td class="profile-info" reik="2">이름:<input type="text" name="name" value="홍길동"></td>
+                </tr>
+                <tr>
+                    <td class="profile-info"><span>생년:</span> <input type="text" name="birthYear" value="1990"></td>
+                    <td class="profile-info"><span>이메일:</span> <input type="email" name="email" value="gil_dong@example.com"></td>
+                </tr>
+                <tr>
+                    <td class="profile-info"><span>개발 직무:</span> <input type="text" name="job" value="백엔드 개발자"></td>
+                    <td class="profile-info"><span>기술 스택:</span> <input type="text" name="techStack" value="Java, Spring, MyBatis, SQL"></td>
+                </tr>
+                <tr>
+                    <td><span>학력:</span> <select name="education">
+                            <option value="kh대학교">kh대학교</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span>자격증:</span> <input type="text" name="certification" value="정보처리기사"></td>
+                </tr>
+                <tr>
+                    <td><span>자기소개서:</span> <textarea name="selfIntroduction"></textarea></td>
+                </tr>
+            </table>
+            <div class="btn-group">
+                <button type="submit">임시저장</button>
+                <button type="reset">저장하기</button>
+            </div>
+        </form>
     </div>
+    <script>
+        function showProfileForm() {
+            document.getElementById('profile-section').style.display = 'block';
+        }
+    </script>
+    
 </div>
 </body>
 </html>
