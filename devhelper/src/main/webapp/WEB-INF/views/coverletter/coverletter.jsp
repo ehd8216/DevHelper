@@ -274,7 +274,7 @@
 
                     updateCharCount();
                         },complete:function(){
-                            hideLoading();
+                            hideLoading()
                         }
                     })
             });
