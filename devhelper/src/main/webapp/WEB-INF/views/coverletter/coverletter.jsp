@@ -122,6 +122,7 @@
     <body>
     <jsp:include page="../common/menubar.jsp" />
     <jsp:include page="../common/backToTop.jsp" />
+    <jsp:include page="../common/loading.jsp" />
     <div class="coverletter">
         <h1 style="font-size: 40px; padding-top: 30px;">자기소개서 도우미</h1>
         <h2 style="font-size: 20px; padding: 15px 0 15px 0;">질문에 답변하고 openAI와 함께 자기소개서를 작성해보세요!</h2>
@@ -183,9 +184,20 @@
     </div>
 
     <script>
+
+            function showLoading() {
+                $('#loadingScreen').show();
+            }
+
+            
+            function hideLoading() {
+                $('#loadingScreen').hide();
+            }
     
         $('#generateAI').on('click', function (e) {
             e.preventDefault();
+
+            showLoading();
             
             let prompt = [];
 		  
@@ -261,6 +273,8 @@
                     console.log('Error stored in sessionStorage:', sessionStorage.getItem('resultAPI'));
 
                     updateCharCount();
+                        },complete:function(){
+                            hideLoading();
                         }
                     })
             });
