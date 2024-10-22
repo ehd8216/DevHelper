@@ -96,11 +96,33 @@
             display: none;
             margin-top: 20px;
         }
+        .skill-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px; /* Adds space between skill badges */
+            margin-top: 15px;
+        }
+
+        .skill-container .skill-badge {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #f0f2f5;
+            color: #333;
+            border-radius: 20px;
+            font-size: 16px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+
+        .skill-container .skill-badge:hover {
+            background-color: #e0e2e5;
+        }
     </style>
     </head>
     <body>
     <jsp:include page="../common/menubar.jsp" />
     <jsp:include page="../common/backToTop.jsp" />
+    <jsp:include page="../common/loading.jsp" />
     <div class="coverletter">
         <h1 style="font-size: 40px; padding-top: 30px;">자기소개서 도우미</h1>
         <h2 style="font-size: 20px; padding: 15px 0 15px 0;">질문에 답변하고 openAI와 함께 자기소개서를 작성해보세요!</h2>
@@ -113,7 +135,7 @@
             <input type="text" id="newSkill" style="width: 15%;">
             <button id="addSkillBtn">추가</button>
             <button id="delSkillBtn">삭제</button>
-            <div id="skill"></div>
+            <div id="skill" class="skill-container"></div>
         </div>
     
 
@@ -151,17 +173,31 @@
              
             </table>
             <button class="write" id="generateAI">AI를 통해 작성</button>
-            <textarea type="text" class="resultAPI" style="min-height: 300px; height: auto;"></textarea>
-            <span id="charCount" style="display: none;">0 characters</span>
-            <button id="copyButton" style="display: none;">내 이력서에 복사</button>
+          
+                <textarea type="text" class="resultAPI" style="min-height: 300px; height: auto;"></textarea>
+                <span id="charCount" style="display: none;">0 characters</span>
+                <button id="copyButton" style="display: none;">이력서에 저장</button>
+        
+           
             
         </div>
     </div>
 
     <script>
+
+            function showLoading() {
+                $('#loadingScreen').show();
+            }
+
+            
+            function hideLoading() {
+                $('#loadingScreen').hide();
+            }
     
         $('#generateAI').on('click', function (e) {
             e.preventDefault();
+
+            showLoading();
             
             let prompt = [];
 		  
@@ -171,6 +207,8 @@
            const motivation = $("#motivation").val();
            const question = $("#question").val();
            const experience = $("#experience").val()
+           const skill = skillsArray.join(', ');
+
             // prompt.push($("#companyName").val());
             // prompt.push($("#jobTitle").val());
             // prompt.push($("#maxLength").val());
@@ -192,6 +230,7 @@
                     , motivation:motivation
                     , question:question
                     , experience:experience
+                    , skill:skill
                 }),
                 success:function(result){
                   console.log("sucess : " + result);  
@@ -199,11 +238,11 @@
             try {
             
                 let jsonResponse = JSON.parse(result);
-
-            
                 if (jsonResponse && jsonResponse.response) {
                     let responseText = jsonResponse.response;
                     $('.resultAPI').val(responseText).show();
+
+                    sessionStorage.setItem('resultAPI',responseText);
                 } else {
                     console.log("Unexpected format:", jsonResponse);
                     $('.resultAPI').val('Unexpected format: ' + JSON.stringify(jsonResponse, null, 2)).show();
@@ -219,7 +258,6 @@
     updateCharCount();
         },
             error: function(xhr) {
-                
                 const str = xhr.responseText;
                 const substr = str.substring(13, str.length - 2);
                 
@@ -230,19 +268,40 @@
                     $('.resultAPI').focus()[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
                     $('#charCount').show();
                     $('#copyButton').show();
+
+                    sessionStorage.setItem('resultAPI', substr);
+                    console.log('Error stored in sessionStorage:', sessionStorage.getItem('resultAPI'));
+
                     updateCharCount();
+                        },complete:function(){
+                            hideLoading();
                         }
                     })
             });
 
-
-
-
         function updateCharCount() {const charCount = $('.resultAPI').val().length;
         $('#charCount').text(charCount + ' characters'); }
         $('.resultAPI').on('input', updateCharCount);
+
+
+        $('.resultAPI').on('input', function() {
+            const modifiedResult = $(this).val();
+            sessionStorage.setItem('resultAPI', modifiedResult);  // Save the modified content
+            console.log('Modified result stored in sessionStorage:', modifiedResult);
+        });
+
+
+        $(document).ready(function () {
+        
+        const storedResult = sessionStorage.getItem('resultAPI');
+        
+        if (storedResult) {
+            $('.resultAPI').val(storedResult).show();
+            updateCharCount();  
+        }
+        });
     
-    
+        
 
         const exampleData = {
             companyName: "kakao",
@@ -284,8 +343,14 @@
         let skillsArray = [];
 
         function updateSkillsDisplay() {
-            $('#skill').text(skillsArray.join(', '));
-        }
+        const skillContainer = $('#skill');
+        skillContainer.empty(); // Clear the container before updating
+
+        skillsArray.forEach(skill => {
+            const skillBadge = $('<span>').addClass('skill-badge').text(skill);
+            skillContainer.append(skillBadge);
+        });
+}
 
         $('#addSkillBtn').on('click', function () {
         const newSkill = $('#newSkill').val().trim();
@@ -304,6 +369,11 @@
             }
         })
 
+
+        
+
+
+        
 
     </script>
     </body>

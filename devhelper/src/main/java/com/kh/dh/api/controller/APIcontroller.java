@@ -175,8 +175,9 @@ public class APIcontroller {
 	        String motivation = requestData.get("motivation");
 	        String question = requestData.get("question");
 	        String experience = requestData.get("experience");
+	        String skill = requestData.get("skill");
 
-	        String generatedText = gptService.callChatGPT(companyName, jobTitle, maxLength, motivation, question, experience);
+	        String generatedText = gptService.callChatGPT(companyName, jobTitle, maxLength, motivation, question, experience,skill);
 	  
 	        return "{\"response\": \"" + generatedText + "\"}";
 	    }

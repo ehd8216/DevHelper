@@ -200,6 +200,7 @@
 
 <body>
   <jsp:include page="../common/menubar.jsp" />
+  <jsp:include page="../common/loading.jsp" />
 
   <div class="title" align="center">채용 공고 확인하기</div>
   <div class="search-bar-container">
@@ -272,6 +273,7 @@
   let scrapSnList = [];
   $(function(){
 	  loadData(currentPage);
+      showLoading();
       updatePagination(currentPage);
       scrapnum();
       
@@ -323,7 +325,9 @@
 			error:function()
 			{
 				console.log("API AJAX에러")
-			}
+			},complete:function(){
+        hideLoading()
+      }
 		})
 	}
 
@@ -547,6 +551,15 @@ function saveRecentJob(job) {
     });
   
 });
+
+  function showLoading() {
+     $('#loadingScreen').show();
+  }
+
+            
+  function hideLoading() {
+     $('#loadingScreen').hide();
+ }
   </script>
 </body>
 
