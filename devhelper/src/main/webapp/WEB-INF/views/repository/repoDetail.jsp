@@ -128,16 +128,23 @@
 
 
                 <select name="bOption" class="btn btn-secondary" style="left: 450px; top: 60px;">
-              		<c:forEach var="b" items="${ bList }">
-              			<c:if test="${ b.branchName eq 'main' }">
-                   			<option value="${ b.branchName }" selected>${ b.branchName }</option>
-                   		</c:if>
-                  	</c:forEach>
-                  	<c:forEach var="b" items="${ bList }">
-                   		<c:if test="${ b.branchName ne 'main' }">
-                   			<option value="${ b.branchName }">${ b.branchName }</option>
-                   		</c:if>
-                   	</c:forEach>
+                	<c:choose>
+                		<c:when test="${ not empty bList }">
+		              		<c:forEach var="b" items="${ bList }">
+		              			<c:if test="${ b.branchName eq 'main' }">
+		                   			<option value="${ b.branchName }" selected>${ b.branchName }</option>
+		                   		</c:if>
+		                  	</c:forEach>
+		                  	<c:forEach var="b" items="${ bList }">
+		                   		<c:if test="${ b.branchName ne 'main' }">
+		                   			<option value="${ b.branchName }">${ b.branchName }</option>
+		                   		</c:if>
+		                   	</c:forEach>
+		                </c:when>
+		                <c:otherwise>
+		                	<option value="none" selected>브랜치 없음</option>
+		                </c:otherwise>
+                   	</c:choose>
                 </select>
 
 
@@ -161,26 +168,34 @@
             <br>
             <div id="dual">
                 <div id="repoDetailFile">
-                    <!-- 폴더가 위로가게 배치 -->
-                    <c:forEach var="l" items="${ repoDirectory }">
-                        <div class="rd">
-                            <c:if test="${ l.isFile eq false }">
-                                <span class="material-symbols-outlined" style="color: #2854C5;">folder</span>
-                                <span>${ l.dirName }</span>
-                                <br>
-                            </c:if>
-                        </div>
-                    </c:forEach>
-                    <!-- 폴더가 아닌 파일들은 아래로 위치 -->
-                    <c:forEach var="l" items="${ repoDirectory }">
-                        <div class="rd">
-                            <c:if test="${ l.isFile eq true }">
-                                <span class="material-symbols-outlined">description</span>
-                                <span>${ l.dirName }</span>
-                                <br>
-                            </c:if>
-                        </div>
-                    </c:forEach>
+                	<c:choose>
+                		<c:when test="${ repoDirectory ne 'none' }">
+                	
+		                    <!-- 폴더가 위로가게 배치 -->
+		                    <c:forEach var="l" items="${ repoDirectory }">
+		                        <div class="rd">
+		                            <c:if test="${ l.isFile eq false }">
+		                                <span class="material-symbols-outlined" style="color: #2854C5;">folder</span>
+		                                <span>${ l.dirName }</span>
+		                                <br>
+		                            </c:if>
+		                        </div>
+		                    </c:forEach>
+		                    <!-- 폴더가 아닌 파일들은 아래로 위치 -->
+		                    <c:forEach var="l" items="${ repoDirectory }">
+		                        <div class="rd">
+		                            <c:if test="${ l.isFile eq true }">
+		                                <span class="material-symbols-outlined">description</span>
+		                                <span>${ l.dirName }</span>
+		                                <br>
+		                            </c:if>
+		                        </div>
+		                    </c:forEach>
+	                    </c:when>
+	                    <c:otherwise>
+	                    	<div>파일이 존재하지 않습니다.</div>
+                    	</c:otherwise>
+	                </c:choose>    
                 </div>
             </div>
 

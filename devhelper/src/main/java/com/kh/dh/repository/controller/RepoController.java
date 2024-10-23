@@ -16,9 +16,11 @@ import org.kohsuke.github.GHBranch;
 import org.kohsuke.github.GHCommit;
 import org.kohsuke.github.GHContent;
 import org.kohsuke.github.GHCreateRepositoryBuilder;
+import org.kohsuke.github.GHFileNotFoundException;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHUser;
 import org.kohsuke.github.GitHub;
+import org.kohsuke.github.HttpException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -63,43 +65,52 @@ public class RepoController {
 	}
 	
 	@RequestMapping("repoDetail.re")
-	public String repoDetail(String repoUrl, HttpSession session) throws IOException {
-		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
-		String url = repoUrl.substring(29);
-		GHRepository repo = github.getRepository(url);
-		String[] str = url.split("/");
-
-        // 첫 번째 부분만 출력
-        String writer = str[0];
-        
-        // 레포 폴더 뽑기
-        List<GHContent> contents = repo.getDirectoryContent("");
-        ArrayList<RepoDirectory> list = new ArrayList<RepoDirectory>();
-        for (GHContent content : contents) {
-        	RepoDirectory rd = new RepoDirectory();
-        	rd.setDirName(content.getName());
-        	if(content.isFile()) {
-        		rd.setIsFile("true");
-        	}else {
-        		rd.setIsFile("false");
-        	}
-        	list.add(rd);
-        }
-        
-        // 브랜치 리스트 뽑기
-        Map<String, GHBranch> branches = repo.getBranches();
-        ArrayList<Branch> bList = new ArrayList<Branch>();
-        
-        for (String branchName : branches.keySet()) {
-        	Branch b = new Branch();
-        	b.setBranchName(branchName);
-        	bList.add(b);
-        }
-		session.setAttribute("repo", repo);
-		session.setAttribute("writer", writer);
-		session.setAttribute("url", url);
-		session.setAttribute("repoDirectory", list);
-		session.setAttribute("bList", bList);
+	public String repoDetail(String repoUrl, HttpSession session) {
+		try {
+			github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
+			String url = repoUrl.substring(29);
+			GHRepository repo = github.getRepository(url);
+			String[] str = url.split("/");
+			
+			// 첫 번째 부분만 출력
+			String writer = str[0];
+			
+			// 브랜치 리스트 뽑기
+			Map<String, GHBranch> branches = repo.getBranches();
+			ArrayList<Branch> bList = new ArrayList<Branch>();
+			
+			for (String branchName : branches.keySet()) {
+				Branch b = new Branch();
+				b.setBranchName(branchName);
+				bList.add(b);
+			}
+			System.out.println(bList);
+			
+			session.setAttribute("repo", repo);
+			session.setAttribute("writer", writer);
+			session.setAttribute("url", url);
+			session.setAttribute("bList", bList);
+			
+			// 레포 폴더 뽑기
+			List<GHContent> contents = repo.getDirectoryContent("");
+			ArrayList<RepoDirectory> list = new ArrayList<RepoDirectory>();
+			for (GHContent content : contents) {
+				RepoDirectory rd = new RepoDirectory();
+				rd.setDirName(content.getName());
+				if(content.isFile()) {
+					rd.setIsFile("true");
+				}else {
+					rd.setIsFile("false");
+				}
+				list.add(rd);
+			}
+			
+			session.setAttribute("repoDirectory", list);
+		} catch (IOException e) {
+			e.printStackTrace();
+			String nonFile = "none";
+			session.setAttribute("repoDirectory", nonFile);
+		}
 		return "repository/repoDetail";
 	}
 	
@@ -189,24 +200,43 @@ public class RepoController {
 	}
 	
 	@RequestMapping("commitList.re")
-	public String commitList(String repoUserUrl, HttpSession session) throws IOException {
-		github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
-		GHRepository repo = github.getRepository(repoUserUrl);
-		String[] str = repoUserUrl.split("/");
-		
-		// commit 리스트 뽑기
-        sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
-        ArrayList<Commit> list = new ArrayList<>();
-        for (GHCommit commit : repo.listCommits()) {
-        	Commit c = new Commit();
-        	c.setComAuthor(commit.getCommitShortInfo().getAuthor().getName());
-        	c.setComMessage(commit.getCommitShortInfo().getMessage());
-        	c.setComDate(sdf.format(commit.getCommitDate()));
-        	c.setSHA(commit.getSHA1().substring(0, 11));
-        	list.add(c);
-        }
-        session.setAttribute("repoName", str[1]);
-		session.setAttribute("commitList", list);
+	public String commitList(String repoUserUrl, HttpSession session) {
+		try {
+			github = GitHub.connectUsingOAuth((String)session.getAttribute("token"));
+			GHRepository repo = github.getRepository(repoUserUrl);
+			String[] str = repoUserUrl.split("/");
+			
+			session.setAttribute("repoName", str[1]);
+			
+			// commit 리스트 뽑기
+			sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
+			ArrayList<Commit> list = new ArrayList<>();
+			
+			System.out.println(repo.getReadme().getContent());
+			if(repo.listCommits().equals("")) {
+				String nonCommit = "none";
+				session.setAttribute("commitList", nonCommit);
+			}else {
+				for (GHCommit commit : repo.listCommits()) {
+					Commit c = new Commit();
+					c.setComAuthor(commit.getCommitShortInfo().getAuthor().getName());
+					c.setComMessage(commit.getCommitShortInfo().getMessage());
+					c.setComDate(sdf.format(commit.getCommitDate()));
+					c.setSHA(commit.getSHA1().substring(0, 11));
+					list.add(c);
+				}
+				session.setAttribute("commitList", list);
+			}
+		} catch (HttpException gh) {
+			gh.printStackTrace();
+			System.out.println("FDSA");
+			String nonCommit = "none";
+			session.setAttribute("commitList", nonCommit);
+		} catch (IOException e) {
+			e.printStackTrace();
+			String nonCommit = "none";
+			session.setAttribute("commitList", nonCommit);
+		} 
 		return "repository/commitList";
 	}
 	
