@@ -11,7 +11,7 @@ import lombok.ToString;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class firend 
+public class Firend 
 {
 	private String bfGiver; // 친구 요청자 (닉네임보여줄거임)
 	private String bfTaker; // 친구 요청받는자 (닉네임보여줄거임)
