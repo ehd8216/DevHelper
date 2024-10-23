@@ -48,12 +48,13 @@ ex)
 # 🧾 설계 내역 <br>
 <details>
   <summary>UseCase Diagram</summary>
-!https://prod-files-secure.s3.us-west-2.amazonaws.com/c5ad0030-b6b0-4f96-8b36-f6deb5357ea7/113d9064-69bc-4a75-be8d-295a3c7d23cf/image369.png
+![image369](https://github.com/user-attachments/assets/fe517cae-8ea1-4784-88b2-e47b908594b7)
+
 
 </details>
 <details>
   <summary>ERDCLoud</summary>
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/c5ad0030-b6b0-4f96-8b36-f6deb5357ea7/b961cbb6-b700-4171-af39-e03378185205/image.png)
+![image](https://github.com/user-attachments/assets/13227f80-040b-46fd-935e-555dd00458fa)
  https://www.erdcloud.com/d/RvptfveEqmgkx4bEw
 </details>
 
