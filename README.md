@@ -54,7 +54,9 @@ ex)
 </details>
 <details>
   <summary>ERDCLoud</summary>
-![image](https://github.com/user-attachments/assets/13227f80-040b-46fd-935e-555dd00458fa)
+<p align="center">
+  <img src="![image](https://github.com/user-attachments/assets/349ed72e-190f-4a52-af4e-88c8553b319d)">
+</p>
  https://www.erdcloud.com/d/RvptfveEqmgkx4bEw
 </details>
 
