@@ -88,16 +88,24 @@
           </tr>
         </thead>
         <tbody>
-        
-          <c:forEach var="c" items="${ commitList }">
-            <tr id="lTr" style="height: 40px;">
-              <td><%= num++ %></td>
-              <td>${ c.comAuthor }</td>
-              <td>${ c.comMessage }</td>
-              <td>${ c.comDate }</td>
-              <td id="sha">${ c.SHA }</td>
-            </tr>
-          </c:forEach>
+        	<c:choose>
+        		<c:when test="${ commitList ne 'none' }">
+		          <c:forEach var="c" items="${ commitList }">
+		            <tr id="lTr" style="height: 40px;">
+		              <td><%= num++ %></td>
+		              <td>${ c.comAuthor }</td>
+		              <td>${ c.comMessage }</td>
+		              <td>${ c.comDate }</td>
+		              <td id="sha">${ c.SHA }</td>
+		            </tr>
+		          </c:forEach>
+		    	</c:when>
+		    	<c:otherwise>
+		    		<tr>
+		    			<td colspan="5">커밋이 존재하지 않습니다.</td>
+		    		</tr>
+		    	</c:otherwise>
+	        </c:choose> 
         </tbody>
       </table>
 
