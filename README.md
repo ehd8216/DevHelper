@@ -5,7 +5,7 @@
 
 # 🧷프로젝트 특징 <br>
 만든 부분 : 만든 이유로 작성해주시면 좋을것 같습니다.<br>
-ex)<br>
+ex)
 #### 깃 API  
 기존의 CLI위주의 형상관리시스템을 학생들에게 클릭이나 드래그 앤 드롭으로 쉽게 관리할 수 있도록 기능 제공<br>
 #### AI 자기소개서 
@@ -61,18 +61,27 @@ ERDCLoud : https://www.erdcloud.com/d/RvptfveEqmgkx4bEw <br><br>
   구현한부분적기
 
 </details>
+
+ <br>
+ 
 <details>
   <summary>정택은</summary>
 
   구현한부분적기
 
 </details>
+
+ <br>
+ 
 <details>
   <summary>최규호</summary>
 
   구현한부분적기
 
 </details>
+
+ <br>
+ 
 <details>
   <summary>최승균</summary>
 
