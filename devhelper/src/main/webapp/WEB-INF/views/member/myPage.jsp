@@ -165,16 +165,16 @@
 	                    <p>스크랩 공고</p>
 	                </div>
 	            </a>
-	            <a href="#">
+	            <a href="userlist.me">
 	                <div>
 	                    <i class="bi bi-heart"></i>
-	                    <p>관심기업</p>
+	                    <p>친구신청</p>
 	                </div>
 	            </a>
 	            <a href="#">
 	                <div>
 	                    <i class="bi bi-file-earmark"></i>
-	                    <p>지원현황</p>
+	                    <p>친구목록</p>
 	                </div>
 	            </a>
 	        </div>

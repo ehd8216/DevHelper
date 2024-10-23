@@ -103,5 +103,13 @@ public class MemberController
 				
 		
 	}
+	@RequestMapping("userlist.me")
+	public ModelAndView userlist(ModelAndView mv)
+	{
+		ArrayList<Member> list = mService.userlist();
+		mv.addObject("list", list)
+		  .setViewName("member/userlist");
+		return mv;
+	}
 	
 }

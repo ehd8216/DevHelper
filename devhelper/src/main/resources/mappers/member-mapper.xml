@@ -69,6 +69,14 @@
 		   	 , stack_name = #{stackName}
 		   where mem_no = #{memNo}
 	</update>
+	<select id="userlist" resultMap="memberResult">
+		select
+		    mem_no
+		   ,git_nick
+		   ,mem_intro
+		   ,stack_name
+		from member
+	</select>
 </mapper>
 
 

@@ -1,5 +1,7 @@
 package com.kh.dh.member.model.service;
 
+import java.util.ArrayList;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +39,11 @@ public class MemberServiceImpl implements MemberService {
 	public int updatemember(Member m) 
 	{
 		return mDao.updatemember(sqlSession,m);
+	}
+
+	@Override
+	public ArrayList<Member> userlist() {
+		return mDao.userlist(sqlSession);
 	}
 
 }

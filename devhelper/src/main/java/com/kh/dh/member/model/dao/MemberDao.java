@@ -1,5 +1,7 @@
 package com.kh.dh.member.model.dao;
 
+import java.util.ArrayList;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -22,6 +24,10 @@ public class MemberDao {
 	public int updatemember(SqlSessionTemplate sqlSession,Member m)
 	{
 		return sqlSession.update("memberMapper.updatemember", m);
+	}
+	public ArrayList<Member> userlist(SqlSessionTemplate sqlSession)
+	{
+		return (ArrayList)sqlSession.selectList("memberMapper.userlist");
 	}
 
 }
