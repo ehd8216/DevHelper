@@ -54,3 +54,10 @@ ERDCLoud : https://www.erdcloud.com/d/RvptfveEqmgkx4bEw <br><br>
 
 
 # 🎨 프로젝트 구현 <br>
+
+<details>
+  <summary>Click to reveal more information</summary>
+
+  Here is the hidden content! You can write anything here, like additional project details, code snippets, or documentation.
+
+</details>
