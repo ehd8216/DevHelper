@@ -9,7 +9,7 @@ ex)
 #### 깃 API  
 기존의 CLI위주의 형상관리시스템을 학생들에게 클릭이나 드래그 앤 드롭으로 쉽게 관리할 수 있도록 기능 제공<br>
 #### AI 자기소개서 
-문서작성에 미숙하거나 이력서나 자기소개서를 작성해보지 못한 학생들에게 몇가지 문항을 답변받아 하나의 임시 자기소개서를 AI를 통해 제공하는 기능<br>
+문서작성에 미숙하거나 이력서나 자기소개서를 작성해보지 못한 학생들에게 몇가지 문항들로 임시 자기소개서를 openAI를 통해 제공하는 기능<br>
 
 
 
@@ -46,9 +46,16 @@ ex)
 
 
 # 🧾 설계 내역 <br>
-UseCase Diagram :  <br>
-ERDCLoud : https://www.erdcloud.com/d/RvptfveEqmgkx4bEw <br><br>
+<details>
+  <summary>UseCase Diagram</summary>
+!https://prod-files-secure.s3.us-west-2.amazonaws.com/c5ad0030-b6b0-4f96-8b36-f6deb5357ea7/113d9064-69bc-4a75-be8d-295a3c7d23cf/image369.png
 
+</details>
+<details>
+  <summary>ERDCLoud</summary>
+![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/c5ad0030-b6b0-4f96-8b36-f6deb5357ea7/b961cbb6-b700-4171-af39-e03378185205/image.png)
+ https://www.erdcloud.com/d/RvptfveEqmgkx4bEw
+</details>
 
 
 
