@@ -29,9 +29,9 @@ ex)
 ### 최승균 (https://github.com/0724choi)<br>
 - 공공데이터 API를 통한 기획재정부_공공기관 채용정보목록 조회서비스 제공 <br>
 - 공공데이터 API를 통한 기획재정부_공공기관 채용정보 상세조회서비스 제공 <br>
-- 취업지원부분 CRUD <br>
+- 취업지원 CRUD <br>
 - openAI API를 통한 AI자기소개서 구현 <br>
-- 이력서부분 CRUD <br><br>
+- 이력서 CRUD <br><br>
 
 
 # 📚 사용 기술 <br>
