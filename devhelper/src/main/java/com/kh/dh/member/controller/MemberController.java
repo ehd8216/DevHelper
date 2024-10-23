@@ -2,19 +2,24 @@ package com.kh.dh.member.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.dh.common.model.service.GitService;
 import com.kh.dh.member.model.service.MemberServiceImpl;
+import com.kh.dh.member.model.vo.Firend;
 import com.kh.dh.member.model.vo.Member;
 import com.kh.dh.repository.model.service.RepoServiceImpl;
 import com.kh.dh.repository.model.vo.Repositorys;
@@ -111,5 +116,56 @@ public class MemberController
 		  .setViewName("member/userlist");
 		return mv;
 	}
-	
+	@ResponseBody
+	@RequestMapping("friend.me")
+	public int  friendlist( HttpSession session, int memNo)
+	{
+		Member loginmem = (Member)session.getAttribute("loginMember");
+		int logmemNo = loginmem.getMemNo(); //로그인 회원 번호
+		Firend f = new Firend();
+		f.setBfGiver(logmemNo);
+		f.setBfTaker(memNo);
+		System.out.println(f);
+		int count = mService.checkFriendExists(f);
+		System.out.println(count);
+		if(count > 0) //이미 친구관계
+		{
+			System.out.println(count);
+			return 2;
+		}
+		else 
+		{
+			int result = mService.friendlist(f);
+			return result;	
+		}
+	}
+	@RequestMapping("request.me")
+    public String requestFriend(@RequestParam("currentMemberId") int currentMemberId, Model model) {
+        // 받은 친구 요청
+        List<Map<String, Object>> receivedRequests = mService.getReceivedRequests(currentMemberId);
+        System.out.println(receivedRequests);
+        model.addAttribute("receivedRequests", receivedRequests);
+        // 보낸 친구 요청
+        List<Map<String, Object>> sentRequests = mService.getSentRequests(currentMemberId);
+        model.addAttribute("sentRequests", sentRequests);
+        return "member/friend"; 
+    }
+	@RequestMapping("receive.me")
+    public String receiveFriend(@RequestParam("memNo") int memNo, @RequestParam("action") String action, HttpSession session, Model model) {
+		Member loginmem = (Member)session.getAttribute("loginMember");
+		int loginmemNo = loginmem.getMemNo();
+       int result = mService.receivefriend(memNo, action,loginmemNo);
+       if (result > 0) { 
+           if (action.equals("Y")) {
+               model.addAttribute("message", "친구 요청을 수락했습니다.");
+           } else {
+               model.addAttribute("message", "친구 요청을 거절했습니다.");
+           }
+       } else { 
+           model.addAttribute("message", "처리에 실패했습니다.");
+          
+       }
+       
+       return "member/friend"; // 성공 후 표시할 페이지
+    }
 }

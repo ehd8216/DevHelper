@@ -1,12 +1,15 @@
 package com.kh.dh.member.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.dh.member.model.dao.MemberDao;
+import com.kh.dh.member.model.vo.Firend;
 import com.kh.dh.member.model.vo.Member;
 
 @Service
@@ -44,6 +47,36 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public ArrayList<Member> userlist() {
 		return mDao.userlist(sqlSession);
+	}
+
+	@Override
+	public int friendlist(Firend f)
+	{
+		return mDao.friendlist(sqlSession,f);
+	}
+
+	@Override
+	public int checkFriendExists(Firend f)
+	{
+		return mDao.checkFriendExists(sqlSession,f);
+	}
+
+	@Override
+	public List<Map<String, Object>> getReceivedRequests(int currentMemberId)
+	{
+		return mDao.getReceivedRequests(sqlSession,currentMemberId);
+	}
+
+	@Override
+	public List<Map<String, Object>> getSentRequests(int currentMemberId)
+	{
+		return mDao.getSentRequests(sqlSession,currentMemberId);
+	}
+
+	@Override
+	public int receivefriend(int memNo, String action,int loginmemNo) 
+	{
+		return mDao.receivefriend(sqlSession,memNo,action,loginmemNo);
 	}
 
 }

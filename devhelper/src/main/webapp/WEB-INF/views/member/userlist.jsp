@@ -108,17 +108,40 @@ h1 {
            <c:forEach var="l" items="${list}">
                     <c:if test="${loginMember.memNo != l.memNo}">
                         <tr>
-                            <input type="hidden" value="${l.memNo}">
                             <td>${l.gitNick}</td>
                             <td>${l.memIntro}</td>
                             <td>${l.stackName}</td>
-                            <td><button class="friend_btn">친구신청</button></td>
+                            <td><button class="friend_btn" onclick="sendFriend(${l.memNo})">친구신청</button></td>
                         </tr>
                     </c:if>
                 </c:forEach>
             </tbody>
         </table>
     </div>
-  
+ <script>
+        function sendFriend(memNo) {
+            $.ajax({
+                url: "friend.me",
+                data: { memNo: memNo },
+                success: function(result) {
+                    if (result === 1)
+                    {
+                        alert("친구 신청이 성공했습니다.");
+                    } 
+                    else if(result ===2)
+                   	{
+                   		alert("이미 요청된 유저입니다.")
+                   	}
+                    else 
+                    {
+                        alert("친구 신청에 실패했습니다.");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert("오류가 발생했습니다: " + error);
+                }
+            });
+        }
+    </script>
 </body>
 </html>

@@ -171,7 +171,7 @@
 	                    <p>친구신청</p>
 	                </div>
 	            </a>
-	            <a href="#">
+	            <a href="request.me?currentMemberId=${loginMember.memNo}">
 	                <div>
 	                    <i class="bi bi-file-earmark"></i>
 	                    <p>친구목록</p>

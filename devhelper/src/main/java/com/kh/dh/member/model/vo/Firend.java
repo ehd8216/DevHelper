@@ -13,8 +13,8 @@ import lombok.ToString;
 @NoArgsConstructor
 public class Firend 
 {
-	private String bfGiver; // 친구 요청자 (닉네임보여줄거임)
-	private String bfTaker; // 친구 요청받는자 (닉네임보여줄거임)
+	private int bfGiver; // 친구 요청자 (닉네임보여줄거임)
+	private int bfTaker; // 친구 요청받는자 (닉네임보여줄거임)
 	private String fStatus; // 친구 요청 상태
 	private String requestDate; // 친구 요청일
 }

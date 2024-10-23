@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="friendMapper">
+ 
+ <resultMap type="Friend" id="friendResultSet">
+	  	<result column="bf_giver" property="bfGiver"/>
+		<result column="bf_taker" property="bfTaker"/>
+		<result column="status" property="fStatus"/>
+		<result column="request_date" property="requestDate"/>
+ </resultMap>
+ 	<select id="checkFriendExists" resultType="int">
+	    SELECT COUNT(*)
+	    FROM friend
+	    WHERE bf_giver = #{bfGiver} 
+	    AND bf_taker = #{bfTaker}
+	    AND status = 'A'
+	</select>
+ 	<insert id="friendlist">
+ 		insert
+ 			into friend
+ 				(
+ 					bf_giver
+ 				   ,bf_taker
+ 				   ,status
+ 				   ,request_date
+ 				)
+ 			values
+ 				(
+ 				    #{bfGiver}
+ 				   ,#{bfTaker}
+ 				   ,'A'
+ 				   ,sysdate
+ 				)
+ 	</insert>
+	 <select id="getReceivedRequests" resultType="map">
+        SELECT m.git_nick AS gitNick, m.mem_intro AS memIntro, m.mem_no AS memNo
+        FROM FRIEND f
+        JOIN MEMBER m ON f.BF_GIVER = m.MEM_NO
+        WHERE f.BF_TAKER = #{currentMemberId} AND f.STATUS = 'A'
+    </select>
+
+    <select id="getSentRequests" resultType="map">
+        SELECT m.git_nick AS gitNick, m.mem_intro AS memIntro, f.status AS status
+		    FROM FRIEND f
+		    JOIN MEMBER m ON f.BF_TAKER = m.MEM_NO
+		    WHERE f.BF_GIVER = #{currentMemberId}
+    </select>
+    <update id="receivefriend">
+    	update friend
+    	set status = #{action}
+    	where BF_TAKER = #{loginmemNo}
+    	and BF_GIVER = #{memNo}
+    	and status = 'A'
+    </update>
+	
+ 
+
+ 
+ 
+</mapper>
