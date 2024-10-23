@@ -56,8 +56,26 @@ ERDCLoud : https://www.erdcloud.com/d/RvptfveEqmgkx4bEw <br><br>
 # 🎨 프로젝트 구현 <br>
 
 <details>
-  <summary>Click to reveal more information</summary>
+  <summary>유현동</summary>
 
-  Here is the hidden content! You can write anything here, like additional project details, code snippets, or documentation.
+  구현한부분적기
+
+</details>
+<details>
+  <summary>정택은</summary>
+
+  구현한부분적기
+
+</details>
+<details>
+  <summary>최규호</summary>
+
+  구현한부분적기
+
+</details>
+<details>
+  <summary>최승균</summary>
+
+  구현한부분적기
 
 </details>
