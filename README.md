@@ -32,7 +32,6 @@ ex)
 - 취업지원 CRUD <br>
 - openAI API를 통한 AI자기소개서 구현 <br>
 - 이력서 CRUD <br><br>
-![image](https://github.com/user-attachments/assets/349ed72e-190f-4a52-af4e-88c8553b319d)
 
 # 📚 사용 기술 <br>
 - OS : Windows11 <br>
@@ -54,9 +53,7 @@ ex)
 </details>
 <details>
   <summary>ERDCLoud</summary>
-<p align="center">
-  <img src="![image](https://github.com/user-attachments/assets/349ed72e-190f-4a52-af4e-88c8553b319d)">
-</p>
+![image](https://github.com/user-attachments/assets/349ed72e-190f-4a52-af4e-88c8553b319d)
  https://www.erdcloud.com/d/RvptfveEqmgkx4bEw
 </details>
 
