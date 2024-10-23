@@ -47,13 +47,12 @@ ex)
 # 🧾 설계 내역 <br>
 <details>
   <summary>UseCase Diagram</summary>
-![image369](https://github.com/user-attachments/assets/fe517cae-8ea1-4784-88b2-e47b908594b7)
-
-
+(https://github.com/user-attachments/assets/fe517cae-8ea1-4784-88b2-e47b908594b7)
 </details>
+
 <details>
   <summary>ERDCLoud</summary>
-![](https://github.com/user-attachments/assets/349ed72e-190f-4a52-af4e-88c8553b319d)
+(https://github.com/user-attachments/assets/349ed72e-190f-4a52-af4e-88c8553b319d)
 </details>
 
 
