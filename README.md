@@ -1,5 +1,5 @@
 # DevHelper
-(이미지나 jpg 추천 받습니다)
+
 # 📄프로젝트 소개<br>
 신입 개발자를 꿈꾸는 학생들에게 도움이 되는 정보와 시스템을 한번에 편리하게 제공해주기 위해 깃, 채용공고, 자기소개서 작성, 커뮤니티를 이용한 질의문답 등의 서비스를 만들고 싶었습니다.
 
@@ -60,36 +60,24 @@ ex)
 
 # 🎨 프로젝트 구현 <br>
 
-<details>
-  <summary>유현동</summary>
+#### 유현동
 
-  구현한부분적기
+#### 정택은
 
-</details>
-
- <br>
+#### 최규호
  
-<details>
-  <summary>정택은</summary>
-
-  구현한부분적기
-
-</details>
-
- <br>
- 
-<details>
-  <summary>최규호</summary>
-
-  구현한부분적기
-
-</details>
-
- <br>
- 
-<details>
-  <summary>최승균</summary>
-
-  구현한부분적기
-
-</details>
+#### 최승균
+![채용공고리스트](https://github.com/user-attachments/assets/9c351a69-d7a0-4fd6-a94f-377a4fb59973)
+공공데이터 채용 API 활용 채용정보 리스트 조회 기능(사람인API 대체)
+<br><br>
+![검색기능](https://github.com/user-attachments/assets/fc3755ac-9a38-4c3c-b7b0-2de7b9578e70)
+공공데이터 채용 API 활용 채용정보 리스트 검색 기능 
+<br><br>
+![상세조회](https://github.com/user-attachments/assets/7c718380-be72-4719-8516-6476dfb330ad)
+공공데이터 채용 API 활용 채용정보 상세 조회 기능
+<br><br>
+![자기소개서ai](https://github.com/user-attachments/assets/91d03af6-65a1-45c5-8ee0-151c0251690a)
+openAI API활용 간단자기소개서 (예시제공)
+<br><br>
+![세션영역에임시저장](https://github.com/user-attachments/assets/ae9d63b3-5fd2-428d-bc3a-bbc6b5d6af1d)
+임시저장 기능 (세션 저장소 활용)
