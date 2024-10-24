@@ -77,7 +77,12 @@ ex)
 <details>
   <summary>유현동</summary>
   <pre>
+    
     ![image](https://github.com/user-attachments/assets/3acb4315-dff1-49a3-ad1f-b44d0b4676b7)
+    <br><br>
+    
+    ![레파지토리 조회](https://github.com/user-attachments/assets/80f029be-a9ca-4fad-a21c-29f955b8a688)
+    <br><br>
 
   </pre>
 </details>
@@ -99,6 +104,7 @@ ex)
 <details>
   <summary>최승균</summary>
   <pre>
+    
   ![채용공고리스트](https://github.com/user-attachments/assets/9c351a69-d7a0-4fd6-a94f-377a4fb59973)
   공공데이터 채용 API 활용 채용정보 리스트 조회 기능(사람인API 대체)
   <br><br>
