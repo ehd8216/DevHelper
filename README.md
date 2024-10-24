@@ -23,7 +23,12 @@ ex)
 24.10.24 ~ 10.24 : 최종 발표자료 준비 및 발표 <br><br>
 
 # 😎 팀원 및 역할 <br>
-### 유현동 (Leader) <br>
+### 유현동 (Leader) (https://github.com/ehd8216)<br>
+- oAuth API를 이용한 깃허브 연동 로그인 <br>
+- org.kohsuke.github 라이브러리를 이용<br>
+- git commit리스트 불러오기, branch별 commit리스트 불러오기 <br>
+- branch 리스트 불러오기 <br>
+- repository 불러오기, 생성하기 <br>
 ### 정택은 (https://github.com/tak511)<br>
 - oAuth API를 이용한 깃허브 연동 로그인 <br>
 - GHRepository메소드를 이용한 깃허브 이슈 조회,삭제,생성<br>
