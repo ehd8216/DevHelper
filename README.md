@@ -77,7 +77,7 @@ ex)
 공공데이터 채용 API 활용 채용정보 상세 조회 기능
 <br>
 ![자기소개서ai](https://github.com/user-attachments/assets/91d03af6-65a1-45c5-8ee0-151c0251690a)
-openAI API활용 간단자기소개서 
+openAI API활용 간단자기소개서 (예시제공)
 <br>
 ![세션영역에임시저장](https://github.com/user-attachments/assets/ae9d63b3-5fd2-428d-bc3a-bbc6b5d6af1d)
 임시저장 기능 (세션 저장소 활용)
