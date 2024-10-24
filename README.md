@@ -77,7 +77,8 @@ ex)
 <details>
   <summary>유현동</summary>
   <pre>
-    
+    ![image](https://github.com/user-attachments/assets/3acb4315-dff1-49a3-ad1f-b44d0b4676b7)
+
   </pre>
 </details>
 
