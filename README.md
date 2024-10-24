@@ -89,7 +89,22 @@ ex)
 <details>
   <summary>정택은</summary>
   <pre>
-    
+  ![깃허브 연동로그인](https://github.com/user-attachments/assets/b99b6837-700f-4c1c-a06c-677103f54ab0)
+  oAuthAPI활용한 깃허브 연동 로그인
+  ![이슈리스트 조회,상세보기](https://github.com/user-attachments/assets/b6ec4f31-738c-4015-af2d-12babfa4bf62)
+  깃허브 제공 메소드를 활용한 이슈리스트 조회,상세보기
+  ![이슈 작성하기](https://github.com/user-attachments/assets/98a4ee52-f8a4-4fc5-970e-8a62e5695b01)
+  깃허브 제공 메소드를 활용한 이슈작성하기
+  ![공고문 스크랩하기](https://github.com/user-attachments/assets/aba3f29d-d20a-4673-b1ad-69d249729b55)
+  공고문 스크랩기능
+  ![스크랩 공고문 조회](https://github.com/user-attachments/assets/f0bad47b-abcb-4cd3-b8e4-0a403b3377bc)
+  스크랩한 공고문 조회기능
+  ![최근본 게시글 조회](https://github.com/user-attachments/assets/e9b25d00-0a52-486e-ad30-072343b48df6)
+  최근본게시글 조회기능
+  ![친구신청](https://github.com/user-attachments/assets/511f2c80-2795-4960-b78e-c9015710796d)
+  친구신청기능
+  ![친구조회](https://github.com/user-attachments/assets/27ea2733-4d53-4eda-a637-88bfe97030ac)
+  친구조회기능
   </pre>
 </details>
 
