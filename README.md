@@ -61,7 +61,10 @@ ex)
 # 🧾 설계 내역 <br>
 <details>
   <summary>UseCase Diagram</summary>
-(https://github.com/user-attachments/assets/fe517cae-8ea1-4784-88b2-e47b908594b7)
+  <pre>
+    
+  ![image](https://github.com/user-attachments/assets/fbf9750d-bc7a-4822-8553-b84244fe2159)
+  </pre>
 </details>
 
 <details>
