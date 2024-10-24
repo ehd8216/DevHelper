@@ -79,10 +79,26 @@ ex)
   <pre>
     
   ![레파지토리 조회](https://github.com/user-attachments/assets/251e41f1-36a2-4e8f-8174-c27f49b07045)
-  왜 안될까
+  레파지토리 조회
   <br><br>
-
-    
+  ![레포 생성](https://github.com/user-attachments/assets/ff540cf6-7ed2-4edc-941a-70482e571547)
+  레파지토리 생성
+  <br><br>
+  ![레파지토리 초대](https://github.com/user-attachments/assets/233e90ba-8af0-4475-9b9d-d99d39759ac9)
+  레파지토리 유저 초대
+  <br><br>
+  ![레포 불러오기](https://github.com/user-attachments/assets/a398a472-df4c-4d29-a3a8-1ca02f27c505)
+  레포 불러오기
+  <br><br>
+  ![브랜치 리스트](https://github.com/user-attachments/assets/2de6e7b1-0388-420a-bb4c-3f646692b734)
+  브랜치 리스트
+  <br><br>
+  ![브랜치 삭제](https://github.com/user-attachments/assets/7599a7bb-e9fd-4771-973a-34c7d2c15273)
+  브랜치 삭제 및 생성
+  <br><br>
+  ![커밋 리스트](https://github.com/user-attachments/assets/11637620-89d6-443a-821d-1fa2f0258e00)
+  커밋 리스트 (브랜치별)
+  <br><br>
   </pre>
 </details>
 
