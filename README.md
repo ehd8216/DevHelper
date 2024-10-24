@@ -78,12 +78,11 @@ ex)
   <summary>유현동</summary>
   <pre>
     
-    ![image](https://github.com/user-attachments/assets/3acb4315-dff1-49a3-ad1f-b44d0b4676b7)
-    <br><br>
-    
-    ![레파지토리 조회](https://github.com/user-attachments/assets/80f029be-a9ca-4fad-a21c-29f955b8a688)
-    <br><br>
+  ![레파지토리 조회](https://github.com/user-attachments/assets/251e41f1-36a2-4e8f-8174-c27f49b07045)
+  왜 안될까
+  <br><br>
 
+    
   </pre>
 </details>
 
