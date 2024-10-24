@@ -112,6 +112,21 @@ ex)
 <details>
   <summary>최규호</summary>
   <pre>
+        
+    ![게](https://github.com/user-attachments/assets/096bbdf9-e86d-4e0d-b3e3-6145840ebf1a)
+    게시판 CRUD
+
+    ![뉴](https://github.com/user-attachments/assets/84dcad8e-5399-4716-afde-1c04bde2627c)
+    뉴스 API를 통한 실시간 뉴스목록 조회
+    
+    ![댓](https://github.com/user-attachments/assets/b57ed077-586f-4336-b7af-d316d2ab0fb3)
+    disqus API를 통해 댓글기능 구현
+    
+    ![코](https://github.com/user-attachments/assets/a86ab45b-134a-41c1-96d8-6bdfb78f86f2)
+    codeforce API를 통한 코딩테스트, Contest 참여, 순위 조회
+    
+    ![포](https://github.com/user-attachments/assets/6e36c616-16d8-4068-95dd-d23fe88cba8f)
+    edidor API와 웹소켓의 결합을 통한 실시간 토론 페이지 구현
     
   </pre>
 </details>
