@@ -76,17 +76,23 @@ ex)
 
 <details>
   <summary>유현동</summary>
-
+  <pre>
+    
+  </pre>
 </details>
 
 <details>
   <summary>정택은</summary>
-
+  <pre>
+    
+  </pre>
 </details>
 
 <details>
   <summary>최규호</summary>
-
+  <pre>
+    
+  </pre>
 </details>
 
 <details>
