@@ -29,7 +29,12 @@ ex)
 - GHRepository메소드를 이용한 깃허브 이슈 조회,삭제,생성<br>
 - 공고문 스크랩,최근본 공고문조회 <br>
 - 친구신청, 친구 조회 <br>
-### 최규호 ()<br>
+### 최규호 (https://github.com/cgh7373)<br>
+- 게시판 CRUD <br>
+- 뉴스 API를 통한 실시간 뉴스목록 조회 <br>
+- disqus API를 통해 댓글기능 구현 <br>
+- codeforce API를 통한 코딩테스트, Contest 참여, 순위 조회 <br>
+- edidor API와 웹소켓의 결합을 통한 실시간 토론 페이지 구현 <br>
 ### 최승균 (https://github.com/0724choi)<br>
 - 공공데이터 API를 통한 기획재정부_공공기관 채용정보목록 조회서비스 제공 <br>
 - 공공데이터 API를 통한 기획재정부_공공기관 채용정보 상세조회서비스 제공 <br>
