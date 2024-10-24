@@ -87,10 +87,7 @@ ex)
 
  <br>
  
-<details>
-  <summary>최승균</summary>
+
 ![채용공고리스트](https://github.com/user-attachments/assets/9c351a69-d7a0-4fd6-a94f-377a4fb59973)
 
- 
 
-</details>
