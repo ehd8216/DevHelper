@@ -112,12 +112,11 @@ ex)
 <details>
   <summary>최규호</summary>
   <pre>
-   ![게](https://github.com/user-attachments/assets/c1384acf-0207-4c42-afc9-849ce65cf5bf)
-![댓](https://github.com/user-attachments/assets/4be1b9ca-5022-46ae-b9aa-e9076b76f9d7)
-![뉴](https://github.com/user-attachments/assets/caa9945b-b291-4709-b402-2fe03412981e)
-![포](https://github.com/user-attachments/assets/c82e7e9f-730c-484b-9af7-b9296916a1bc)
-![코](https://github.com/user-attachments/assets/3eb70fbe-fce8-44c5-8b5c-687fe6940201)
-
+ ![댓](https://github.com/user-attachments/assets/bd982a26-ee04-4fe4-b217-b0a9b2ad1adc)
+![뉴](https://github.com/user-attachments/assets/f51c9d09-dcf3-44e9-a3c1-8d141666622e)
+![포](https://github.com/user-attachments/assets/3b97ce1c-3e67-41ad-8d36-a22773d16f0b)
+![코](https://github.com/user-attachments/assets/c7478378-7b91-411a-94f9-04761b903cd5)
+![게](https://github.com/user-attachments/assets/2e50fc09-6c87-4883-955d-21402bd2d44a)
     ![게](https://github.com/user-attachments/assets/096bbdf9-e86d-4e0d-b3e3-6145840ebf1a)
     게시판 CRUD
 
