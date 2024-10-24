@@ -112,7 +112,8 @@ ex)
 <details>
   <summary>최규호</summary>
   <pre>
-       
+    ![게](https://github.com/user-attachments/assets/5d9294a7-f121-48c8-a01d-d0773c24d845)
+   
     ![게](https://github.com/user-attachments/assets/096bbdf9-e86d-4e0d-b3e3-6145840ebf1a)
     게시판 CRUD
 
