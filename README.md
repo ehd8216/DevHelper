@@ -107,19 +107,4 @@ ex)
   임시저장 기능 (세션 저장소 활용)
 
 </details>
- 
-#### 최승균
-![채용공고리스트](https://github.com/user-attachments/assets/9c351a69-d7a0-4fd6-a94f-377a4fb59973)
-공공데이터 채용 API 활용 채용정보 리스트 조회 기능(사람인API 대체)
-<br><br>
-![검색기능](https://github.com/user-attachments/assets/fc3755ac-9a38-4c3c-b7b0-2de7b9578e70)
-공공데이터 채용 API 활용 채용정보 리스트 검색 기능 
-<br><br>
-![상세조회](https://github.com/user-attachments/assets/7c718380-be72-4719-8516-6476dfb330ad)
-공공데이터 채용 API 활용 채용정보 상세 조회 기능
-<br><br>
-![자기소개서ai](https://github.com/user-attachments/assets/91d03af6-65a1-45c5-8ee0-151c0251690a)
-openAI API활용 간단자기소개서 (예시제공)
-<br><br>
-![세션영역에임시저장](https://github.com/user-attachments/assets/ae9d63b3-5fd2-428d-bc3a-bbc6b5d6af1d)
-임시저장 기능 (세션 저장소 활용)
+
