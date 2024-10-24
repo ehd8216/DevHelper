@@ -60,34 +60,16 @@ ex)
 
 # 🎨 프로젝트 구현 <br>
 
-<details>
-  <summary>유현동</summary>
-
-  구현한부분적기
-
-</details>
+####유현동
 
  <br>
- 
-<details>
-  <summary>정택은</summary>
+ ####정택은
+<br>
 
-  구현한부분적기
-
-</details>
-
+####최규호
  <br>
  
-<details>
-  <summary>최규호</summary>
-
-  구현한부분적기
-
-</details>
-
- <br>
- 
-
+####최승균
 ![채용공고리스트](https://github.com/user-attachments/assets/9c351a69-d7a0-4fd6-a94f-377a4fb59973)
 
 
