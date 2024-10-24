@@ -45,8 +45,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public ArrayList<Member> userlist() {
-		return mDao.userlist(sqlSession);
+	public ArrayList<Member> userlist(int memNo) {
+		return mDao.userlist(sqlSession,memNo);
 	}
 
 	@Override
@@ -77,6 +77,12 @@ public class MemberServiceImpl implements MemberService {
 	public int receivefriend(int memNo, String action,int loginmemNo) 
 	{
 		return mDao.receivefriend(sqlSession,memNo,action,loginmemNo);
+	}
+
+	@Override
+	public ArrayList<Member> friendlistselect(int memNo) 
+	{
+		return mDao.friendlistselect(sqlSession,memNo);
 	}
 
 }

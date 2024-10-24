@@ -165,7 +165,7 @@
 	                    <p>스크랩 공고</p>
 	                </div>
 	            </a>
-	            <a href="userlist.me">
+	            <a href="userlist.me?memNo=${loginMember.memNo}">
 	                <div>
 	                    <i class="bi bi-heart"></i>
 	                    <p>친구신청</p>

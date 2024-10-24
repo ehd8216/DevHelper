@@ -109,9 +109,9 @@ public class MemberController
 		
 	}
 	@RequestMapping("userlist.me")
-	public ModelAndView userlist(ModelAndView mv)
+	public ModelAndView userlist(ModelAndView mv,int memNo)
 	{
-		ArrayList<Member> list = mService.userlist();
+		ArrayList<Member> list = mService.userlist(memNo);
 		mv.addObject("list", list)
 		  .setViewName("member/userlist");
 		return mv;
@@ -127,7 +127,6 @@ public class MemberController
 		f.setBfTaker(memNo);
 		System.out.println(f);
 		int count = mService.checkFriendExists(f);
-		System.out.println(count);
 		if(count > 0) //이미 친구관계
 		{
 			System.out.println(count);
@@ -143,7 +142,6 @@ public class MemberController
     public String requestFriend(@RequestParam("currentMemberId") int currentMemberId, Model model) {
         // 받은 친구 요청
         List<Map<String, Object>> receivedRequests = mService.getReceivedRequests(currentMemberId);
-        System.out.println(receivedRequests);
         model.addAttribute("receivedRequests", receivedRequests);
         // 보낸 친구 요청
         List<Map<String, Object>> sentRequests = mService.getSentRequests(currentMemberId);
@@ -168,4 +166,12 @@ public class MemberController
        
        return "member/friend"; // 성공 후 표시할 페이지
     }
+	@ResponseBody
+	@RequestMapping("friendlist.me")
+	public List<Member> friendlist(@RequestParam("memNo") int memNo) {
+	    // 친구 목록 조회
+	    ArrayList<Member> memberlist = mService.friendlistselect(memNo);
+	    return memberlist; 
+	}
+
 }

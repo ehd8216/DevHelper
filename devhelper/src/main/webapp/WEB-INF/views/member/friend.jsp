@@ -191,18 +191,49 @@
                         <th>기술 스택</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>닉네임 자리</td>
-                        <td>자기소개 자리</td>
-                        <td>기술 스택 자리</td>
-                    </tr>
-                </tbody>
+                 <tbody id="friendListBody">
+		            <!-- 친구 목록이 여기에 동적으로 추가됩니다 -->
+		         </tbody>
             </table>
         </div>
     </div>
 
     <script>
+    function loadFriendList() {
+        $.ajax({
+            url: "friendlist.me", // 서버에 보낼 URL
+            type: "GET", // HTTP 메서드 타입
+            data: {
+                memNo: "${loginMember.memNo}" // 로그인한 회원의 memNo를 전달
+            },
+            success: function(data)
+            {
+                // AJAX 호출이 성공하면 데이터를 파싱하여 테이블에 추가
+                let friendListBody = $("#friendListBody");
+                friendListBody.empty(); // 기존 목록 비우기
+
+                // data는 서버에서 받아온 친구 목록으로 가정 (Array 형태)
+                $.each(data, function(index, friend)
+                {
+                    let row = "<tr>" +
+                                "<td>" + friend.gitNick + "</td>" +
+                                "<td>" + friend.memIntro + "</td>" +
+                                "<td>" + friend.stackName + "</td>" +
+                              "</tr>";
+                    friendListBody.append(row); // 테이블에 한 줄씩 추가
+                });
+            },
+            error: function()
+            {
+                console.log("실패!!!!!!");
+            }
+        });
+    }
+
+    // 페이지 로드 시 친구 목록 불러오기
+    $(document).ready(function() {
+        loadFriendList();
+    });
         function showRequests(type) {
             // 모든 요청 목록 숨기기
             $('.request-list').removeClass('active');

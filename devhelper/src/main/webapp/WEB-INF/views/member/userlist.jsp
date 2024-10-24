@@ -99,7 +99,7 @@ h1 {
             <thead>
                 <tr>
                     <th>닉네임</th>
-                    <th>자시소개</th>
+                    <th>자기소개</th>
                     <th>기술 스택</th>
                     <th>친구</th>
                 </tr>

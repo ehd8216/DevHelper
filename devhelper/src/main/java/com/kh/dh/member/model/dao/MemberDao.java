@@ -29,9 +29,9 @@ public class MemberDao {
 	{
 		return sqlSession.update("memberMapper.updatemember", m);
 	}
-	public ArrayList<Member> userlist(SqlSessionTemplate sqlSession)
+	public ArrayList<Member> userlist(SqlSessionTemplate sqlSession,int memNo)
 	{
-		return (ArrayList)sqlSession.selectList("memberMapper.userlist");
+		return (ArrayList)sqlSession.selectList("memberMapper.userlist",memNo);
 	}
 	public int friendlist(SqlSessionTemplate sqlSession,Firend f)
 	{
@@ -62,4 +62,8 @@ public class MemberDao {
 
 	        return sqlSession.insert("friendMapper.receivefriend", parameter); 
 	 }
+	public ArrayList<Member> friendlistselect(SqlSessionTemplate sqlSession, int memNo)
+	{
+		return (ArrayList)sqlSession.selectList("friendMapper.friendlistselect", memNo);
+	}
 }

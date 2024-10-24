@@ -69,14 +69,27 @@
 		   	 , stack_name = #{stackName}
 		   where mem_no = #{memNo}
 	</update>
-	<select id="userlist" resultMap="memberResult">
-		select
-		    mem_no
-		   ,git_nick
-		   ,mem_intro
-		   ,stack_name
-		from member
-	</select>
+<select id="userlist" resultMap="memberResult">
+    SELECT
+        m.mem_no,
+        m.git_nick,
+        m.mem_intro,
+        m.stack_name
+    FROM
+        member m
+    WHERE
+        m.mem_no NOT IN (
+            SELECT
+                CASE
+                    WHEN bf_giver = #{memNo} THEN bf_taker
+                    WHEN bf_taker = #{memNo} THEN bf_giver
+                END
+            FROM
+                friend
+            WHERE
+                (bf_giver = #{memNo} OR bf_taker = #{memNo}) AND status = 'Y'
+        )
+</select>
 </mapper>
 
 

@@ -8,6 +8,18 @@
 		<result column="status" property="fStatus"/>
 		<result column="request_date" property="requestDate"/>
  </resultMap>
+ <resultMap type="Member" id="memberResult">
+			<result column="mem_no" property="memNo"/>
+			<result column="mem_id" property="memId"/>
+			<result column="git_nick" property="gitNick"/>
+			<result column="profile" property="profile"/>
+			<result column="mem_intro" property="memIntro"/>
+			<result column="stack_name" property="stackName"/>
+			<result column="create_date" property="createDate"/>
+			<result column="status" property="status"/>
+			<result column="team" property="team"/>
+			<result column="team_status" property="teamStatus"/>
+		</resultMap>
  	<select id="checkFriendExists" resultType="int">
 	    SELECT COUNT(*)
 	    FROM friend
@@ -52,9 +64,13 @@
     	and BF_GIVER = #{memNo}
     	and status = 'A'
     </update>
-	
- 
-
- 
- 
+	<select id="friendlistselect" resultMap="memberResult">
+		SELECT M.git_nick, M.mem_intro, M.stack_name
+		FROM friend F
+		JOIN member M
+		  ON (F.bf_giver = M.mem_no OR F.bf_taker = M.mem_no)
+		WHERE ((F.bf_giver = #{memNo} AND F.status = 'Y') 
+		    OR (F.bf_taker = #{memNo} AND F.status = 'Y'))
+		and mem_no != #{memNo}
+	</select>
 </mapper>
