@@ -127,7 +127,12 @@ ex)
     
     <img src="https://github.com/user-attachments/assets/3b97ce1c-3e67-41ad-8d36-a22773d16f0b" />
     edidor API와 웹소켓의 결합을 통한 실시간 토론 페이지 구현
-    
+    ![댓](https://github.com/user-attachments/assets/bd982a26-ee04-4fe4-b217-b0a9b2ad1adc)
+![뉴](https://github.com/user-attachments/assets/f51c9d09-dcf3-44e9-a3c1-8d141666622e)
+![포](https://github.com/user-attachments/assets/3b97ce1c-3e67-41ad-8d36-a22773d16f0b)
+![코](https://github.com/user-attachments/assets/c7478378-7b91-411a-94f9-04761b903cd5)
+![게](https://github.com/user-attachments/assets/2e50fc09-6c87-4883-955d-21402bd2d44a)
+
   </pre>
 </details>
 
