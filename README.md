@@ -89,6 +89,7 @@ ex)
 <details>
   <summary>정택은</summary>
   <pre>
+    
   ![깃허브 연동로그인](https://github.com/user-attachments/assets/b99b6837-700f-4c1c-a06c-677103f54ab0)
   oAuthAPI활용한 깃허브 연동 로그인
   ![이슈리스트 조회,상세보기](https://github.com/user-attachments/assets/b6ec4f31-738c-4015-af2d-12babfa4bf62)
