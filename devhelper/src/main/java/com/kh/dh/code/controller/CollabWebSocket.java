@@ -28,7 +28,7 @@ public class CollabWebSocket {
 	    //String type = jo.get("type").getAsString();
 
 	    for (Session client : clients) {
-	        if (client.isOpen() && client.equals(session)) { 
+	        if (client.isOpen() && !client.equals(session)) { 
 	            try {
 	                client.getBasicRemote().sendText(message); 
 	            } catch (IOException e) {

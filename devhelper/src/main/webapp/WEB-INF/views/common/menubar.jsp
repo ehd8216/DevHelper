@@ -286,7 +286,7 @@
 					</c:when>
 					<c:otherwise>
 						<div class="about_user">
-							<span class="material-icons" onclick="toCodeTyping()">description</span>
+							<!-- <span class="material-icons" onclick="toCodeTyping()">description</span>  -->
 							<span class="material-symbols-outlined" onclick="toThe('login.me')">login</span>
 						</div>
 					</c:otherwise>
@@ -368,7 +368,7 @@
 							} else if (result == 2) {
 								toastr.error("${errorMsg1}")
 							} else {
-								const message = "<a href='http://localhost:8234/dh/" + result + "' style='color: white;'>룸 아이디는 " + result + "입니다. <br>여기를 눌러서 입장하거나,<br>콘솔창을 확인하세요</a>";
+								const message = "<a href='http://192.168.20.52:8234/dh/" + result + "' style='color: white;'>룸 아이디는 " + result + "입니다. <br>여기를 눌러서 입장하거나,<br>콘솔창을 확인하세요</a>";
 								toastr.success(message, "", {
 									allowHtml: true,
 									tapToDismiss: false

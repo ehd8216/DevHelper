@@ -140,7 +140,7 @@
 										gap: 3%;
 										height: 100%;
 										width: 30%;
-										justify-content: end;
+										justify-content: space-between;
 
 										& .count {
 											border: 2px solid rgb(243, 132, 243);
@@ -244,10 +244,10 @@
 								<div class="underBoard">
 									<div class="ubSlider" data-bNo="${b.boardNo}">
 										<div class="underBoardInfo">
+											<div class="count">${b.boardCount}</div>
 											<c:if test="${b.answer eq 'Y'}">
 												<div class="answerMark">🏆</div>
 											</c:if>
-											<div class="count">${b.boardCount}</div>
 											<div class="date">${b.createDate}</div>
 										</div>
 									</div>

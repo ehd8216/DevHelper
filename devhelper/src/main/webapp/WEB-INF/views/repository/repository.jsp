@@ -159,7 +159,7 @@
   
 
     function getRepoUserUrl(repoUrl){
-      reUserUrl = repoUrl.substr(29);
+      repoUserUrl = repoUrl.substr(29);
     }
 
     function deleteRepo(repoUrl){
@@ -175,7 +175,7 @@
     
     function inviteRepo(){
     	const inviteUserName = $("#inviteUserName").val();
-    	location.href="inviteRepo.re?inviteUserName=" + inviteUserName + "&reUserUrl=" + repoUserUrl;
+    	location.href="inviteRepo.re?inviteUserName=" + inviteUserName + "&repoUserUrl=" + repoUserUrl;
     }
 
     function repoReload(){

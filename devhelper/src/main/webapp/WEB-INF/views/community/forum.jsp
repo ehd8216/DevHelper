@@ -170,11 +170,6 @@
 
 					<div class="chat">
 
-
-						<div class="chat-input">
-							<input type="text" id="chatInput" placeholder="메시지를 입력하세요..." />
-							<button onclick="sendChatMessage()">전송</button>
-						</div>
 						<div id="disqus_thread"></div>
 						<script>
 							/**
