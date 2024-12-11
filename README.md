@@ -47,7 +47,7 @@
 # 📚 사용 기술 <br>
 - OS : Windows11 <br>
 - language : JAVA11 , JavaScript <br>
-- Back-End : Spring framework/ JSP & Servlet / mybatis <br>
+- Back-End : Spring framework/ mybatis <br>
 - Front-End : JavaScript / jQuery / AJAX / JSON <br>
 - Developer Tools : Eclipse / VS Code / SqlDeveloper <br>
 - Server : Apache Tomcat 9.0 / Apache maven <br>
